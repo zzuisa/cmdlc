@@ -13,16 +13,19 @@ import NotFound from './components/App/NotFound';
 
 import Home from './components/Home/Home';
 
-import HelloWorld from './components/HelloWorld/HelloWorld';
+import TopicPage from './components/Topic/TopicPage';
+import TeamPage from './components/Team/TeamPage';
 
 import './styles/styles.scss';
+import 'antd/dist/antd.css';
 
 render((
     <Router>
         <App>
             <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route path="/helloworld" component={HelloWorld}/>
+                <Route path="/topic/:name" component={TopicPage}/>
+                <Route path="/team/:name" component={TeamPage}/>
                 <Route component={NotFound}/>
             </Switch>
         </App>
