@@ -1,6 +1,10 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import {
+    NavLink, Link, withRouter, useLocation,
+} from 'react-router-dom';
 import './menus.css';
+import cookie from 'react-cookies';
+
 import {
     Layout, Menu, Button,
 } from 'antd';
@@ -20,8 +24,17 @@ const selectedStyle = {
     backgroundColor: 'white',
     color: 'slategray',
 };
-const MainMenu = (props) => (
 
+function getAndSavePath(path) {
+    if (path.indexOf('/detail') == -1) {
+        cookie.save('location', path);
+        return path;
+    }
+    if (cookie.load('location') != undefined) { return cookie.load('location'); }
+    return '/team/vue';
+}
+
+const MainMenu = (props) => (
     <Layout>
         <Sider
             collapsedWidth="0"
@@ -33,15 +46,13 @@ const MainMenu = (props) => (
             }}
         >
             <Button type="primary" size="large" >Logo</Button>
-
-            <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={['1']}>
+            <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>
                 <SubMenu key="team" icon={<MailOutlined />} title="Team">
                     {teamRoute.map((e, index) => {
                         if (e.path != '*') {
                             return (
-                                <Menu.Item key={index} icon={<UserOutlined />}>
+                                <Menu.Item key={e.path} icon={<UserOutlined />}>
                                     <NavLink to={e.path}>{e.name }</NavLink>
-
                                 </Menu.Item>
                             );
                         }
@@ -51,7 +62,7 @@ const MainMenu = (props) => (
                     {topicRoute.map((e, index) => {
                         if (e.path != '*') {
                             return (
-                                <Menu.Item key={index + 3} icon={<UserOutlined />}>
+                                <Menu.Item key={e.path} icon={<UserOutlined />}>
                                     <NavLink to={e.path}>{e.name }</NavLink>
 
                                 </Menu.Item>
@@ -73,4 +84,4 @@ const MainMenu = (props) => (
         </Layout>
     </Layout>
 );
-export default MainMenu;
+export default withRouter(MainMenu);
