@@ -7,6 +7,7 @@ import {
 import 'antd/dist/antd.css';
 import SlideList from '../Slide/SlideList';
 import MainMenu from '../../router/menus';
+import UserProfile from '../Profile/UserProfile';
 
 const { Header, Content, Footer } = Layout;
 
@@ -113,6 +114,7 @@ class Home extends Component {
                     </ul>
 
                     <button onClick={this.newCounter}>New counter</button>
+
                 </Content></MainMenu>
         );
     }

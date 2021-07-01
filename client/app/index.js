@@ -18,6 +18,7 @@ import TeamPage from './components/Team/TeamPage';
 
 import './styles/styles.scss';
 import 'antd/dist/antd.css';
+import Test from './components/Profile/Test';
 
 render((
     <Router>
@@ -25,7 +26,8 @@ render((
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route path="/topic/:name" component={TopicPage}/>
-                <Route path="/team/:name" component={TeamPage}/>
+                {/* <Route path="/team/:name" component={TeamPage}/> */}
+                <Route path="/team/:name" component={Test}/>
                 <Route component={NotFound}/>
             </Switch>
         </App>
