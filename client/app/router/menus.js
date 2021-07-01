@@ -1,6 +1,10 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import {
+    NavLink, Link, withRouter, useLocation,
+} from 'react-router-dom';
 import './menus.css';
+import cookie from 'react-cookies';
+
 import {
     Layout, Menu, Button,
 } from 'antd';
@@ -22,8 +26,17 @@ const selectedStyle = {
     backgroundColor: 'white',
     color: 'slategray',
 };
-const MainMenu = (props) => (
 
+function getAndSavePath(path) {
+    if (path.indexOf('/detail') == -1) {
+        cookie.save('location', path);
+        return path;
+    }
+    if (cookie.load('location') != undefined) { return cookie.load('location'); }
+    return '/team/vue';
+}
+
+const MainMenu = (props) => (
     <Layout>
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
 
@@ -40,7 +53,7 @@ const MainMenu = (props) => (
                     console.log(collapsed, type);
                 }}
             >
-                {/* <Button type="primary" size="large" >Logo</Button> */}
+                <Button type="primary" size="large" >Logo</Button>
 
                 <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={['1']}>
 
@@ -82,4 +95,4 @@ const MainMenu = (props) => (
         </Layout>
     </Layout>
 );
-export default MainMenu;
+export default withRouter(MainMenu);
