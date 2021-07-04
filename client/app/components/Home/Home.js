@@ -101,7 +101,7 @@ class Home extends Component {
                 <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
 
                     <p>Counters:</p>
-                    <SlideList slides={test}/>
+                    {/* <SlideList slides={test}/> */}
                     <ul>
                         { this.state.counters.map((counter, i) => (
                             <li key={i}>

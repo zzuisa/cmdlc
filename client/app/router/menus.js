@@ -32,7 +32,9 @@ function getAndSavePath(path) {
         cookie.save('location', path);
         return path;
     }
-    if (cookie.load('location') != undefined) { return cookie.load('location'); }
+    if (cookie.load('location') != undefined) {
+        return cookie.load('location');
+    }
     return '/team/vue';
 }
 
@@ -53,15 +55,14 @@ const MainMenu = (props) => (
                     console.log(collapsed, type);
                 }}
             >
-                <Button type="primary" size="large" >Logo</Button>
 
-                <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={['1']}>
+                <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>
 
                     <SubMenu key="team" icon={<MailOutlined />} title="Team">
                         {teamRoute.map((e, index) => {
                             if (e.path != '*') {
                                 return (
-                                    <Menu.Item key={index} icon={<UserOutlined />}>
+                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
                                         <NavLink to={e.path}>{e.name }</NavLink>
 
                                     </Menu.Item>
@@ -73,7 +74,7 @@ const MainMenu = (props) => (
                         {topicRoute.map((e, index) => {
                             if (e.path != '*') {
                                 return (
-                                    <Menu.Item key={index + 3} icon={<UserOutlined />}>
+                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
                                         <NavLink to={e.path}>{e.name }</NavLink>
 
                                     </Menu.Item>

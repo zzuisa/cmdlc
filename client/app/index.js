@@ -28,7 +28,7 @@ render((
                 <Route exact path="/" component={Home}/>
                 <Route path="/topic/:name" component={TopicPage}/>
 
-                <Route path="/team/:name" component={Test}/>
+                <Route path="/test" component={Test}/>
                 <Route path="/team/:name" component={TeamPage}/>
                 <Route path="/detail/:id" component={SlideDetail}/>
                 <Route component={NotFound}/>

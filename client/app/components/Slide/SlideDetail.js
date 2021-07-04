@@ -83,7 +83,7 @@ export default class TopicPage extends React.Component {
                                       >
                                           <Page
                                               style={{ width: '100%' }}
-                                              height={800}
+                                              size={[600, 400]}
                                               key="page"
                                               pageNumber={this.state.pageNumber}
                                           />

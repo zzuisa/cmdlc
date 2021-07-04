@@ -9,6 +9,7 @@ import {
 import moment from 'moment';
 import MainMenu from '../../router/menus';
 import SlideList from '../Slide/SlideList';
+import Chat from '../Chat/Chat';
 
 const props = {
     name: 'file',
@@ -88,12 +89,11 @@ export default class TopicPage extends React.Component {
         return (
             <MainMenu>
                 <Upload {...props} onChange={this.onChange}>
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>,
+                    <Button type='primary' icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
                 <SlideList slides={this.state.slides}/>
-                <p>TopicPage: {this.props.match.params.name}</p>
                 <Divider plain>Text</Divider>
-
+                <Chat roomId={this.props.match.params.name} />
             </MainMenu>
         );
     }
