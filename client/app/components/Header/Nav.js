@@ -46,23 +46,18 @@ export default class Nav extends React.Component {
   };
 
   handleClick = (e) => {
-      console.log('click ', e);
       this.setState({ current: e.key });
   };
 
-  //   onSearch = (value) => console.log(value);
+  //   onSearch = (value) =>
 
   onResponse=() => {
       this.setState({ status: !this.state.status });
 
       if (this.state.status == 'true') {
           openNotificationWithIcon('success');
-          console.log('改变为绿');
-          console.log(`call res${this.state.status}`);
       } else if (this.state.status == 'false') {
           openNotificationWithIcon('warning');
-          console.log('改变为红');
-          console.log(`call res${this.state.status}`);
       }
   }
 
@@ -74,11 +69,9 @@ export default class Nav extends React.Component {
       if (isOnline) {
           button = <Button key="status1"><IconFont type='icon-lvdian' /></Button>;
           status = 'Online';
-          console.log('改变为绿');
       } else {
           button = <Button key="status2"><IconFont type='icon-lvdian1'/></Button>;
           status = 'Offline';
-          console.log('改变为红');
       }
       return (
 

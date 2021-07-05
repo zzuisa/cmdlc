@@ -4,6 +4,8 @@ import {
     Button, Step, Card, Radio,
     Comment, Tooltip, Avatar,
     Image,
+    Empty,
+    Spin, Alert,
 } from 'antd';
 import moment from 'moment';
 import {
@@ -15,9 +17,9 @@ import SlideDetail from './SlideDetail';
 function SlideList(props) {
     return (
         <Card>
-            <Radio.Group defaultValue="a" buttonStyle="solid">
-                {
-                    props.slides.map((s, index) => (
+            {props.slides.length !== 0
+                ? <Radio.Group if={props.slides.length !== 0} defaultValue="a" buttonStyle="solid">
+                    { props.slides.map((s, index) => (
                         <Comment
                             key={index}
                             author={<a>Han Solo</a>}
@@ -47,8 +49,9 @@ function SlideList(props) {
                         />
                         // <Radio.Button style={{ float: 'left' }} value={ s.name} key={index}>{ s.name}</Radio.Button>
                     ))
-                }
-            </Radio.Group>
+
+                    }
+                </Radio.Group> : <Empty else image={Empty.PRESENTED_IMAGE_SIMPLE} />}
 
         </Card>
 

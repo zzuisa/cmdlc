@@ -42,8 +42,6 @@ module.exports = (app) => {
         // Use the mv() method to place the file somewhere on your server
         sampleFile.mv(uploadPath, (err) => {
             if (err) { return res.status(500).send(err); }
-            console.log('ss', finalName);
-
             let sType = 0 ? method == 'lecture' : 1;
             const slide = new Slide({
                 name: sampleFile.name,
@@ -51,7 +49,6 @@ module.exports = (app) => {
                 path: `/files/${finalName}`,
                 topic: req.body.topic,
             });
-            console.log('slide', slide);
 
             slide.save()
                 .then(() => res.json(slide));

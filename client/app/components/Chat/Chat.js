@@ -7,19 +7,27 @@ import Message from './Message';
 import ChatInput from './ChatInput';
 
 const Chat = (props) => {
-    console.log('vv', props);
     const { roomId } = props;
     const [roomDetails, setRoomDetails] = useState(null);
     let [roomMessages, setRoomMessages] = useState([]);
-
     useEffect(() => {
         if (roomId) {
             fetch(`/api/conversations/slide_${props.roomId}`)
                 .then((res) => res.json())
                 .then((content) => {
-                    console.log('content', content);
-                    setRoomMessages(content.messages);
+                    let mes = content.messages;
+                    setRoomMessages(mes);
+                    props.socket.on('output', (data) => {
+                        mes.push({
+                            _id: data._id,
+                            create_time: data.create_time,
+                            content: data.msg,
+                        });
+                        setRoomMessages([...mes]);
+                    });
                 });
+
+            // let socket = socketClient('localhost:8081', { transports: ['websocket', 'polling', 'flashsocket'] });
         }
     }, [roomId]);
 
@@ -29,17 +37,17 @@ const Chat = (props) => {
                 {roomMessages.map(({
                     _id, user_id, content, create_time,
                 }) => (
-
                     <Message
+
                         key={_id}
                         message={content}
                         timestamp={create_time}
-                        user={user_id == 0 ? 'System' : user_id}
+                        user={user_id == 0 ? 'System' : 'User'}
                         userImage={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}
                     />
                 ))}
             </div>
-            <ChatInput style={{ marginTop: '100' }} channelName={props.roomId} channelId={props.roomId} />
+            <ChatInput style={{ marginTop: '100' }} channelName={props.roomId} channelId={props.roomId} socket={props.socket} />
         </div>
     );
 };

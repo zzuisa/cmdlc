@@ -21,11 +21,11 @@ export default class Logo extends React.Component {
   };
 
   handleClick = (e) => {
-      console.log('click ', e);
+      
       this.setState({ current: e.key });
   };
 
-  onSearch = (value) => console.log(value);
+  onSearch = (value) => 
 
   render() {
       const { current } = this.state;

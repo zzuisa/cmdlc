@@ -9,7 +9,6 @@ module.exports = (app) => {
         let rename = `slide_${topic}`;
         Conversation.find({ channel_name: rename }).exec()
             .then((cs) => {
-                console.log('r', cs);
                 if (cs.length === 0) {
                     const conversation = new Conversation();
                     conversation.messages.push(new E.Message().init());

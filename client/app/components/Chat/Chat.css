@@ -4,7 +4,9 @@
     overflow-y: scroll;
     padding-bottom: 150px;
 }
-
+body{
+    overflow-x: hidden;
+}
 .chat__header {
     display: flex;
     align-items: center;

@@ -6,7 +6,7 @@ function Message({
     message, timestamp, user, userImage,
 }) {
     return (
-        <Card>
+        <Card style={{ marginBottom: '2px' }}>
             <div className="message">
                 <img src={userImage} alt="" />
                 <div className="message__info">
@@ -16,7 +16,7 @@ function Message({
                             {timestamp}
                         </span>
                     </h4>
-                    <p>{message}</p>
+                    <p dangerouslySetInnerHTML={{ __html: message }}></p>
                 </div>
             </div>
         </Card>

@@ -6,12 +6,20 @@ const path = require('path');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+let cors = require('cors');
+const moment = require('moment');
 
+const app = express();
+app.use(cors());
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 8080;
+const socketPort = 8881;
 
 // Configuration
 // ================================================================================================
@@ -20,13 +28,20 @@ const port = process.env.PORT || 8080;
 mongoose.connect(isDev ? config.db_dev : config.db);
 mongoose.Promise = global.Promise;
 
-const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    next();
+});
 // API routes
 require('./routes')(app);
 
+let date = moment.utc().format();
+let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
 if (isDev) {
     const compiler = webpack(webpackConfig);
 
@@ -57,13 +72,61 @@ if (isDev) {
         res.end();
     });
 }
+let connectedUser = [];
+io.on('connection', (socket) => {
+    updateUserName();
+    let userName = '';
 
-app.listen(port, '127.0.0.1', (err) => {
+    // login
+    socket.on('login', (name, callback) => {
+        if (name.trim().length === 0) {
+            return;
+        }
+        callback(true);
+        userName = name;
+        connectedUser.push(userName);
+        updateUserName();
+    });
+    // Receive Chat Message
+    socket.on('message', (msg) => {
+        // socket.emit('output', {
+        //     name: 'user',
+        //     _id: new Date().getTime(),
+        //     msg,
+        //     create_time: local,
+        // });
+        io.sockets.emit('output', {
+            name: 'user',
+            _id: new Date().getTime(),
+            msg,
+            create_time: local,
+        });
+    });
+
+    // Disconnect
+    socket.on('disconnect', () => {
+        let logoutmsg = `${userName} left the chat room`;
+        socket.emit('logout', logoutmsg);
+        connectedUser.splice(
+            connectedUser.indexOf(userName) === -1
+                ? 99999
+                : connectedUser.indexOf(userName),
+            1,
+        );
+        updateUserName();
+    });
+
+    // update username
+    function updateUserName() {
+        io.emit('loadUser', connectedUser);
+    }
+});
+server.listen(port, 'localhost', (err) => {
     if (err) {
         console.log(err);
     }
-
-    console.info('>>> 🌎 Open http://127.0.0.1:%s/ in your browser.', port);
 });
-
+// server.listen(socketPort, { log: false, origins: '*:*' }, () => {
+//
+// });
 module.exports = app;

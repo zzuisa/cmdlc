@@ -11,7 +11,7 @@ const HorizontalLoginForm = () => {
     }, []);
 
     const onFinish = (values) => {
-        console.log('Finish:', values);
+
     };
 
     return (

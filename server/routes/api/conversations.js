@@ -15,7 +15,6 @@ module.exports = (app) => {
         message.content = data.content;
         message.user_id = 1;
         Conversation.findOne({ channel_name: cm }).exec().then((r) => {
-            console.log('rr', r);
             r.messages.push(message);
             r.save();
             res.json({ code: 0 });
