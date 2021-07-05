@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     Button, Step, Card, Radio,
     Comment, Tooltip, Avatar,

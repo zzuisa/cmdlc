@@ -21,16 +21,16 @@ export default class Logo extends React.Component {
   };
 
   handleClick = (e) => {
-      
       this.setState({ current: e.key });
   };
 
-  onSearch = (value) => 
+  onSearch = (value) => {
+
+  }
 
   render() {
       const { current } = this.state;
       return (
-
           <Button type="primary" size="large" >Logo</Button>
       );
   }
