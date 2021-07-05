@@ -97,7 +97,7 @@ class Home extends Component {
 
     render() {
         return (
-            <MainMenu>
+            <MainMenu props='false'>
                 <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
 
                     <p>Counters:</p>
@@ -116,6 +116,7 @@ class Home extends Component {
                     <button onClick={this.newCounter}>New counter</button>
 
                 </Content></MainMenu>
+
         );
     }
 }

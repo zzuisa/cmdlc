@@ -41,7 +41,7 @@ const MainMenu = (props) => (
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
 
             <Logo style={{ float: 'left' }}/>
-            <Nav style={{ float: 'right' }}/>
+            <Nav style={{ float: 'right' }} isLoggedIn={props}/>
         </Header>
         <Layout>
             <Sider
@@ -90,7 +90,7 @@ const MainMenu = (props) => (
                         {props.children}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center' }}>Created by Noders Group</Footer>
             </Layout>
         </Layout>
     </Layout>

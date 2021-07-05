@@ -19,18 +19,23 @@ import SlideDetail from './components/Slide/SlideDetail';
 
 import './styles/styles.scss';
 import 'antd/dist/antd.css';
-import Test from './components/Profile/Test';
+import UserProfile from './components/Profile/UserProfile';
+import Login from './components/SignIn/Login';
 
 render((
     <Router>
         <App>
             <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route path="/topic/:name" component={TopicPage}/>
 
-                <Route path="/team/:name" component={Test}/>
+                <Route path="/topic/:name" component={TopicPage}/>
                 <Route path="/team/:name" component={TeamPage}/>
                 <Route path="/detail/:id" component={SlideDetail}/>
+
+                {/* <Route path="/userSetting/:name" component={UserProfile}/> */}
+                {/* <Route path="/userSetting/login" component={Login}/> */}
+                <Route path="/userSetting/profile" component={UserProfile}/>
+                <Route path="/login" component={Home}/>
                 <Route component={NotFound}/>
             </Switch>
         </App>

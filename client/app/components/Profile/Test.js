@@ -16,11 +16,6 @@ class Test extends Component {
         return (
             <MainMenu>
 
-                <Button type="primary">
-                    {/* <Link to="/Profile">返回</Link> */}
-                    sadsad
-                </Button>
-
                 <UserProfile/>
             </MainMenu>
         );
