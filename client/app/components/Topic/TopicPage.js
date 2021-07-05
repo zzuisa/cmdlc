@@ -33,7 +33,7 @@ export default class TopicPage extends React.Component {
     }
 
     componentWillMount=() => {
-        let socket = socketClient('localhost:8081');
+        let socket = socketClient('localhost:8080');
 
         socket.on('connection', () => {
 

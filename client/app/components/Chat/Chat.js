@@ -27,7 +27,7 @@ const Chat = (props) => {
                     });
                 });
 
-            // let socket = socketClient('localhost:8081', { transports: ['websocket', 'polling', 'flashsocket'] });
+            // let socket = socketClient('localhost:8080', { transports: ['websocket', 'polling', 'flashsocket'] });
         }
     }, [roomId]);
 

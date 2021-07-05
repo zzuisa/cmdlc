@@ -18,7 +18,7 @@ const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
 
 const isDev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 const socketPort = 8881;
 
 // Configuration
