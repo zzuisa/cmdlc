@@ -5,22 +5,24 @@ const helpers = require('./helpers');
 const commonConfig = require('./webpack.common');
 
 module.exports = merge(commonConfig, {
-  mode: 'production',
+    mode: 'production',
 
-  output: {
-    filename: 'js/[name].[hash].js',
-    chunkFilename: '[id].[hash].chunk.js'
-  },
-
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false,
-        screw_ie8: true
-      },
-      output: {
-        comments: false
-      }
-    })
-  ]
+    output: {
+        filename: 'js/[name].[hash].js',
+        chunkFilename: '[id].[hash].chunk.js',
+    },
+    optimization: {
+        minimize: false, // Update this to true or false
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false,
+                screw_ie8: true,
+            },
+            output: {
+                comments: false,
+            },
+        }),
+    ],
 });

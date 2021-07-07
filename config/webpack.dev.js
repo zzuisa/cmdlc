@@ -13,7 +13,9 @@ module.exports = merge(commonConfig, {
             'webpack-hot-middleware/client?reload=true',
         ],
     },
-
+    optimization: {
+        minimize: false, // Update this to true or false
+    },
     output: {
         filename: 'js/[name].js',
         chunkFilename: '[id].chunk.js',
