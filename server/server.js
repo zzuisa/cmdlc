@@ -89,12 +89,6 @@ io.on('connection', (socket) => {
     });
     // Receive Chat Message
     socket.on('message', (msg) => {
-        // socket.emit('output', {
-        //     name: 'user',
-        //     _id: new Date().getTime(),
-        //     msg,
-        //     create_time: local,
-        // });
         io.sockets.emit('output', {
             name: 'user',
             _id: new Date().getTime(),
@@ -102,13 +96,16 @@ io.on('connection', (socket) => {
             create_time: local,
         });
     });
+    socket.on('client_slide_message', (msg) => {
+        console.log('client_slide_message', msg);
+        io.sockets.emit('server_slide_message', {
+            name: 'user',
+            _id: new Date().getTime(),
+            msg,
+            create_time: local,
+        });
+    });
     socket.on('client_slide_comment', (msg) => {
-        // socket.emit('output', {
-        //     name: 'user',
-        //     _id: new Date().getTime(),
-        //     msg,
-        //     create_time: local,
-        // });
         io.sockets.emit('server_slide_comment', {
             name: 'user',
             _id: new Date().getTime(),

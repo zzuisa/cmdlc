@@ -3,6 +3,7 @@ import {
     Upload, message, Button, Divider,
     Comment, Tooltip, Avatar,
     Spin, Alert,
+    BackTop,
 } from 'antd';
 import {
     UploadOutlined, DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled,
@@ -117,7 +118,7 @@ export default class TopicPage extends React.Component {
                     <Divider plain>Text</Divider>
                     <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
                 </Spin>
-
+                <BackTop />
             </MainMenu>
         );
     }

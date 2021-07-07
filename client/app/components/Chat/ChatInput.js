@@ -6,7 +6,9 @@ import 'braft-editor/dist/index.css';
 // import firebase from 'firebase';
 // import db from './firebase';
 import { ContentUtils } from 'braft-utils';
+import { SendOutlined } from '@ant-design/icons';
 import { useStateValue } from '../StateProvider';
+import { notice, verify } from '../Common/Notice';
 
 const controls = [
     'undo', 'redo', 'separator',
@@ -59,7 +61,8 @@ export default class ChatInput extends React.Component {
          e.preventDefault();
 
          if (this.state.channelId && this.state.type === 'con') {
-             fetch(`/api/conversations/slide_${this.state.channelId}`, {
+             fetch(`/api/conversations/${verify(this.state.channelId)
+                 ? `slide_${this.state.channelId}` : this.state.channelId}`, {
                  method: 'POST',
                  body: JSON.stringify({ content: this.state.editorState.toHTML() }),
                  headers: {
@@ -68,7 +71,9 @@ export default class ChatInput extends React.Component {
              })
                  .then((res) => res.json())
                  .then((json) => {
-                     this.state.socket.emit('message', this.state.editorState.toHTML());
+                     let eventName = verify(this.state.channelId) ? 'message' : 'client_slide_message';
+                     console.log(eventName);
+                     this.state.socket.emit(eventName, this.state.editorState.toHTML());
                      this.clearContent();
                  });
          } else {
@@ -104,7 +109,8 @@ export default class ChatInput extends React.Component {
                      contentStyle={{ height: 200, minHeight: 200 }}
                      textBackgroundColor={true}
                      value={this.state.editorState} onChange={this.handleChange}/>
-                 <Button size="large" type="primary" onClick={this.sendMessage} htmlType="submit">Submit</Button>
+                 <Button type="primary" style={{ float: 'right' }} shape="circle" icon={<SendOutlined />}
+                     size={'large'} onClick={this.sendMessage} htmlType="submit" />
 
              </Card>
          );

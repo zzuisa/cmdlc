@@ -15,21 +15,24 @@ import {
     Skeleton,
     Spin,
     Alert,
+    BackTop,
 } from 'antd';
 import { pdfjs, Document, Page } from 'react-pdf';
 import socketClient from 'socket.io-client';
+import TextField from '@material-ui/core/TextField';
 import { Viewer, DocumentWrapper } from './styles';
 import MainMenu from '../../router/menus';
 import Message from '../Chat/Message';
 import ChatInput from '../Chat/ChatInput';
+import Chat from '../Chat/Chat';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
 export default class SlideDetail extends React.Component {
   state = {
       slide: {},
       numPages: null,
       pageNumber: 1,
+      textValue: 1,
       spinning: true,
       roomMessages: [],
       id: 0,
@@ -43,6 +46,12 @@ export default class SlideDetail extends React.Component {
   onDocumentLoadSuccess = ({ numPages }) => {
       this.setState({ numPages });
   };
+
+  componentDidUpdate=(prevProps, prevState) => {
+      if (prevState.pageNumber !== this.state.pageNumber) {
+          this.getSlideComment(this.state.pageNumber);
+      }
+  }
 
   componentWillMount = () => {
       let socket = socketClient('localhost:8080');
@@ -96,17 +105,36 @@ export default class SlideDetail extends React.Component {
 
   prev = () => {
       if (this.state.pageNumber !== 1) {
-          this.getSlideComment(this.state.pageNumber - 1);
-          this.setState((prevState) => ({ pageNumber: prevState.pageNumber - 1 }));
+          this.setState((prevState) => ({
+              pageNumber: prevState.pageNumber - 1,
+              textValue: prevState.pageNumber - 1,
+          }));
       }
   };
 
   next = () => {
       if (this.state.pageNumber !== this.state.numPages) {
-          this.getSlideComment(this.state.pageNumber + 1);
-          this.setState((prevState) => ({ pageNumber: prevState.pageNumber + 1 }));
+          this.setState((prevState) => ({
+              pageNumber: prevState.pageNumber + 1,
+              textValue: prevState.pageNumber + 1,
+
+          }));
       }
   };
+
+  textBlur=(e) => {
+      e.persist();
+      this.setState(() => ({
+          pageNumber: this.state.textValue,
+      }));
+  }
+
+textChange=(e) => {
+    console.log('text', e);
+    this.setState({
+        textValue: parseInt(e.target.value),
+    });
+}
 
   render = () => {
       return (
@@ -138,10 +166,15 @@ export default class SlideDetail extends React.Component {
                               <Col span={4}>
                                   <Button onClick={this.prev}>Prev</Button>
                               </Col>
-                              <Col span={4}>
+                              <Col span={8} style={{ textAlign: 'center' }}>
                                   <span>
-                    Page {this.state.pageNumber} of {this.state.numPages}
+                                      <TextField size="small" type="number" onBlur={this.textBlur} onChange={this.textChange} style={{ width: 74, height: '32px' }} value={this.state.textValue} label="current" id="outlined-basic" variant="outlined" />
+                                      <TextField size="small" disabled style={{ width: 54, height: '32px' }}
+                                          label={`/${this.state.numPages}`}
+                                          defaultValue={this.state.numPages}
+                                          id="outlined-basic" variant="outlined" />
                                   </span>
+
                               </Col>
                               <Col span={4}>
                                   <Button onClick={this.next}>Next</Button>
@@ -181,7 +214,15 @@ export default class SlideDetail extends React.Component {
                               />
                           </div>
                       </Col>
+                      <Divider plain style={{ color: '#888' }}>Public Message</Divider>
+                      <Col span={24}>
+                          <Chat roomId={this.props.match.params.id} socket={this.state.socket} />
+
+                      </Col>
+
                   </Row>
+                  <BackTop />
+
               </Card>
           </MainMenu>
       );

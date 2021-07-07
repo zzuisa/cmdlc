@@ -15,9 +15,16 @@ module.exports = (app) => {
         message.content = data.content;
         message.user_id = 1;
         Conversation.findOne({ channel_name: cm }).exec().then((r) => {
-            r.messages.push(message);
-            r.save();
-            res.json({ code: 0 });
+            if (r !== null) {
+                r.messages.push(message);
+                r.save();
+                res.json({ code: 0 });
+            } else {
+                let conv = new Conversation();
+                conv.messages = [message];
+                conv.channel_name = cm;
+                conv.save();
+            }
         });
     });
 
