@@ -102,6 +102,20 @@ io.on('connection', (socket) => {
             create_time: local,
         });
     });
+    socket.on('client_slide_comment', (msg) => {
+        // socket.emit('output', {
+        //     name: 'user',
+        //     _id: new Date().getTime(),
+        //     msg,
+        //     create_time: local,
+        // });
+        io.sockets.emit('server_slide_comment', {
+            name: 'user',
+            _id: new Date().getTime(),
+            msg,
+            create_time: local,
+        });
+    });
 
     // Disconnect
     socket.on('disconnect', () => {

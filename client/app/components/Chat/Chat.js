@@ -47,7 +47,7 @@ const Chat = (props) => {
                     />
                 ))}
             </div>
-            <ChatInput style={{ marginTop: '100' }} channelName={props.roomId} channelId={props.roomId} socket={props.socket} />
+            <ChatInput style={{ marginTop: '100' }} channelName={props.roomId} channelId={props.roomId} type={'con'} socket={props.socket} />
         </div>
     );
 };

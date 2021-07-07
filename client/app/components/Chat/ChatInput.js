@@ -8,6 +8,16 @@ import 'braft-editor/dist/index.css';
 import { ContentUtils } from 'braft-utils';
 import { useStateValue } from '../StateProvider';
 
+const controls = [
+    'undo', 'redo', 'separator',
+    'font-size', 'line-height', 'letter-spacing', 'separator',
+    'text-color', 'bold', 'italic', 'underline', 'strike-through', 'separator',
+    'superscript', 'subscript', 'remove-styles', 'emoji', 'separator', 'text-indent', 'text-align', 'separator',
+    'headings', 'list-ul', 'list-ol', 'blockquote', 'code', 'separator',
+    'link', 'separator', 'hr', 'separator',
+    'media', 'separator',
+    'clear',
+];
 export default class ChatInput extends React.Component {
     // const [input, setInput] = useState('');
     // // const [{ user }] = useStateValue();
@@ -15,6 +25,7 @@ export default class ChatInput extends React.Component {
         editorState: BraftEditor.createEditorState(null),
         channelName: this.props.channelName,
         channelId: this.props.channelId,
+        type: this.props.type,
         socket: this.props.socket,
     }
 
@@ -47,7 +58,7 @@ export default class ChatInput extends React.Component {
      sendMessage = (e) => {
          e.preventDefault();
 
-         if (this.state.channelId) {
+         if (this.state.channelId && this.state.type === 'con') {
              fetch(`/api/conversations/slide_${this.state.channelId}`, {
                  method: 'POST',
                  body: JSON.stringify({ content: this.state.editorState.toHTML() }),
@@ -60,6 +71,24 @@ export default class ChatInput extends React.Component {
                      this.state.socket.emit('message', this.state.editorState.toHTML());
                      this.clearContent();
                  });
+         } else {
+             let data = {
+                 content: this.state.editorState.toHTML(),
+                 page: this.state.channelName,
+                 slide_id: this.state.channelId,
+             };
+             fetch('/api/slideComments', {
+                 method: 'POST',
+                 body: JSON.stringify(data),
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+             })
+                 .then((res) => res.json())
+                 .then((json) => {
+                     this.state.socket.emit('client_slide_comment', this.state.editorState.toHTML());
+                     this.clearContent();
+                 });
          }
      };
 
@@ -69,9 +98,10 @@ export default class ChatInput extends React.Component {
          return (
              <Card>
                  <BraftEditor
+                     controls={this.props.controls ? this.props.controls : controls}
                      language={'en'}
-                     style={{ width: '100%', overflowX: 'hidden' }}
-                     contentStyle={{ height: 400 }}
+                     style={{ width: '100%', overflowX: 'hidden', overflowY: 'hidden' }}
+                     contentStyle={{ height: 200, minHeight: 200 }}
                      textBackgroundColor={true}
                      value={this.state.editorState} onChange={this.handleChange}/>
                  <Button size="large" type="primary" onClick={this.sendMessage} htmlType="submit">Submit</Button>

@@ -12,7 +12,6 @@ import {
     DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import SlideDetail from './SlideDetail';
 
 function SlideList(props) {
     return (
