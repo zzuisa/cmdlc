@@ -18,10 +18,6 @@ export default class ChatInput extends React.Component {
         socket: this.props.socket,
     }
 
-    async componentDidMount() {
-
-    }
-
     submitContent = async() => {
         // Pressing ctrl + s when the editor has focus will execute this method
         const htmlContent = this.state.editorState.toHTML();
@@ -52,12 +48,6 @@ export default class ChatInput extends React.Component {
          e.preventDefault();
 
          if (this.state.channelId) {
-             // db.collection('rooms').doc(channelId).collection('messages').add({
-             //     message: input,
-             //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-             //     user: user.displayName,
-             //     userImage: user.photoURL,
-             // });
              fetch(`/api/conversations/slide_${this.state.channelId}`, {
                  method: 'POST',
                  body: JSON.stringify({ content: this.state.editorState.toHTML() }),
