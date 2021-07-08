@@ -1,4 +1,4 @@
-import { Menu, Input } from 'antd';
+import { Menu, Input, Button } from 'antd';
 import {
     MailOutlined, AppstoreOutlined, SettingOutlined, AudioOutlined,
 } from '@ant-design/icons';
@@ -21,23 +21,17 @@ export default class Logo extends React.Component {
   };
 
   handleClick = (e) => {
-      console.log('click ', e);
       this.setState({ current: e.key });
   };
 
-  onSearch = (value) => console.log(value);
+  onSearch = (value) => {
+
+  }
 
   render() {
       const { current } = this.state;
       return (
-
-          <Menu theme="light" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'left' }}>
-
-              <Menu.Item key="mail" >
-                  <a href="#"><img src="assets/img/logo.PNG" alt="" /></a>
-              </Menu.Item>
-
-          </Menu>
+          <Button type="primary" size="large" >Logo</Button>
       );
   }
 }

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 let date = moment.utc().format();
 let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
 const SlideSchema = new mongoose.Schema({
-    id: Number,
+    id: mongoose.Types.ObjectId,
     user_id: { type: Number, default: 1 },
     type: { type: Number, default: 0 },
     topic: String,

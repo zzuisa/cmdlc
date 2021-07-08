@@ -56,23 +56,18 @@ export default class Nav extends React.Component {
     };
 
   handleClick = (e) => {
-      console.log('click ', e);
       this.setState({ current: e.key });
   };
 
-  //   onSearch = (value) => console.log(value);
+  //   onSearch = (value) =>
 
   onResponse=() => {
       this.setState({ status: !this.state.status });
 
       if (this.state.status == 'true') {
           openNotificationWithIcon('success');
-          console.log('改变为绿');
-          console.log(`call res${this.state.status}`);
       } else if (this.state.status == 'false') {
           openNotificationWithIcon('warning');
-          console.log('改变为红');
-          console.log(`call res${this.state.status}`);
       }
   }
 
@@ -94,25 +89,6 @@ export default class Nav extends React.Component {
           status = 'Offline';
       }
 
-      if (this.props.isLoggedIn == 'false') {
-          return (
-              <Menu theme="dark" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
-
-                  <Menu.Item key="login" onClick={() => { this.login(); }}><HorizontalLoginForm/></Menu.Item>
-
-                  {/* <Menu.Item key="search">
-          <Search
-              placeholder="input search text"
-              enterButton="Search"
-              size="large"
-              suffix={suffix}
-              onSearch={this.onSearch}
-          />
-      </Menu.Item> */}
-
-              </Menu>
-          );
-      }
       return (
 
           <Menu theme="dark" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
@@ -128,7 +104,7 @@ export default class Nav extends React.Component {
               </Menu.Item>
               {/* <SubMenu title="SubMenu" onTitleClick={this.onResponse('伟大新')}></SubMenu> */}
               <Menu.Item key="app" icon={<SettingOutlined />}>
-        Navigation Two
+          Navigation Two
               </Menu.Item>
 
               <SubMenu key="SubMenu" style={{ float: 'right' }} icon={ <UserOutlined />} title="User Setting" >
@@ -137,21 +113,11 @@ export default class Nav extends React.Component {
                       <Menu.Item key="setting:2">System Setting2</Menu.Item>
                   </Menu.ItemGroup>
                   <Menu.ItemGroup title="Profile">
-                      <Menu.Item key="setting:3" icon={<ProfileOutlined />}>View Profile</Menu.Item>
+                      <Menu.Item key="setting:3" icon={<ProfileOutlined />}><NavLink to='/userSetting/profile'>View Profile</NavLink></Menu.Item>
                       <Menu.Item key="setting:4" icon={<FormOutlined />}>Edit Profile</Menu.Item>
                       <Menu.Item key="setting:5" icon={<LogoutOutlined/>} onClick={() => openNotification('topLRight')}>Logout</Menu.Item>
                   </Menu.ItemGroup>
               </SubMenu>
-
-              {/* <Menu.Item key="search">
-                <Search
-                    placeholder="input search text"
-                    enterButton="Search"
-                    size="large"
-                    suffix={suffix}
-                    onSearch={this.onSearch}
-                />
-            </Menu.Item> */}
 
           </Menu>
 

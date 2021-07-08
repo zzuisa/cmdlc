@@ -1,68 +1,143 @@
-import React, { useState, useEffect } from 'react';
 import {
-    Form, Input, Button, Space,
+    Form, Input, Button, Checkbox, Space,
 } from 'antd';
+import React, { Component } from 'react';
+import RegisterForm from '../Signup/RegisterForm';
+import Passport from './Passport';
 
-import { Link } from 'react-router-dom';
+export default class Login extends React.Component {
+    formRef = React.createRef();
 
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+    constructor(props) {
+        super(props);
 
-export default function HorizontalLoginForm() {
-    const [form] = Form.useForm();
-    const [, forceUpdate] = useState({}); // To disable submit button at the beginning.
+        this.state = {
+            // new_user: null,
+            isLogin: false,
 
-    useEffect(() => {
-        forceUpdate({});
-    }, []);
+        };
+    }
 
-    const onFinish = (values) => {
-        console.log('Finish:', values);
-    };
+  onFinish = (values) => {
+      console.log('Success:', values);
 
-    return (
-        <Space align="center">
-            <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish}>
-                <Form.Item
-                    name="username"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your username!',
-                        },
-                    ]}
-                >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                    ]}
-                >
-                    <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder="Password"
-                    />
-                </Form.Item>
-                <Form.Item shouldUpdate>
-                    {() => (
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            disabled={
-                                !form.isFieldsTouched(true)
-              || !!form.getFieldsError().filter(({ errors }) => errors.length).length
-                            }
-                        >
-                            <Link to="/login">log in</Link>
-                        </Button>
-                    )}
-                </Form.Item>
-            </Form>
-        </Space>
-    );
+      const p = new Passport();
+      p.login(values.username, values.password, () => {
+          // 登录成功时，跳转页面
+          //   this.setState({
+          //       isLogin: true,
+          //   });
+          this.props.history.push('/main');
+      });
+
+      fetch('/api/login', {
+          method: 'POST',
+
+          // send data as json strings to back-end
+          body: JSON.stringify({
+              username: values.username,
+              password: values.password,
+          }),
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      })
+          .then((res) => res.json())
+          .then((json) => {
+              //   let data = this.state.new_user;
+              //   data = json;
+              //   this.setState({
+              //       new_user: data,
+              //   });
+          });
+  };
+
+  onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+  };
+
+  onReset = () => {
+      this.formRef.current.resetFields();
+  };
+
+  render=() => {
+      return (
+          <Form
+              ref={this.formRef}
+              name="basic"
+              labelCol={{
+                  span: 8,
+              }}
+              wrapperCol={{
+                  span: 8,
+              }}
+              initialValues={{
+                  remember: true,
+              }}
+              onFinish={this.onFinish}
+              onFinishFailed={this.onFinishFailed}
+              //   layout='vertical'
+
+          >
+              <Form.Item
+                  label="Username"
+                  name="username"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Please input your username!',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+
+              <Form.Item
+                  label="Password"
+                  name="password"
+                  wrapperCol={{
+                      offset: 0,
+                      span: 8,
+                  }}
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Please input your password!',
+                      },
+                  ]}
+              >
+                  <Input.Password />
+              </Form.Item>
+
+              <Form.Item
+                  name="remember"
+                  valuePropName="checked"
+                  wrapperCol={{
+                      offset: 8,
+                      span: 8,
+                  }}
+              >
+                  <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+
+              <Form.Item
+                  wrapperCol={{
+                      offset: 8,
+                      span: 8,
+                  }}
+              >
+                  <Space>
+                      <Button type="primary" htmlType="submit" onClick={this.submit}>
+          Submit
+                      </Button>
+                      <Button htmlType="button" onClick={this.onReset}>
+          Reset
+                      </Button>
+                  </Space>
+              </Form.Item>
+          </Form>
+
+      //   <RegisterForm/>
+      );
+  }
 }

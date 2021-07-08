@@ -2,28 +2,46 @@ import React from 'react';
 import {
     Upload, message, Button, Divider,
     Comment, Tooltip, Avatar,
+    Spin, Alert,
 } from 'antd';
 import {
     UploadOutlined, DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled,
 } from '@ant-design/icons';
 import moment from 'moment';
+import socketClient from 'socket.io-client';
 import MainMenu from '../../router/menus';
 import SlideList from '../Slide/SlideList';
+import Chat from '../Chat/Chat';
 
 const props = {
     name: 'file',
     showUploadList: false,
 
 };
+
 export default class TopicPage extends React.Component {
     state={
         name: '',
+        socket: null,
         uploader: {
             action: '',
             name: '',
         },
         slides: [],
         flag: 0,
+        spinning: true,
+    }
+
+    componentWillMount=() => {
+        let socket = socketClient('localhost:8080');
+
+        socket.on('connection', () => {
+
+        });
+
+        this.setState({
+            socket,
+        });
     }
 
     componentDidMount=() => {
@@ -40,11 +58,14 @@ export default class TopicPage extends React.Component {
 
     onChange = (info) => {
         if (info.file.status !== 'uploading') {
-            console.log('info', info.file.originFileObj);
+            this.setState({
+                spinning: true,
+            });
+
             const formData = new FormData();
             formData.append('file', info.file.originFileObj);
             formData.append('topic', this.props.match.params.name);
-            console.log('formData', formData);
+
             fetch('/api/commons/lecture', {
                 method: 'POST',
                 body: formData,
@@ -52,20 +73,25 @@ export default class TopicPage extends React.Component {
             })
                 .then((res) => res.json())
                 .then((json) => {
-                    console.log('jsp', json);
                     message.success(`${info.file.name} file uploaded successfully`);
                     this.getSlides(this.props.match.params.name);
+                    this.setState({
+                        spinning: false,
+                    });
                 });
         }
     }
 
     getSlides(topic) {
+        this.setState({
+            spinning: true,
+        });
         fetch(`/api/slides/${topic}`)
             .then((res) => res.json())
             .then((json) => {
-                console.log('js', json);
                 this.setState({
                     slides: json,
+                    spinning: false,
                 });
             });
     }
@@ -87,12 +113,15 @@ export default class TopicPage extends React.Component {
     render = () => {
         return (
             <MainMenu>
-                <Upload {...props} onChange={this.onChange}>
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>,
-                <SlideList slides={this.state.slides}/>
-                <p>TopicPage: {this.props.match.params.name}</p>
-                <Divider plain>Text</Divider>
+                <Spin tip="Loading..." spinning={this.state.spinning}>
+
+                    <Upload {...props} onChange={this.onChange}>
+                        <Button type='primary' icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                    <SlideList slides={this.state.slides}/>
+                    <Divider plain>Text</Divider>
+                    <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
+                </Spin>
 
             </MainMenu>
         );
