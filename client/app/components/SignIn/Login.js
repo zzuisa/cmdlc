@@ -3,7 +3,6 @@ import {
 } from 'antd';
 import React, { Component } from 'react';
 import RegisterForm from '../Signup/RegisterForm';
-import Passport from './Passport';
 
 export default class Login extends React.Component {
     formRef = React.createRef();
@@ -21,15 +20,6 @@ export default class Login extends React.Component {
   onFinish = (values) => {
       console.log('Success:', values);
 
-      const p = new Passport();
-      p.login(values.username, values.password, () => {
-          // 登录成功时，跳转页面
-          //   this.setState({
-          //       isLogin: true,
-          //   });
-          this.props.history.push('/main');
-      });
-
       fetch('/api/login', {
           method: 'POST',
 
@@ -42,13 +32,14 @@ export default class Login extends React.Component {
               'Content-Type': 'application/json',
           },
       })
-          .then((res) => res.json())
-          .then((json) => {
-              //   let data = this.state.new_user;
-              //   data = json;
-              //   this.setState({
-              //       new_user: data,
-              //   });
+          .then((res) => { console.log('res', res); return res.json(); })
+          .then((data) => {
+              console.log('data', data);
+              if (data) {
+                  this.props.history.push('/main');
+              } else {
+                  alert('login fails');
+              }
           });
   };
 
