@@ -31,3 +31,17 @@ export const topicRoute = [
     },
 
 ];
+
+export const UserSettingRoute = [
+    {
+        path: '/userSetting/login',
+        name: 'Interactive message settings',
+        icon: 'MessageOutlined',
+    },
+    {
+        path: '/userSetting/login',
+        name: 'Downloaded content',
+        icon: 'DownloadOutlined',
+    },
+
+];

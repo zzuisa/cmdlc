@@ -1,11 +1,18 @@
 import {
-    Menu, Input, Button, notification,
+    Menu, Input, Button, notification, Avatar, Badge,
 } from 'antd';
 import {
-    AppstoreOutlined, SettingOutlined, AudioOutlined, LogoutOutlined, UserOutlined, FormOutlined, ProfileOutlined,
+    MessageOutlined, SettingOutlined, DownloadOutlined, LogoutOutlined, UserOutlined, FormOutlined, ProfileOutlined,
     createFromIconfontCN,
 } from '@ant-design/icons';
 import React, { Component } from 'react';
+import {
+    NavLink,
+} from 'react-router-dom';
+// eslint-disable-next-line import/named
+import HorizontalLoginForm from '../SignIn/Login';
+
+const { UserSettingRoute } = require('../../router/routes');
 
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -17,6 +24,8 @@ const { Search } = Input;
 //         }}
 //     />
 // );
+
+const array = [MessageOutlined, DownloadOutlined];
 
 // notation for logout
 const openNotification = (placement) => {
@@ -36,14 +45,15 @@ const openNotificationWithIcon = (type) => {
     });
 };
 const IconFont = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_2641472_zngj46qsrbd.js',
+    scriptUrl: '//at.alicdn.com/t/font_2641472_epyvupb8bfp.js',
 });
 
 export default class Nav extends React.Component {
-  state = {
-      current: 'SubMenu',
-      status: 'true',
-  };
+    state = {
+        current: 'SubMenu',
+        status: 'true',
+
+    };
 
   handleClick = (e) => {
       this.setState({ current: e.key });
@@ -61,6 +71,11 @@ export default class Nav extends React.Component {
       }
   }
 
+  login=() => {
+      this.setState({ status: !this.state.isLoggedIn });
+      console.log(`${this.state.isLoggedIn}  login`);
+  }
+
   render() {
       const { current } = this.state;
       const isOnline = this.state.status;
@@ -73,10 +88,16 @@ export default class Nav extends React.Component {
           button = <Button key="status2"><IconFont type='icon-lvdian1'/></Button>;
           status = 'Offline';
       }
+
       return (
 
           <Menu theme="dark" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
 
+              <Menu.Item key="avatar">
+                  <Badge count={1}>
+                      <Avatar shape="square" icon={<UserOutlined />} />
+                  </Badge>
+              </Menu.Item>
               <Menu.Item key="status">
                   {button}
                   <Button type="primary" onClick={() => { this.onResponse(); }}>{status}</Button>
@@ -92,23 +113,14 @@ export default class Nav extends React.Component {
                       <Menu.Item key="setting:2">System Setting2</Menu.Item>
                   </Menu.ItemGroup>
                   <Menu.ItemGroup title="Profile">
-                      <Menu.Item key="setting:3" icon={<ProfileOutlined />}>View Profile</Menu.Item>
+                      <Menu.Item key="setting:3" icon={<ProfileOutlined />}><NavLink to='/userSetting/profile'>View Profile</NavLink></Menu.Item>
                       <Menu.Item key="setting:4" icon={<FormOutlined />}>Edit Profile</Menu.Item>
                       <Menu.Item key="setting:5" icon={<LogoutOutlined/>} onClick={() => openNotification('topLRight')}>Logout</Menu.Item>
                   </Menu.ItemGroup>
               </SubMenu>
 
-              {/* <Menu.Item key="search">
-                  <Search
-                      placeholder="input search text"
-                      enterButton="Search"
-                      size="large"
-                      suffix={suffix}
-                      onSearch={this.onSearch}
-                  />
-              </Menu.Item> */}
-
           </Menu>
+
       );
   }
 }

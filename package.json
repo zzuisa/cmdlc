@@ -18,6 +18,7 @@
     "node": "14.15.2"
   },
   "dependencies": {
+    "@ant-design/compatible": "^1.0.8",
     "@babel/core": "^7.0.0-beta.42",
     "@babel/preset-env": "^7.0.0-beta.42",
     "@babel/preset-react": "^7.0.0-beta.42",
@@ -34,6 +35,7 @@
     "express": "^4.16.3",
     "express-fileupload": "^1.2.1",
     "express-formidable": "^1.2.0",
+    "express-jwt": "^6.0.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^3.1.0",
     "less-loader": "^10.0.0",

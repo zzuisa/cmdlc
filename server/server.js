@@ -14,6 +14,7 @@ app.use(cors());
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+let expressJWT = require('express-jwt');
 const config = require('../config/config');
 const webpackConfig = require('../webpack.config');
 
@@ -30,11 +31,15 @@ mongoose.Promise = global.Promise;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use((req, res, next) => {
+app.use((err, req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    console.log('err', err);
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('invalid token...');
+    }
     next();
 });
 // API routes
@@ -72,7 +77,15 @@ if (isDev) {
         res.end();
     });
 }
+
+let { secretOrPrivateKey } = config;
+app.use(expressJWT({
+    secret: secretOrPrivateKey, algorithms: ['HS256'],
+}).unless({
+    path: ['/api/login', '/api/register'],
+}));
 let connectedUser = [];
+
 io.on('connection', (socket) => {
     updateUserName();
     let userName = '';

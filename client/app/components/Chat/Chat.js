@@ -22,6 +22,7 @@ const Chat = (props) => {
 
                     props.socket.on('output', (data) => {
                         notice();
+
                         mes.push({
                             _id: data._id,
                             create_time: data.create_time,
@@ -30,7 +31,6 @@ const Chat = (props) => {
                         setRoomMessages([...mes]);
                     });
                 });
-
             // let socket = socketClient('localhost:8080', { transports: ['websocket', 'polling', 'flashsocket'] });
         } else {
             fetch(`/api/conversations/${props.roomId}`)
@@ -56,7 +56,6 @@ const Chat = (props) => {
                 });
         }
     }, [roomId]);
-
     return (
         <div className="chat">
             <div className="chat__messages" style={{ marginBottom: 100 }}>
@@ -74,6 +73,7 @@ const Chat = (props) => {
                 ))}
             </div>
             <ChatInput style={{ marginTop: '100' }} channelName={props.roomId} channelId={props.roomId} type={'con'} socket={props.socket} />
+
         </div>
     );
 };

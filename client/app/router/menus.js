@@ -43,7 +43,7 @@ const MainMenu = (props) => (
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
 
             <Logo style={{ float: 'left' }}/>
-            <Nav style={{ float: 'right' }}/>
+            <Nav style={{ float: 'right' }} isLoggedIn={props}/>
         </Header>
         <Layout>
             <Sider

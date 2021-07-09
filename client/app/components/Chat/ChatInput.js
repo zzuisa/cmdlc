@@ -20,6 +20,7 @@ const controls = [
     'media', 'separator',
     'clear',
 ];
+
 export default class ChatInput extends React.Component {
     // const [input, setInput] = useState('');
     // // const [{ user }] = useStateValue();
@@ -111,7 +112,6 @@ export default class ChatInput extends React.Component {
                      value={this.state.editorState} onChange={this.handleChange}/>
                  <Button type="primary" style={{ float: 'right' }} shape="circle" icon={<SendOutlined />}
                      size={'large'} onClick={this.sendMessage} htmlType="submit" />
-
              </Card>
          );
      }
