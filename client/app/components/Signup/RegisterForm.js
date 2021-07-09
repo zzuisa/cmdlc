@@ -83,7 +83,7 @@ export default class RegisterForm extends Component {
                 <Form.Item label="Noders Group ">
                     <span className="ant-form-text">xxx System</span>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     name="identity"
                     label="Identity"
                     hasFeedback
@@ -100,7 +100,7 @@ export default class RegisterForm extends Component {
                         <Option value="1">Teacher</Option>
                         <Option value="2">Admin</Option>
                     </Select>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name="name"
                     label="Full Name"
