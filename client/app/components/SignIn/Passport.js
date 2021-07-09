@@ -1,4 +1,4 @@
-// file：src/core/Passport.js
+const User = require('../../../../server/models/User');
 
 export default class Passport {
     constructor() {
@@ -6,17 +6,15 @@ export default class Passport {
         this.isLogin = false;
     }
 
-    login(username, password, callback) {
-        if (username === 'chris' && password === '123') {
-            // 登录成功
-            console.log('islog修改前');
-            this.isLogin = true;
-            // 将登录成功之后的操作给调用者处理
-            callback();
-        } else {
-            // 登录失败
-            // 这里简单弹出一个消息
-            alert('Login fails');
-        }
+    login(username, psd, callback) {
+        User.find({ name: username, password: psd }, (err, doc) => {
+            if (err) {
+                console.log(err.message);
+            } else {
+                console.log(doc);
+                this.isLogin = true;
+                console.log(doc.id != null);
+            }
+        });
     }
 }
