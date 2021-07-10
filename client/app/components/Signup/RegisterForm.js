@@ -61,8 +61,10 @@ export default class RegisterForm extends Component {
             },
         })
             .then((res) => res.json())
-            .then((json) => {
-
+            .then((data) => {
+                console.log(data);
+                alert('Register success');
+                this.props.history.push('/main');
             });
     };
 

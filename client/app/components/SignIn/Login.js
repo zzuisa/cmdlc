@@ -51,9 +51,10 @@ export default class Login extends React.Component {
       this.formRef.current.resetFields();
   };
 
-  register=()=>{
-    this.props.history.push('/register');
+  register=() => {
+      this.props.history.push('/register');
   }
+
   render=() => {
       return (
           <Form
@@ -114,7 +115,7 @@ export default class Login extends React.Component {
                   <Checkbox>Remember me</Checkbox>
                   <Button type="link" htmlType="button" onClick={this.register}>
           Forget password?
-        </Button>
+                  </Button>
               </Form.Item>
 
               <Form.Item
@@ -132,7 +133,6 @@ export default class Login extends React.Component {
                       </Button>
                   </Space>
 
-                  
               </Form.Item>
               <Form.Item
                   wrapperCol={{
@@ -141,8 +141,8 @@ export default class Login extends React.Component {
                   }}
               ><Button type="link" htmlType="button" onClick={this.register}>
               No account? Here register
-            </Button></Form.Item>
-              
+                  </Button></Form.Item>
+
           </Form>
 
       //   <RegisterForm/>

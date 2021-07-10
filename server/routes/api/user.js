@@ -42,13 +42,41 @@ module.exports = (app) => {
                 } else {
                     res.json(false);
                 }
-                // let response = {
-                //     code: 200,
-                //     message: '用户注册成功！',
-                // };
-                // res.json(response);
             }
         })
+            .catch((err) => next(err));
+    });
+
+    app.post('/api/register', (req, res, next) => {
+        console.log(req);
+        const user = new User({
+
+            // Todo
+
+            id: 0, // needs to be changed
+            name: req.body.name,
+            password: req.body.password,
+            type: req.body.identity,
+            avatar: null,
+            email: req.body.email,
+            create_time: req.body.create_time,
+            update_time: null,
+            delete_time: null,
+            team: req.body.team,
+            channels: req.body.channels,
+
+        });
+
+        user.save()
+            .then(() => {
+                let response = {
+                    code: 200,
+                    message: 'New user register success！',
+                };
+                res.json(response);
+            })
+            // .then(() => res.json(user))
+
             .catch((err) => next(err));
     });
 };
