@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Card,
     Upload, message, Button, Divider,
     Comment, Tooltip, Avatar,
     Spin, Alert,
@@ -13,6 +14,7 @@ import socketClient from 'socket.io-client';
 import MainMenu from '../../router/menus';
 import SlideList from '../Slide/SlideList';
 import Chat from '../Chat/Chat';
+import $http from '../Util/PageHelper';
 
 const props = {
     name: 'file',
@@ -65,16 +67,13 @@ export default class TopicPage extends React.Component {
             fetch('/api/commons/lecture', {
                 method: 'POST',
                 body: formData,
-
-            })
-                .then((res) => res.json())
-                .then((json) => {
-                    message.success(`${info.file.name} file uploaded successfully`);
-                    this.getSlides(this.props.match.params.name);
-                    this.setState({
-                        spinning: false,
-                    });
+            }).then((json) => {
+                message.success(`${info.file.name} file uploaded successfully`);
+                this.getSlides(this.props.match.params.name);
+                this.setState({
+                    spinning: false,
                 });
+            });
         }
     }
 
@@ -82,11 +81,11 @@ export default class TopicPage extends React.Component {
         this.setState({
             spinning: true,
         });
-        fetch(`/api/slides/${topic}`)
-            .then((res) => res.json())
-            .then((json) => {
+        $http(`/api/slides/${topic}`)
+
+            .then((res) => {
                 this.setState({
-                    slides: json,
+                    slides: res.data.content,
                     spinning: false,
                 });
             });
@@ -109,15 +108,17 @@ export default class TopicPage extends React.Component {
     render = () => {
         return (
             <MainMenu>
-                <Spin tip="Loading..." spinning={this.state.spinning}>
+                <Card style={{ margin: 20, borderRadius: 5 }}>
+                    <Spin tip="Loading..." spinning={this.state.spinning}>
+                        <Upload {...props} onChange={this.onChange}>
+                            <Button type='primary' icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
+                        <SlideList slides={this.state.slides}/>
+                        <Divider plain>Text</Divider>
+                        <Chat roomId={`topic_${this.props.match.params.name}`} socket={this.state.socket} />
+                    </Spin>
+                </Card>
 
-                    <Upload {...props} onChange={this.onChange}>
-                        <Button type='primary' icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload>
-                    <SlideList slides={this.state.slides}/>
-                    <Divider plain>Text</Divider>
-                    <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
-                </Spin>
                 <BackTop />
             </MainMenu>
         );

@@ -1,0 +1,9 @@
+.ant-layout-content{
+    margin:0 !important
+}
+.site-layout-background{
+    padding: 0 !important
+}
+.MuiPaper-rounded {
+    border-radius: 0 !important;
+}

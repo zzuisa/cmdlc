@@ -2,7 +2,9 @@ import {
     Form, Input, Button, Checkbox, Space,
 } from 'antd';
 import React, { Component } from 'react';
+import cookie from 'react-cookies';
 import RegisterForm from '../Signup/RegisterForm';
+import $http from '../Util/PageHelper';
 
 export default class Login extends React.Component {
     formRef = React.createRef();
@@ -13,30 +15,29 @@ export default class Login extends React.Component {
         this.state = {
             // new_user: null,
             isLogin: false,
-
         };
     }
 
   onFinish = (values) => {
       console.log('Success:', values);
-
-      fetch('/api/login', {
-          method: 'POST',
-
+      $http({
+          url: '/api/login',
+          method: 'post',
           // send data as json strings to back-end
-          body: JSON.stringify({
+          data: {
               username: values.username,
               password: values.password,
-          }),
+          },
           headers: {
               'Content-Type': 'application/json',
           },
       })
-          .then((res) => { console.log('res', res); return res.json(); })
-          .then((data) => {
-              console.log('data', data);
-              if (data) {
-                  this.props.history.push('/main');
+          .then((res) => {
+              console.log('data', res.data);
+              cookie.save('user', res.data.token);
+
+              if (res.data) {
+                  this.props.history.push('/');
               } else {
                   alert('login fails');
               }

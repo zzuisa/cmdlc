@@ -6,18 +6,15 @@ let { secretOrPrivateKey } = config;
 
 module.exports = (app) => {
     app.post('/api/login', (req, res, next) => {
+        console.log('req', req.body);
         const user = new User({
-
             // Todo
-
             id: 0, // needs to be changed
             name: req.body.username,
             password: req.body.password,
 
         });
-
         // this.props.history.push('/main');
-
         // find Test
         User.find({ name: req.body.username, password: req.body.password }, (err, doc) => {
             if (err) {
@@ -29,15 +26,13 @@ module.exports = (app) => {
                     res.json({
                         result: 'ok',
                         token: jwt.sign({
-                            name: 'BinMaing',
+                            name: 'cmdlc',
                             data: '=============',
                         }, secretOrPrivateKey, {
                             expiresIn: '24h',
                         }),
                         flag,
-                    });
-
-                    // this.props.history.push('/main');
+                    }); // this.props.history.push('/main');
                     // res.json(flag);
                 } else {
                     res.json(false);

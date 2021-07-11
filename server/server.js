@@ -8,6 +8,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 let cors = require('cors');
 const moment = require('moment');
+let jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
@@ -21,7 +22,9 @@ const webpackConfig = require('../webpack.config');
 const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 8080;
 const socketPort = 8881;
+const { T } = require('./models/entity/R');
 
+let R = new T();
 // Configuration
 // ================================================================================================
 
@@ -31,22 +34,26 @@ mongoose.Promise = global.Promise;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use((err, req, res, next) => {
+
+// API routes
+
+let date = moment.utc().format();
+let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
+
+require('./routes')(app);
+
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    console.log('err', err);
-    if (err.name === 'UnauthorizedError') {
-        res.status(401).send('invalid token...');
-    }
+    // let whiteUrl = ['/api/login', '/api/register'];
+    // if (!url.includes('api/') || whiteUrl.indexOf(url) >= 0) {
+    //     next();
+    // }
     next();
 });
-// API routes
-require('./routes')(app);
 
-let date = moment.utc().format();
-let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
 if (isDev) {
     const compiler = webpack(webpackConfig);
 
@@ -79,17 +86,18 @@ if (isDev) {
 }
 
 let { secretOrPrivateKey } = config;
-app.use(expressJWT({
-    secret: secretOrPrivateKey, algorithms: ['HS256'],
-}).unless({
-    path: ['/api/login', '/api/register'],
-}));
+// app.use(expressJWT({
+//     secret: secretOrPrivateKey, algorithms: ['HS256'],
+// }).unless({
+//     path: ['/api/login', '/api/register'],
+// }));
+
 let connectedUser = [];
 
 io.on('connection', (socket) => {
     updateUserName();
     let userName = '';
-
+    console.log('connection');
     // login
     socket.on('login', (name, callback) => {
         if (name.trim().length === 0) {
@@ -101,28 +109,22 @@ io.on('connection', (socket) => {
         updateUserName();
     });
     // Receive Chat Message
-    socket.on('message', (msg) => {
-        io.sockets.emit('output', {
-            name: 'user',
-            _id: new Date().getTime(),
-            msg,
-            create_time: local,
-        });
-    });
     socket.on('client_slide_message', (msg) => {
         console.log('client_slide_message', msg);
         io.sockets.emit('server_slide_message', {
+            eventName: msg.eventName,
             name: 'user',
             _id: new Date().getTime(),
-            msg,
+            msg: msg.content,
             create_time: local,
         });
     });
     socket.on('client_slide_comment', (msg) => {
         io.sockets.emit('server_slide_comment', {
+            eventName: msg.eventName,
             name: 'user',
             _id: new Date().getTime(),
-            msg,
+            msg: msg.content,
             create_time: local,
         });
     });
@@ -150,6 +152,7 @@ server.listen(port, 'localhost', (err) => {
         console.log(err);
     }
 });
+
 // server.listen(socketPort, { log: false, origins: '*:*' }, () => {
 //
 // });

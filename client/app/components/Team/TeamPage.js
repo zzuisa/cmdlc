@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Upload, message, Button, Divider,
-    Comment, Tooltip, Avatar,
+    Comment, Tooltip, Avatar, Card,
     Spin, Alert,
 } from 'antd';
 import socketClient from 'socket.io-client';
@@ -22,10 +22,11 @@ export default class TeamPage extends React.Component {
     render = () => { // Describes what the UI should appear
         return (
             <MainMenu>
-                <p>Welcone to: {this.props.match.params.name} {this.state.name}</p>
-
-                <Divider plain>Messages</Divider>
-                <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
+                <Card style={{ margin: 20, borderRadius: 5 }}>
+                    <p>Welcone to: {this.props.match.params.name} {this.state.name}</p>
+                    <Divider plain>Messages</Divider>
+                    <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
+                </Card>
 
             </MainMenu>
         );

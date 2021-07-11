@@ -56,32 +56,26 @@ const MainMenu = (props) => (
                 }}
             >
 
-                <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>
-
-                    <SubMenu key="team" icon={<MailOutlined />} title="Team">
-                        {teamRoute.map((e, index) => {
-                            if (e.path != '*') {
-                                return (
-                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                        <NavLink to={e.path}>{e.name }</NavLink>
-
-                                    </Menu.Item>
-                                );
-                            }
-                        })}
-                    </SubMenu>
-                    <SubMenu key="topic" icon={<AppstoreOutlined />} title="Topic">
-                        {topicRoute.map((e, index) => {
-                            if (e.path != '*') {
-                                return (
-                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                        <NavLink to={e.path}>{e.name }</NavLink>
-
-                                    </Menu.Item>
-                                );
-                            }
-                        })}
-                    </SubMenu>
+                <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
+                    {teamRoute.map((e, index) => {
+                        if (e.path != '*') {
+                            return (
+                                <Menu.Item key={e.path} icon={<UserOutlined />}>
+                                    <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                            );
+                        }
+                    })}
+                </SubMenu>
+                <SubMenu key="topic" icon={<AppstoreOutlined />} title="Topic">
+                    {topicRoute.map((e, index) => {
+                        if (e.path != '*') {
+                            return (
+                                <Menu.Item key={e.path} icon={<UserOutlined />}>
+                                    <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                            );
+                        }
+                    })}
+                </SubMenu>
 
                 </Menu>
             </Sider>

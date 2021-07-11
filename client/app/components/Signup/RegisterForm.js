@@ -16,6 +16,7 @@ import {
     Input,
 } from 'antd';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+import $http from '../Util/PageHelper';
 
 const { Option } = Select;
 const formItemLayout = {
@@ -40,11 +41,11 @@ export default class RegisterForm extends Component {
     onFinish = (values) => {
         console.log('Received values of form: ', values);
 
-        fetch('/api/register', {
+        $http('/api/register', {
             method: 'POST',
 
             // send data as json strings to back-end
-            body: JSON.stringify({
+            data: {
                 name: values.name,
                 password: values.password,
                 type: values.identity,
@@ -55,12 +56,9 @@ export default class RegisterForm extends Component {
                 delete_time: null,
                 team: [],
                 channels: [],
-            }),
-            headers: {
-                'Content-Type': 'application/json',
             },
         })
-            .then((res) => res.json())
+
             .then((json) => {
 
             });
@@ -93,9 +91,7 @@ export default class RegisterForm extends Component {
                             message: 'Please select your Identity!',
                         },
                     ]}
-                >
-
-                    <Select placeholder="Please select your major">
+                >   <Select placeholder="Please select your major">
                         <Option value="0">Studnent</Option>
                         <Option value="1">Teacher</Option>
                         <Option value="2">Admin</Option>
@@ -158,9 +154,7 @@ export default class RegisterForm extends Component {
                             validator(_, value) {
                                 if (!value || getFieldValue('password') === value) {
                                     return Promise.resolve();
-                                }
-
-                                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                }               return Promise.reject(new Error('The two passwords that you entered do not match!'));
                             },
                         }),
                     ]}

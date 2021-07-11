@@ -1,12 +1,18 @@
 const Conversation = require('../../models/Conversation');
 const E = require('../../models/entity/E');
+const { T } = require('../../models/entity/R');
+const tools = require('../../utils/tool');
 
+let R = new T();
 module.exports = (app) => {
     app.get('/api/conversations/:channelName', (req, res, next) => {
-        Conversation.findOne({ channel_name: req.params.channelName })
-            .exec()
-            .then((conversation) => res.json(conversation))
-            .catch((err) => next(err));
+        let authorization = req.get('Authorization');
+        if (tools.verifyToken(authorization, res)) {
+            Conversation.findOne({ channel_name: req.params.channelName })
+                .exec()
+                .then((conversation) => res.json(R.ok(conversation)))
+                .catch((err) => res.json(R.error()));
+        }
     });
     app.post('/api/conversations/:channelName', (req, res, next) => {
         let cm = req.params.channelName;
@@ -18,7 +24,7 @@ module.exports = (app) => {
             if (r !== null) {
                 r.messages.push(message);
                 r.save();
-                res.json({ code: 0 });
+                res.json(R.ok());
             } else {
                 let conv = new Conversation();
                 conv.messages = [message];
@@ -26,38 +32,5 @@ module.exports = (app) => {
                 conv.save();
             }
         });
-    });
-
-    app.delete('/api/conversations/:id', (req, res, next) => {
-        Conversation.findOneAndDelete({ _id: req.params.id })
-            .exec()
-            .then((conversation) => res.json())
-            .catch((err) => next(err));
-    });
-
-    app.put('/api/conversations/:id/increment', (req, res, next) => {
-        Conversation.findById(req.params.id)
-            .exec()
-            .then((conversation) => {
-                conversation.count++;
-
-                conversation.save()
-                    .then(() => res.json(conversation))
-                    .catch((err) => next(err));
-            })
-            .catch((err) => next(err));
-    });
-
-    app.put('/api/conversations/:id/decrement', (req, res, next) => {
-        Conversation.findById(req.params.id)
-            .exec()
-            .then((conversation) => {
-                conversation.count--;
-
-                conversation.save()
-                    .then(() => res.json(conversation))
-                    .catch((err) => next(err));
-            })
-            .catch((err) => next(err));
     });
 };
