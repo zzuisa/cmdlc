@@ -32,7 +32,8 @@ class Chat extends React.Component {
 
     componentWillReceiveProps = (nextProps, nextState) => {
         if (this.props.roomId !== nextProps.roomId) {
-            console.log('!!!!!!!!!!!!!!', nextProps.roomId);
+            // get the new state after path changed
+
             this.updateConversation(nextProps.roomId);
         }
     }
@@ -40,6 +41,7 @@ class Chat extends React.Component {
     updateConversation=(roomId) => {
         $http(`/api/conversations/${roomId}`)
             .then((res) => {
+                console.log('res', res);
                 let mes = res.data.content !== null ? res.data.content.messages : [];
                 this.setRoomMessages(mes);
             });
@@ -53,9 +55,8 @@ class Chat extends React.Component {
                     let mes = res.data.content !== null ? res.data.content.messages : [];
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
-                        console.log('rrrr', this.props.roomId);
-                        console.log('rrrr22', data);
                         if (this.props.roomId === data.eventName) {
+                            this.updateConversation(this.props.roomId);
                             notice();
                             mes.push({
                                 _id: data._id,

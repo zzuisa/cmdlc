@@ -43,6 +43,7 @@ export default class Nav extends React.Component {
     state = {
         current: 'SubMenu',
         status: 'true',
+        userinfo: cookie.load('userinfo'),
 
     };
 
@@ -95,7 +96,7 @@ export default class Nav extends React.Component {
               </Menu.Item>
               <Menu.Item key="welcome" disabled="true">
 
-                  {cookie.load('userinfo').name}
+                  { this.state.userinfo === undefined ? '' : this.state.userinfo.name}
               </Menu.Item>
               <Menu.Item key="avatar">
                   <Popconfirm
