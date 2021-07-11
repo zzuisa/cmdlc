@@ -21,6 +21,8 @@ const webpackConfig = require('../webpack.config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 8080;
+let server_host = process.env.YOUR_HOST || '0.0.0.0';
+
 const socketPort = 8881;
 const { T } = require('./models/entity/R');
 
@@ -146,7 +148,7 @@ io.on('connection', (socket) => {
         io.emit('loadUser', connectedUser);
     }
 });
-server.listen(port, 'localhost', (err) => {
+server.listen(port, server_host, (err) => {
     if (err) {
         console.log(err);
     }
