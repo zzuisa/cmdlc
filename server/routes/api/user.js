@@ -19,29 +19,28 @@ module.exports = (app) => {
         // this.props.history.push('/main');
 
         // find Test
-        User.find({ name: req.body.username, password: req.body.password }, (err, doc) => {
+        User.findOne({ name: req.body.username, password: req.body.password }, (err, doc) => {
             if (err) {
                 console.log(err.message);
-            } else {
-                console.log(doc);
-                if (doc.length > 0) {
-                    const flag = true;
-                    res.json({
-                        result: 'ok',
-                        token: jwt.sign({
-                            name: 'BinMaing',
-                            data: '=============',
-                        }, secretOrPrivateKey, {
-                            expiresIn: '24h',
-                        }),
-                        flag,
-                    });
+            } else if (doc != null) {
+                const flag = true;
+                // let pageUserinfo = doc;
 
-                    // this.props.history.push('/main');
-                    // res.json(flag);
-                } else {
-                    res.json(false);
-                }
+                res.json({
+                    result: 'ok',
+                    token: jwt.sign({
+                        name: 'BinMaing',
+                        data: '=============',
+                    }, secretOrPrivateKey, {
+                        expiresIn: '24h',
+                    }),
+                    flag,
+                    doc,
+
+                });
+            } else {
+                console.log('log failes');
+                res.json(false);
             }
         })
             .catch((err) => next(err));

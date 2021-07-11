@@ -1,5 +1,6 @@
 import {
     Menu, Input, Button, notification, Avatar, Badge,
+    Popconfirm, message,
 } from 'antd';
 import {
     MessageOutlined, SettingOutlined, DownloadOutlined, LogoutOutlined, UserOutlined, FormOutlined, ProfileOutlined,
@@ -9,21 +10,11 @@ import React, { Component } from 'react';
 import {
     NavLink,
 } from 'react-router-dom';
-// eslint-disable-next-line import/named
-import HorizontalLoginForm from '../SignIn/Login';
+import cookie from 'react-cookies';
 
 const { UserSettingRoute } = require('../../router/routes');
 
 const { SubMenu } = Menu;
-const { Search } = Input;
-// const suffix = (
-//     <AudioOutlined
-//         style={{
-//             fontSize: 16,
-//             color: '#1890ff',
-//         }}
-//     />
-// );
 
 const array = [MessageOutlined, DownloadOutlined];
 
@@ -71,9 +62,14 @@ export default class Nav extends React.Component {
       }
   }
 
-  login=() => {
-      this.setState({ status: !this.state.isLoggedIn });
-      console.log(`${this.state.isLoggedIn}  login`);
+  confirm=(e) => {
+      console.log(e);
+      message.success('Please update your new avatar');
+  }
+
+  cancel=(e) => {
+      console.log(e);
+      message.error('You cancel change your avatar');
   }
 
   render() {
@@ -93,25 +89,34 @@ export default class Nav extends React.Component {
 
           <Menu theme="dark" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
 
-              <Menu.Item key="avatar">
-                  <Badge count={1}>
-                      <Avatar shape="square" icon={<UserOutlined />} />
-                  </Badge>
-              </Menu.Item>
               <Menu.Item key="status">
                   {button}
                   <Button type="primary" onClick={() => { this.onResponse(); }}>{status}</Button>
               </Menu.Item>
-              {/* <SubMenu title="SubMenu" onTitleClick={this.onResponse('伟大新')}></SubMenu> */}
-              <Menu.Item key="app" icon={<SettingOutlined />}>
-          Navigation Two
-              </Menu.Item>
+              <Menu.Item key="welcome" disabled="true">
 
+                  {cookie.load('userinfo').name}
+              </Menu.Item>
+              <Menu.Item key="avatar">
+                  <Popconfirm
+                      title="Do you want to change your avatar ?"
+                      onConfirm={this.confirm}
+                      onCancel={this.cancel}
+                      okText="Yes"
+                      cancelText="No"
+                  >
+                      {/* set unseen message counts here */}
+                      <Badge count={1}>
+                          <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                      </Badge>
+                  </Popconfirm>
+
+              </Menu.Item>
               <SubMenu key="SubMenu" style={{ float: 'right' }} icon={ <UserOutlined />} title="User Setting" >
-                  <Menu.ItemGroup title="Sytsem Setting">
+                  {/* <Menu.ItemGroup title="Sytsem Setting">
                       <Menu.Item key="setting:1">System Setting1</Menu.Item>
                       <Menu.Item key="setting:2">System Setting2</Menu.Item>
-                  </Menu.ItemGroup>
+                  </Menu.ItemGroup> */}
                   <Menu.ItemGroup title="Profile">
                       <Menu.Item key="setting:3" icon={<ProfileOutlined />}><NavLink to='/userSetting/profile'>View Profile</NavLink></Menu.Item>
                       <Menu.Item key="setting:4" icon={<FormOutlined />}>Edit Profile</Menu.Item>

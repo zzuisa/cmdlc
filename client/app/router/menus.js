@@ -9,7 +9,7 @@ import {
     Layout, Menu, Button,
 } from 'antd';
 import {
-    UploadOutlined, UserOutlined, VideoCameraOutlined, MailOutlined, AppstoreOutlined,
+    UserOutlined, MailOutlined, AppstoreOutlined,
 } from '@ant-design/icons';
 import Nav from '../components/Header/Nav';
 import Logo from '../components/Header/Logo';

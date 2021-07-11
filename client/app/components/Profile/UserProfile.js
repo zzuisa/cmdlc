@@ -4,6 +4,7 @@ import {
     Descriptions, Badge, Layout, Menu, Button,
 } from 'antd';
 
+import cookie from 'react-cookies';
 import MainMenu from '../../router/menus';
 
 const { Header, Content, Footer } = Layout;
@@ -13,18 +14,19 @@ export default class UserProfile extends React.Component {
         return (
             <MainMenu>
                 <Descriptions title="User Info" bordered>
-                    <Descriptions.Item label="Name">Jing Song</Descriptions.Item>
 
-                    <Descriptions.Item label="Email">xxx@163.com</Descriptions.Item>
+                    <Descriptions.Item label="Name">{cookie.load('userinfo').name}</Descriptions.Item>
+
+                    <Descriptions.Item label="Email">{cookie.load('userinfo').email}</Descriptions.Item>
                     {/* <Descriptions.Item label="Order time">2018-04-24 18:00:00</Descriptions.Item> */}
                     <Descriptions.Item label="Account Creation Time" span={2}>
-          2019-04-24 18:00:00
+                        {cookie.load('userinfo').create_time}
                     </Descriptions.Item>
                     <Descriptions.Item label="Status" span={3}>
                         <Badge status="processing" color= 'green' text="Verified" />
 
                     </Descriptions.Item>
-                    <Descriptions.Item label="Affiliated Groups">Noders</Descriptions.Item>
+                    <Descriptions.Item label="Channels">{cookie.load('userinfo').channels}</Descriptions.Item>
                     <Descriptions.Item label="Current tasks">TaskOne</Descriptions.Item>
 
                     {/* <Descriptions.Item label="Config Info">

@@ -1,7 +1,8 @@
 import {
-    Form, Input, Button, Checkbox, Space,
+    Form, Input, Button, Checkbox, Space, Row, Col, Image,
 } from 'antd';
 import React, { Component } from 'react';
+import cookie from 'react-cookies';
 import RegisterForm from '../Signup/RegisterForm';
 
 export default class Login extends React.Component {
@@ -11,8 +12,6 @@ export default class Login extends React.Component {
         super(props);
 
         this.state = {
-            // new_user: null,
-            isLogin: false,
 
         };
     }
@@ -34,10 +33,10 @@ export default class Login extends React.Component {
       })
           .then((res) => { console.log('res', res); return res.json(); })
           .then((data) => {
-              console.log('data', data);
-              if (data) {
+              if (data.flag) {
+                  cookie.save('userinfo', data.doc);
                   this.props.history.push('/main');
-              } else {
+              } else if (data == false) {
                   alert('login fails');
               }
           });
@@ -57,6 +56,7 @@ export default class Login extends React.Component {
 
   render=() => {
       return (
+
           <Form
               ref={this.formRef}
               name="basic"
@@ -71,9 +71,15 @@ export default class Login extends React.Component {
               }}
               onFinish={this.onFinish}
               onFinishFailed={this.onFinishFailed}
-              //   layout='vertical'
 
           >
+              <Row>
+                  <Col span={6} offset={9}><Image
+
+                      src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                  /></Col>
+              </Row>
+
               <Form.Item
                   label="Username"
                   name="username"
