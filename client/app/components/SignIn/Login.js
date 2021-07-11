@@ -3,7 +3,8 @@ import {
 } from 'antd';
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
-import RegisterForm from '../Signup/RegisterForm';
+
+import $http from '../Util/PageHelper';
 
 export default class Login extends React.Component {
     formRef = React.createRef();
@@ -13,29 +14,30 @@ export default class Login extends React.Component {
 
         this.state = {
 
+            isLogin: false,
         };
     }
 
   onFinish = (values) => {
       console.log('Success:', values);
-
-      fetch('/api/login', {
-          method: 'POST',
-
+      $http({
+          url: '/api/login',
+          method: 'post',
           // send data as json strings to back-end
-          body: JSON.stringify({
+          data: {
               username: values.username,
               password: values.password,
-          }),
+          },
           headers: {
               'Content-Type': 'application/json',
           },
       })
-          .then((res) => { console.log('res', res); return res.json(); })
+          // .then((res) => { console.log('res', res); return res.json(); })
           .then((data) => {
-              if (data.flag) {
-                  cookie.save('userinfo', data.doc);
-                  this.props.history.push('/main');
+              if (data.data.flag) {
+                  cookie.save('userinfo', data.data.doc);
+                  alert('tiaozhuan');
+                  this.props.history.push('/');
               } else if (data == false) {
                   alert('login fails');
               }

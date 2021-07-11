@@ -3,6 +3,7 @@ import {
     MailOutlined, AppstoreOutlined, SettingOutlined, AudioOutlined,
 } from '@ant-design/icons';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -31,7 +32,8 @@ export default class Logo extends React.Component {
   render() {
       const { current } = this.state;
       return (
-          <Button type="primary" size="large" >Logo</Button>
+          <Link to="/"> <Button type="primary" size="large" >Logo</Button></Link>
+
       );
   }
 }

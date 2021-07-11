@@ -36,9 +36,7 @@ function SlideList(props) {
                                             preview={false}
                                             width={100}
                                             src="https://zh.wizcase.com/wp-content/uploads/2020/02/Powerpoint-logo.png"
-                                        /></Link>
-
-                                </Card>
+                                        /></Link>               </Card>
                             }
                             datetime={
                                 <Tooltip title={moment(s.create_time).format('YYYY-MM-DD HH:mm:ss')}>
@@ -47,9 +45,7 @@ function SlideList(props) {
                             }
                         />
                         // <Radio.Button style={{ float: 'left' }} value={ s.name} key={index}>{ s.name}</Radio.Button>
-                    ))
-
-                    }
+                    )) }
                 </Radio.Group> : <Empty else image={Empty.PRESENTED_IMAGE_SIMPLE} />}
 
         </Card>

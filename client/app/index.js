@@ -30,13 +30,13 @@ render((
         <App>
             <Switch>
 
-                <Route exact path="/" component={Login}/>
-                <Route path="/main" component={Home}/>
-                <Route path="/register" component={RegisterForm}/>
-                <Route path="/topic/:name" component={TopicPage}/>
-                <Route path="/team/:name" component={TeamPage}/>
-                <Route path="/detail/:id" component={SlideDetail}/>
-                <Route path="/userSetting/profile" component={UserProfile}/>
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/register" component={RegisterForm}/>
+                <Route exact path="/topic/:name" component={TopicPage}/>
+                <Route exact path="/team/:name" component={TeamPage}/>
+                <Route exact path="/detail/:id" component={SlideDetail}/>
+                <Route exact path="/userSetting/profile" component={UserProfile}/>
 
                 <Route component={NotFound}/>
             </Switch>

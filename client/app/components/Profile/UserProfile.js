@@ -18,7 +18,7 @@ export default class UserProfile extends React.Component {
                     <Descriptions.Item label="Name">{cookie.load('userinfo').name}</Descriptions.Item>
 
                     <Descriptions.Item label="Email">{cookie.load('userinfo').email}</Descriptions.Item>
-                    {/* <Descriptions.Item label="Order time">2018-04-24 18:00:00</Descriptions.Item> */}
+
                     <Descriptions.Item label="Account Creation Time" span={2}>
                         {cookie.load('userinfo').create_time}
                     </Descriptions.Item>
@@ -29,19 +29,6 @@ export default class UserProfile extends React.Component {
                     <Descriptions.Item label="Channels">{cookie.load('userinfo').channels}</Descriptions.Item>
                     <Descriptions.Item label="Current tasks">TaskOne</Descriptions.Item>
 
-                    {/* <Descriptions.Item label="Config Info">
-          Data disk type: MongoDB
-                        <br />
-          Database version: 3.4
-                        <br />
-          Package: dds.mongo.mid
-                        <br />
-          Storage space: 10 GB
-                        <br />
-          Replication factor: 3
-                        <br />
-          Region: East China 1<br />
-                    </Descriptions.Item> */}
                 </Descriptions>
             </MainMenu>
         );

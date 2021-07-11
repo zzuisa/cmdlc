@@ -25,6 +25,7 @@ import MainMenu from '../../router/menus';
 import Message from '../Chat/Message';
 import ChatInput from '../Chat/ChatInput';
 import Chat from '../Chat/Chat';
+import $http from '../Util/PageHelper';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 export default class SlideDetail extends React.Component {
@@ -35,7 +36,7 @@ export default class SlideDetail extends React.Component {
       textValue: 1,
       spinning: true,
       roomMessages: [],
-      id: 0,
+      id: this.props.match.params.id,
       controls: [
           'font-size', 'line-height',
           'text-color', 'bold', 'italic', 'underline', 'separator',
@@ -64,11 +65,11 @@ export default class SlideDetail extends React.Component {
   };
 
   getSlide = (id) => {
-      fetch(`/api/detail/${id}`)
-          .then((res) => res.json())
-          .then((json) => {
+      $http(`/api/detail/${id}`)
+          .then((res) => {
+              console.log('resss', res);
               this.setState({
-                  slide: json,
+                  slide: res.data.content,
                   spinning: false,
               });
           });
@@ -81,23 +82,22 @@ export default class SlideDetail extends React.Component {
   }
 
   getSlideComment = (page) => {
-      fetch(`/api/slideComments/${this.state.id == 0 ? this.props.match.params.id : this.state.id}/${page}`)
-          .then((res) => res.json())
-          .then((content) => {
-              if (content != null) {
-                  let mes = content.messages;
-                  this.setRoomMessages(mes);
-                  this.state.socket.on('server_slide_comment', (data) => {
+      $http(`/api/slideComments/${this.state.id == 0 ? this.props.match.params.id : this.state.id}/${page}`)
+
+          .then((res) => {
+              let { data } = res;
+              let mes = data.content !== null ? data.content.data.messages : [];
+              this.setRoomMessages(mes);
+              this.state.socket.on('server_slide_comment', (r) => {
+                  if (this.state.id === r.eventName) {
                       mes.push({
-                          _id: data._id,
-                          create_time: data.create_time,
-                          content: data.msg,
+                          _id: r._id,
+                          create_time: r.create_time,
+                          content: r.msg,
                       });
                       this.setRoomMessages([...mes]);
-                  });
-              } else {
-                  this.setRoomMessages([]);
-              }
+                  }
+              });
           });
 
       // let socket = socketClient('localhost:8080', { transports: ['websocket', 'polling', 'flashsocket'] });
@@ -173,9 +173,7 @@ textChange=(e) => {
                                           label={`/${this.state.numPages}`}
                                           defaultValue={this.state.numPages}
                                           id="outlined-basic" variant="outlined" />
-                                  </span>
-
-                              </Col>
+                                  </span>             </Col>
                               <Col span={4}>
                                   <Button onClick={this.next}>Next</Button>
                               </Col>
@@ -183,27 +181,25 @@ textChange=(e) => {
                       </Col>
                       <Col span={9}>
                           <div className="chat">
-                              <Spin tip="Loading..." spinning={this.state.spinning}>
-
-                                  <div className="chat__messages" style={{
-                                      marginBottom: 60, minHeight: 280, height: 280, overflowY: 'auto',
-                                  }}>
-                                      {this.state.roomMessages.map(
-                                          ({
-                                              _id, user_id, content, create_time,
-                                          }) => (
-                                              <Message
-                                                  key={_id}
-                                                  message={content}
-                                                  timestamp={create_time}
-                                                  user={user_id == 0 ? 'System' : 'User'}
-                                                  userImage={
-                                                      'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-                                                  }
-                                              />
-                                          ),
-                                      )}
-                                  </div>
+                              <Spin tip="Loading..." spinning={this.state.spinning}>                 <div className="chat__messages" style={{
+                                  marginBottom: 60, minHeight: 280, height: 280, overflowY: 'auto',
+                              }}>
+                                  {this.state.roomMessages.map(
+                                      ({
+                                          _id, user_id, content, create_time,
+                                      }) => (
+                                          <Message
+                                              key={_id}
+                                              message={content}
+                                              timestamp={create_time}
+                                              user={user_id == 0 ? 'System' : 'User'}
+                                              userImage={
+                                                  'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                                              }
+                                          />
+                                      ),
+                                  )}
+                              </div>
                               </Spin>
                               <ChatInput
                                   controls={this.state.controls}
@@ -216,11 +212,7 @@ textChange=(e) => {
                       </Col>
                       <Divider plain style={{ color: '#888' }}>Public Message</Divider>
                       <Col span={24}>
-                          <Chat roomId={this.props.match.params.id} socket={this.state.socket} />
-
-                      </Col>
-
-                  </Row>
+                          <Chat roomId={`topic_${this.state.slide.topic}`} socket={this.state.socket} />     </Col> </Row>
                   <BackTop />
 
               </Card>

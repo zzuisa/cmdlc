@@ -1,3 +1,5 @@
-const E = require('./E');
+const { T } = require('./R');
 
-let a = new E.Message().init();
+let R = new T();
+let a = R.ok();
+console.log(a);

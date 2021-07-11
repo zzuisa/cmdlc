@@ -15,7 +15,7 @@ module.exports = (app) => {
             password: req.body.password,
 
         });
-
+        console.log(req);
         // this.props.history.push('/main');
 
         // find Test
@@ -25,7 +25,7 @@ module.exports = (app) => {
             } else if (doc != null) {
                 const flag = true;
                 // let pageUserinfo = doc;
-
+                console.log('log success');
                 res.json({
                     result: 'ok',
                     token: jwt.sign({

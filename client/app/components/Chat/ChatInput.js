@@ -9,6 +9,7 @@ import { ContentUtils } from 'braft-utils';
 import { SendOutlined } from '@ant-design/icons';
 import { useStateValue } from '../StateProvider';
 import { notice, verify } from '../Common/Notice';
+import $http from '../Util/PageHelper';
 
 const controls = [
     'undo', 'redo', 'separator',
@@ -60,41 +61,37 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
+         let content = {
+             eventName: this.props.channelId,
+             content: this.state.editorState.toHTML(),
+         };
 
-         if (this.state.channelId && this.state.type === 'con') {
-             fetch(`/api/conversations/${verify(this.state.channelId)
-                 ? `slide_${this.state.channelId}` : this.state.channelId}`, {
+         if (this.props.channelId && this.props.type === 'con') {
+             let eventName = 'client_slide_message';
+
+             $http(`/api/conversations/${this.props.channelId}`, {
                  method: 'POST',
-                 body: JSON.stringify({ content: this.state.editorState.toHTML() }),
-                 headers: {
-                     'Content-Type': 'application/json',
-                 },
-             })
-                 .then((res) => res.json())
-                 .then((json) => {
-                     let eventName = verify(this.state.channelId) ? 'message' : 'client_slide_message';
-                     console.log(eventName);
-                     this.state.socket.emit(eventName, this.state.editorState.toHTML());
-                     this.clearContent();
-                 });
+                 data: { content: this.state.editorState.toHTML() },
+
+             }).then((res) => {
+                 this.state.socket.emit(eventName, content);
+                 this.clearContent();
+             });
          } else {
              let data = {
                  content: this.state.editorState.toHTML(),
                  page: this.state.channelName,
                  slide_id: this.state.channelId,
              };
-             fetch('/api/slideComments', {
+             $http('/api/slideComments', {
                  method: 'POST',
-                 body: JSON.stringify(data),
-                 headers: {
-                     'Content-Type': 'application/json',
-                 },
-             })
-                 .then((res) => res.json())
-                 .then((json) => {
-                     this.state.socket.emit('client_slide_comment', this.state.editorState.toHTML());
-                     this.clearContent();
-                 });
+                 data,
+
+             }).then((res) => {
+                 let eventName = 'client_slide_comment';
+                 this.state.socket.emit(eventName, content);
+                 this.clearContent();
+             });
          }
      };
 
