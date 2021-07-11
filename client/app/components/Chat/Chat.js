@@ -56,6 +56,7 @@ class Chat extends React.Component {
                         console.log('rrrr', this.props.roomId);
                         console.log('rrrr22', data);
                         if (this.props.roomId === data.eventName) {
+                            this.updateConversation(this.props.roomId);
                             notice();
                             mes.push({
                                 _id: data._id,
