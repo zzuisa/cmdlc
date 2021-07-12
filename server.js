@@ -44,36 +44,33 @@ let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
 
 require('./server/routes')(app);
 
-if (isDev) {
-    const compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig);
 
-    app.use(historyApiFallback({
-        verbose: false,
-    }));
+app.use(historyApiFallback({
+    verbose: false,
+}));
 
-    app.use(webpackDevMiddleware(compiler, {
-        publicPath: webpackConfig.output.publicPath,
-        contentBase: path.resolve(__dirname, './client/public'),
-        stats: {
-            colors: true,
-            hash: false,
-            timings: true,
-            chunks: false,
-            chunkModules: false,
-            modules: false,
-        },
-    }));
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+    contentBase: path.resolve(__dirname, './client/public'),
+    stats: {
+        colors: true,
+        hash: false,
+        timings: true,
+        chunks: false,
+        chunkModules: false,
+        modules: false,
+    },
+}));
 
-    app.use(webpackHotMiddleware(compiler));
-    app.use(express.static(path.resolve(__dirname, './dist')));
-    app.use('/res', express.static('./dist/files'));
-} else {
-    app.use(express.static(path.resolve(__dirname, './dist')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, './dist/index.html'));
-        res.end();
-    });
-}
+app.use(webpackHotMiddleware(compiler));
+app.use(express.static(path.resolve(__dirname, './dist')));
+app.use('/res', express.static('./dist/files'));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, './dist/index.html'));
+//     res.end();
+// });
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
