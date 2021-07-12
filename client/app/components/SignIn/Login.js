@@ -36,7 +36,7 @@ export default class Login extends React.Component {
           .then((data) => {
               if (data.data.flag) {
                   cookie.save('userinfo', data.data.doc);
-                  alert('tiaozhuan');
+
                   this.props.history.push('/');
               } else if (data == false) {
                   alert('login fails');
