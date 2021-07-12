@@ -26,6 +26,8 @@ let server_host = process.env.YOUR_HOST || '0.0.0.0';
 const socketPort = 8881;
 const { T } = require('./server/models/entity/R');
 
+console.log('Database_URL', process.env.DATABASE_URL);
+
 let R = new T();
 // Configuration
 // ================================================================================================

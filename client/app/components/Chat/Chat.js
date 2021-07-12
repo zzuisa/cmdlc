@@ -53,7 +53,7 @@ class Chat extends React.Component {
                     let mes = res.data.content !== null ? res.data.content.messages : [];
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
-                        console.log('rrrr', this.props.roomId);
+                        console.log('rrr2r', this.props.roomId);
                         console.log('rrrr22', data);
                         if (this.props.roomId === data.eventName) {
                             this.updateConversation(this.props.roomId);
