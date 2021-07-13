@@ -38,7 +38,6 @@ render((
                 <Route exact path="/detail/:id" component={SlideDetail}/>
                 <Route exact path="/userSetting/profile" component={UserProfile}/>
 
-                {/* <Route path="/login" component={Home}/> */}
                 <Route component={NotFound}/>
             </Switch>
         </App>

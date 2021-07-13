@@ -1,9 +1,9 @@
 import {
-    Form, Input, Button, Checkbox, Space,
+    Form, Input, Button, Checkbox, Space, Row, Col, Image,
 } from 'antd';
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
-import RegisterForm from '../Signup/RegisterForm';
+
 import $http from '../Util/PageHelper';
 
 export default class Login extends React.Component {
@@ -13,13 +13,12 @@ export default class Login extends React.Component {
         super(props);
 
         this.state = {
-            // new_user: null,
+
             isLogin: false,
         };
     }
 
   onFinish = (values) => {
-      console.log('Success:', values);
       $http({
           url: '/api/login',
           method: 'post',
@@ -32,15 +31,12 @@ export default class Login extends React.Component {
               'Content-Type': 'application/json',
           },
       })
+          // .then((res) => { console.log('res', res); return res.json(); })
           .then((res) => {
-              console.log('data', res.data);
-              cookie.save('user', res.data.token);
-
-              if (res.data) {
-                  this.props.history.push('/');
-              } else {
-                  alert('login fails');
-              }
+              console.log('resss', res);
+              cookie.save('userinfo', res.data.content.doc);
+              cookie.save('userToken', res.data.content.token);
+              this.props.history.push('/');
           });
   };
 
@@ -52,82 +48,118 @@ export default class Login extends React.Component {
       this.formRef.current.resetFields();
   };
 
+  register=() => {
+      this.props.history.push('/register');
+  }
+
   render=() => {
       return (
-          <Form
-              ref={this.formRef}
-              name="basic"
-              labelCol={{
-                  span: 8,
-              }}
-              wrapperCol={{
-                  span: 8,
-              }}
-              initialValues={{
-                  remember: true,
-              }}
-              onFinish={this.onFinish}
-              onFinishFailed={this.onFinishFailed}
-              //   layout='vertical'
+          <Row style={{ marginTop: 150 }}>
+              <Col style={{ margin: '0 auto', display: 'inline-block' }} offset={16} span={8}>
 
-          >
-              <Form.Item
-                  label="Username"
-                  name="username"
-                  rules={[
-                      {
-                          required: true,
-                          message: 'Please input your username!',
-                      },
-                  ]}
-              >
-                  <Input />
-              </Form.Item>
+                  <Image
+                      style={{
+                          margin: '0 auto', borderRadius: '10px', textAlign: 'center', display: 'flex',
+                      }}
+                      src="assets/img/due.png"
+                  />
+                  <div style={{ float: 'left' }}>
+                      <span style={{ fontSize: '2em' }}>Brainstorm </span>
+                      <span style={{ fontSize: '2em' }}> CourseMapper</span>
 
-              <Form.Item
-                  label="Password"
-                  name="password"
-                  wrapperCol={{
-                      offset: 0,
-                      span: 8,
-                  }}
-                  rules={[
-                      {
-                          required: true,
-                          message: 'Please input your password!',
-                      },
-                  ]}
-              >
-                  <Input.Password />
-              </Form.Item>
+                  </div>
+              </Col>
+              <Col span={24} style={{ marginTop: 50 }}>
+                  <Form
+                      ref={this.formRef}
+                      name="basic"
+                      labelCol={{
+                          span: 8,
+                      }}
+                      wrapperCol={{
+                          span: 8,
+                      }}
+                      initialValues={{
+                          remember: true,
+                      }}
+                      onFinish={this.onFinish}
+                      onFinishFailed={this.onFinishFailed}
 
-              <Form.Item
-                  name="remember"
-                  valuePropName="checked"
-                  wrapperCol={{
-                      offset: 8,
-                      span: 8,
-                  }}
-              >
-                  <Checkbox>Remember me</Checkbox>
-              </Form.Item>
+                  >
 
-              <Form.Item
-                  wrapperCol={{
-                      offset: 8,
-                      span: 8,
-                  }}
-              >
-                  <Space>
-                      <Button type="primary" htmlType="submit" onClick={this.submit}>
+                      <Form.Item
+                          label="Username"
+                          name="username"
+                          rules={[
+                              {
+                                  required: true,
+                                  message: 'Please input your username!',
+                              },
+                          ]}
+                      >
+                          <Input />
+                      </Form.Item>
+
+                      <Form.Item
+                          label="Password"
+                          name="password"
+                          wrapperCol={{
+                              offset: 0,
+                              span: 8,
+                          }}
+                          rules={[
+                              {
+                                  required: true,
+                                  message: 'Please input your password!',
+                              },
+                          ]}
+                      >
+                          <Input.Password />
+                      </Form.Item>
+
+                      <Form.Item
+                          name="remember"
+                          valuePropName="checked"
+                          wrapperCol={{
+                              offset: 8,
+                              span: 8,
+                          }}
+                      >
+                          <Checkbox>Remember me</Checkbox>
+                          <Button type="link" htmlType="button" onClick={this.register}>
+          Forget password?
+                          </Button>
+                      </Form.Item>
+
+                      <Form.Item
+                          wrapperCol={{
+                              offset: 8,
+                              span: 8,
+                          }}
+                      >
+                          <Space>
+                              <Button type="primary" htmlType="submit" onClick={this.submit}>
           Submit
-                      </Button>
-                      <Button htmlType="button" onClick={this.onReset}>
+                              </Button>
+                              <Button htmlType="button" onClick={this.onReset}>
           Reset
-                      </Button>
-                  </Space>
-              </Form.Item>
-          </Form>
+                              </Button>
+                          </Space>
+
+                      </Form.Item>
+                      <Form.Item
+                          wrapperCol={{
+                              offset: 8,
+                              span: 8,
+                          }}
+                      ><Button type="link" htmlType="button" onClick={this.register}>
+              No account? Here register
+                          </Button></Form.Item>
+
+                  </Form>
+
+              </Col>
+          </Row>
 
       //   <RegisterForm/>
       );

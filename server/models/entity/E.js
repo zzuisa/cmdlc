@@ -7,10 +7,11 @@ exports.Message = class Message {
         this.id = id;
         this.user_id = userId;
         this.content = content;
+        this.avatar = 'https://eu.ui-avatars.com/api/?name=Admin';
         this.create_time = local;
     }
 
     init() {
-        return new Message(0, 0, 'hello every,let\'s talk!');
+        return new Message(0, 'System', 'hello every,let\'s talk!');
     }
 };

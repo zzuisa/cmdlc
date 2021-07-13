@@ -3,9 +3,10 @@ import QS from 'qs';
 import { message } from 'antd';
 import cookie from 'react-cookies';
 import { HashRouter } from 'react-router-dom';
+import config from '../../../../config/config';
 
 const router = new HashRouter();
-export const basciUrl = 'http://localhost:8080';
+export const basciUrl = `${config.host}/`;
 const $http = axios.create({
     baseURL: basciUrl,
 });
@@ -20,7 +21,7 @@ $http.interceptors.request.use((config) => {
  *   so the return status should be judged in the response interceptor.
  */
 
-    const token = cookie.load('user');
+    const token = cookie.load('userToken');
     config.data = { ...config.data };
     config.headers = {
         'Content-Type': 'application/json; charset=utf-8',

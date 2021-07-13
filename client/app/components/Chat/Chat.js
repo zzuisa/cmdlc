@@ -32,7 +32,8 @@ class Chat extends React.Component {
 
     componentWillReceiveProps = (nextProps, nextState) => {
         if (this.props.roomId !== nextProps.roomId) {
-            console.log('!!!!!!!!!!!!!!', nextProps.roomId);
+            // get the new state after path changed
+
             this.updateConversation(nextProps.roomId);
         }
     }
@@ -40,6 +41,7 @@ class Chat extends React.Component {
     updateConversation=(roomId) => {
         $http(`/api/conversations/${roomId}`)
             .then((res) => {
+                console.log('res', res);
                 let mes = res.data.content !== null ? res.data.content.messages : [];
                 this.setRoomMessages(mes);
             });
@@ -53,15 +55,15 @@ class Chat extends React.Component {
                     let mes = res.data.content !== null ? res.data.content.messages : [];
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
-                        console.log('rrr2r', this.props.roomId);
-                        console.log('rrrr22', data);
                         if (this.props.roomId === data.eventName) {
                             this.updateConversation(this.props.roomId);
                             notice();
                             mes.push({
                                 _id: data._id,
+                                user_id: data.name,
                                 create_time: data.create_time,
                                 content: data.msg,
+                                avatar: data.eventAvatar,
                             });
                             this.setRoomMessages([...mes]);
                         }
@@ -75,14 +77,14 @@ class Chat extends React.Component {
             <div className="chat">
                 <div className="chat__messages" style={{ marginBottom: 100 }}>
                     {this.state.roomMessages.map(({
-                        _id, user_id, content, create_time,
+                        _id, user_id, content, create_time, avatar,
                     }) => (
                         <Message
                             key={_id}
                             message={content}
                             timestamp={create_time}
-                            user={user_id == 0 ? 'System' : 'User'}
-                            userImage={'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}
+                            user={user_id}
+                            userImage={avatar}
                         />
                     ))}
                 </div>

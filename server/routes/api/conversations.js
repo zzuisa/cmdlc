@@ -18,10 +18,12 @@ module.exports = (app) => {
         let cm = req.params.channelName;
         let data = req.body;
         const message = new E.Message().init();
-        message.content = data.content;
-        message.user_id = 1;
+
         Conversation.findOne({ channel_name: cm }).exec().then((r) => {
             if (r !== null) {
+                message.content = data.content;
+                message.avatar = data.eventUser.avatar;
+                message.user_id = data.eventUser.name;
                 r.messages.push(message);
                 r.save();
                 res.json(R.ok());

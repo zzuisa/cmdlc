@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import {
+    message,
     Form,
     Select,
     InputNumber,
@@ -15,6 +15,7 @@ import {
     Col,
     Input,
 } from 'antd';
+
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import $http from '../Util/PageHelper';
 
@@ -28,8 +29,6 @@ const formItemLayout = {
     },
 };
 const normFile = (e) => {
-    console.log('Upload event:', e);
-
     if (Array.isArray(e)) {
         return e;
     }
@@ -39,8 +38,6 @@ const normFile = (e) => {
 
 export default class RegisterForm extends Component {
     onFinish = (values) => {
-        console.log('Received values of form: ', values);
-
         $http('/api/register', {
             method: 'POST',
 
@@ -58,9 +55,9 @@ export default class RegisterForm extends Component {
                 channels: [],
             },
         })
-
-            .then((json) => {
-
+            .then((res) => {
+                message.success('Registration success!');
+                this.props.history.push('/');
             });
     };
 
@@ -81,7 +78,7 @@ export default class RegisterForm extends Component {
                 <Form.Item label="Noders Group ">
                     <span className="ant-form-text">xxx System</span>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     name="identity"
                     label="Identity"
                     hasFeedback
@@ -96,7 +93,7 @@ export default class RegisterForm extends Component {
                         <Option value="1">Teacher</Option>
                         <Option value="2">Admin</Option>
                     </Select>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name="name"
                     label="Full Name"
@@ -154,7 +151,7 @@ export default class RegisterForm extends Component {
                             validator(_, value) {
                                 if (!value || getFieldValue('password') === value) {
                                     return Promise.resolve();
-                                }               return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                } return Promise.reject(new Error('The two passwords that you entered do not match!'));
                             },
                         }),
                     ]}

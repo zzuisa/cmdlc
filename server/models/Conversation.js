@@ -9,7 +9,8 @@ const ConversationSchema = new mongoose.Schema({
     channel_name: String,
     messages: [{
         id: Number,
-        user_id: Number,
+        user_id: String,
+        avatar: String,
         content: String,
         create_time: String,
     }],

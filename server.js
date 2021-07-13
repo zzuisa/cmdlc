@@ -26,8 +26,6 @@ let server_host = process.env.YOUR_HOST || '0.0.0.0';
 const socketPort = 8881;
 const { T } = require('./server/models/entity/R');
 
-console.log('Database_URL', process.env.DATABASE_URL);
-
 let R = new T();
 // Configuration
 // ================================================================================================
@@ -97,7 +95,7 @@ let connectedUser = [];
 io.on('connection', (socket) => {
     updateUserName();
     let userName = '';
-    console.log('connection');
+    console.log('a user connection');
     // login
     socket.on('login', (name, callback) => {
         if (name.trim().length === 0) {
@@ -110,10 +108,10 @@ io.on('connection', (socket) => {
     });
     // Receive Chat Message
     socket.on('client_slide_message', (msg) => {
-        console.log('client_slide_message', msg);
         io.sockets.emit('server_slide_message', {
+            avatar: msg.eventUser.avatar,
             eventName: msg.eventName,
-            name: 'user',
+            name: msg.eventUser.name,
             _id: new Date().getTime(),
             msg: msg.content,
             create_time: local,
@@ -121,8 +119,9 @@ io.on('connection', (socket) => {
     });
     socket.on('client_slide_comment', (msg) => {
         io.sockets.emit('server_slide_comment', {
+            avatar: msg.eventUser.avatar,
             eventName: msg.eventName,
-            name: 'user',
+            name: msg.eventUser.name,
             _id: new Date().getTime(),
             msg: msg.content,
             create_time: local,

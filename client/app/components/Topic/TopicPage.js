@@ -15,6 +15,7 @@ import MainMenu from '../../router/menus';
 import SlideList from '../Slide/SlideList';
 import Chat from '../Chat/Chat';
 import $http from '../Util/PageHelper';
+import config from '../../../../config/config';
 
 const props = {
     name: 'file',
@@ -36,7 +37,7 @@ export default class TopicPage extends React.Component {
     }
 
     componentWillMount=() => {
-        let socket = socketClient('localhost:8080');
+        let socket = socketClient(config.host);
         this.setState({
             socket,
         });

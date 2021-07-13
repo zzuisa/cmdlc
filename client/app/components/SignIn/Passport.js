@@ -9,11 +9,8 @@ export default class Passport {
     login(username, psd, callback) {
         User.find({ name: username, password: psd }, (err, doc) => {
             if (err) {
-                console.log(err.message);
             } else {
-                console.log(doc);
                 this.isLogin = true;
-                console.log(doc.id != null);
             }
         });
     }

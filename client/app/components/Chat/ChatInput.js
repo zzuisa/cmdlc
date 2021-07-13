@@ -7,6 +7,7 @@ import 'braft-editor/dist/index.css';
 // import db from './firebase';
 import { ContentUtils } from 'braft-utils';
 import { SendOutlined } from '@ant-design/icons';
+import cookie from 'react-cookies';
 import { useStateValue } from '../StateProvider';
 import { notice, verify } from '../Common/Notice';
 import $http from '../Util/PageHelper';
@@ -31,6 +32,11 @@ export default class ChatInput extends React.Component {
         channelId: this.props.channelId,
         type: this.props.type,
         socket: this.props.socket,
+        user: cookie.load('userinfo'),
+    }
+
+    componentWillMount=() => {
+        console.log('current:', this.state.user);
     }
 
     submitContent = async() => {
@@ -61,7 +67,9 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
+         console.log('send', this.state.user);
          let content = {
+             eventUser: this.state.user,
              eventName: this.props.channelId,
              content: this.state.editorState.toHTML(),
          };
@@ -71,7 +79,10 @@ export default class ChatInput extends React.Component {
 
              $http(`/api/conversations/${this.props.channelId}`, {
                  method: 'POST',
-                 data: { content: this.state.editorState.toHTML() },
+                 data: {
+                     content: this.state.editorState.toHTML(),
+                     eventUser: this.state.user,
+                 },
 
              }).then((res) => {
                  this.state.socket.emit(eventName, content);
@@ -79,6 +90,7 @@ export default class ChatInput extends React.Component {
              });
          } else {
              let data = {
+                 eventUser: this.state.user,
                  content: this.state.editorState.toHTML(),
                  page: this.state.channelName,
                  slide_id: this.state.channelId,

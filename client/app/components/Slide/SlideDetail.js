@@ -26,6 +26,7 @@ import Message from '../Chat/Message';
 import ChatInput from '../Chat/ChatInput';
 import Chat from '../Chat/Chat';
 import $http from '../Util/PageHelper';
+import config from '../../../../config/config';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 export default class SlideDetail extends React.Component {
@@ -55,7 +56,7 @@ export default class SlideDetail extends React.Component {
   }
 
   componentWillMount = () => {
-      let socket = socketClient('localhost:8080');
+      let socket = socketClient(config.host);
       this.setState({
           socket,
           id: this.props.match.params.id,
@@ -67,7 +68,6 @@ export default class SlideDetail extends React.Component {
   getSlide = (id) => {
       $http(`/api/detail/${id}`)
           .then((res) => {
-              console.log('resss', res);
               this.setState({
                   slide: res.data.content,
                   spinning: false,
@@ -99,8 +99,6 @@ export default class SlideDetail extends React.Component {
                   }
               });
           });
-
-      // let socket = socketClient('localhost:8080', { transports: ['websocket', 'polling', 'flashsocket'] });
   };
 
   prev = () => {
@@ -130,7 +128,6 @@ export default class SlideDetail extends React.Component {
   }
 
 textChange=(e) => {
-    console.log('text', e);
     this.setState({
         textValue: parseInt(e.target.value),
     });
@@ -150,7 +147,7 @@ textChange=(e) => {
                                               <Image src="http://49.media.tumblr.com/0018b4de0800b3e822bc5a7895ccfc62/tumblr_nbp3g3IwBz1sq0qq9o1_400.gif"></Image>
                                           }
                                           onLoadSuccess={this.onDocumentLoadSuccess}
-                                          file={`http://localhost:8080${this.state.slide.path}`}
+                                          file={`http://${config.host}${this.state.slide.path}`}
                                       >
                                           <Page
                                               style={{ width: '100%' }}

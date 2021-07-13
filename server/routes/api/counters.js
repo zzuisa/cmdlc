@@ -1,11 +1,18 @@
 const Counter = require('../../models/Counter');
+const { T } = require('../../models/entity/R');
+const tools = require('../../utils/tool');
+
+let R = new T();
 
 module.exports = (app) => {
     app.get('/api/counters', (req, res, next) => {
-        Counter.find()
-            .exec()
-            .then((counter) => res.json(counter))
-            .catch((err) => next(err));
+        let authorization = req.get('Authorization');
+        if (tools.verifyToken(authorization, res)) {
+            Counter.find()
+                .exec()
+                .then((counter) => res.json(counter))
+                .catch((err) => next(err));
+        }
     });
 
     app.post('/api/counters', (req, res, next) => {
