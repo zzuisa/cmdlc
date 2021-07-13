@@ -41,7 +41,6 @@ class Chat extends React.Component {
     updateConversation=(roomId) => {
         $http(`/api/conversations/${roomId}`)
             .then((res) => {
-                console.log('res', res);
                 let mes = res.data.content !== null ? res.data.content.messages : [];
                 this.setRoomMessages(mes);
             });

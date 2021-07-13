@@ -36,7 +36,6 @@ export default class ChatInput extends React.Component {
     }
 
     componentWillMount=() => {
-        console.log('current:', this.state.user);
     }
 
     submitContent = async() => {
@@ -67,7 +66,6 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
-         console.log('send', this.state.user);
          let content = {
              eventUser: this.state.user,
              eventName: this.props.channelId,

@@ -58,12 +58,10 @@ class Nav extends React.Component {
   }
 
   confirm=(e) => {
-      console.log(e);
       message.success('Please update your new avatar');
   }
 
   cancel=(e) => {
-      console.log(e);
       message.error('You cancel change your avatar');
   }
 

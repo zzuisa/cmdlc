@@ -31,9 +31,7 @@ export default class Login extends React.Component {
               'Content-Type': 'application/json',
           },
       })
-          // .then((res) => { console.log('res', res); return res.json(); })
           .then((res) => {
-              console.log('resss', res);
               cookie.save('userinfo', res.data.content.doc);
               cookie.save('userToken', res.data.content.token);
               this.props.history.push('/');
