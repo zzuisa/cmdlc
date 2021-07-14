@@ -21,9 +21,6 @@ const webpackConfig = require('./webpack.config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || config.host.split(':')[2];
-let server_host = process.env.YOUR_HOST || '0.0.0.0';
-
-const socketPort = 8881;
 const { T } = require('./server/models/entity/R');
 
 let R = new T();
