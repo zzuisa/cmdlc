@@ -56,7 +56,7 @@ export default class SlideDetail extends React.Component {
   }
 
   componentWillMount = () => {
-      let socket = socketClient(config.host);
+      let socket = socketClient(config.nginxHost);
       this.setState({
           socket,
           id: this.props.match.params.id,

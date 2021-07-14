@@ -37,7 +37,7 @@ export default class TopicPage extends React.Component {
     }
 
     componentWillMount=() => {
-        let socket = socketClient(config.host);
+        let socket = socketClient(config.nginxHost);
         this.setState({
             socket,
         });
