@@ -26,6 +26,7 @@ export default class Login extends React.Component {
           data: {
               username: values.username,
               password: values.password,
+
           },
           headers: {
               'Content-Type': 'application/json',
