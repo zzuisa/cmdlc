@@ -20,7 +20,7 @@ const config = require('./config/config');
 const webpackConfig = require('./webpack.config');
 
 const isDev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || config.host.split(':')[2];
 let server_host = process.env.YOUR_HOST || '0.0.0.0';
 
 const socketPort = 8881;
@@ -146,7 +146,8 @@ io.on('connection', (socket) => {
         io.emit('loadUser', connectedUser);
     }
 });
-server.listen(port, server_host, (err) => {
+console.log(port);
+server.listen(port, (err) => {
     if (err) {
         console.log(err);
     }

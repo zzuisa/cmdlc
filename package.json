@@ -12,7 +12,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.bak.js",
-    "start:pro": "webpack -p --progress --profile --colors && node server"
+    "start:pro": "webpack -p --progress --profile --colors && node server",
+    "heroku-prebuild": "npm install -f",
+    "heroku-postbuild": "npm run dev"
   },
   "engines": {
     "node": "14.15.2"
