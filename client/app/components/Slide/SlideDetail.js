@@ -147,7 +147,7 @@ textChange=(e) => {
                                               <Image src="http://49.media.tumblr.com/0018b4de0800b3e822bc5a7895ccfc62/tumblr_nbp3g3IwBz1sq0qq9o1_400.gif"></Image>
                                           }
                                           onLoadSuccess={this.onDocumentLoadSuccess}
-                                          file={`http://${config.host}${this.state.slide.path}`}
+                                          file={`${config.host}${this.state.slide.path}`}
                                       >
                                           <Page
                                               style={{ width: '100%' }}
