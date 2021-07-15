@@ -23,6 +23,7 @@ import 'antd/dist/antd.css';
 import UserProfile from './components/Profile/UserProfile';
 import Login from './components/SignIn/Login';
 import RegisterForm from './components/Signup/RegisterForm';
+import ResetPsdByEmail from './components/Signup/ResetPsdByEmail';
 
 render((
 
@@ -37,7 +38,7 @@ render((
                 <Route exact path="/team/:name" component={TeamPage}/>
                 <Route exact path="/detail/:id" component={SlideDetail}/>
                 <Route exact path="/userSetting/profile" component={UserProfile}/>
-
+                <Route exact path="/forgetPassword" component={ResetPsdByEmail}/>
                 <Route component={NotFound}/>
             </Switch>
         </App>

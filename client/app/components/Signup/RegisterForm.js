@@ -14,6 +14,7 @@ import {
     Row,
     Col,
     Input,
+    Tooltip,
 } from 'antd';
 
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
@@ -120,7 +121,13 @@ export default class RegisterForm extends Component {
                         },
                     ]}
                 >
+                    {/* <Tooltip title="Attention! For resetting password" color='pink'>
+
+                        <Input />
+                    </Tooltip> */}
+
                     <Input />
+
                 </Form.Item>
 
                 <Form.Item
@@ -207,7 +214,9 @@ export default class RegisterForm extends Component {
                 </Form.Item>
 
                 <Form.Item label="Dragger">
+
                     <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+
                         <Upload.Dragger name="files" action="/upload.do">
                             <p className="ant-upload-drag-icon">
                                 <InboxOutlined />
@@ -216,6 +225,7 @@ export default class RegisterForm extends Component {
                             <p className="ant-upload-hint">Support for a single or bulk upload.</p>
                         </Upload.Dragger>
                     </Form.Item>
+
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
