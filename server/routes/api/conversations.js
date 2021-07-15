@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Conversation = require('../../models/Conversation');
 const E = require('../../models/entity/E');
 const { T } = require('../../models/entity/R');
@@ -18,7 +19,9 @@ module.exports = (app) => {
         let cm = req.params.channelName;
         let data = req.body;
         const message = new E.Message().init();
-
+        let date = moment.utc().format();
+        let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
+        message.create_time = local;
         Conversation.findOne({ channel_name: cm }).exec().then((r) => {
             if (r !== null) {
                 message.content = data.content;
