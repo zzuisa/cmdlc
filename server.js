@@ -8,14 +8,12 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 let cors = require('cors');
 const moment = require('moment');
-let jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-let expressJWT = require('express-jwt');
 const config = require('./config/config');
 const webpackConfig = require('./webpack.config');
 
