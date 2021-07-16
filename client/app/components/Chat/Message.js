@@ -17,7 +17,7 @@ function Message({
                     <h4>
                         {user}{' '}
                         <span className="message__timestamp">
-                            {moment(timestamp).fromNow()}
+                            {moment(`${timestamp}+02:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
                         </span>
                     </h4>
                     <p dangerouslySetInnerHTML={{ __html: message }}></p>

@@ -9,6 +9,7 @@ import ChatInput from './ChatInput';
 import { notice, verify } from '../Common/Notice';
 import $http from '../Util/PageHelper';
 
+
 class Chat extends React.Component {
     state={
         roomDetails: null,
