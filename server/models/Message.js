@@ -3,6 +3,7 @@ const messages = require('./entity/E');
 
 const MessageSchema = new mongoose.Schema({
     type: Number,
+    u_id: String,
     user_id: Number,
     content: String,
     create_time: String,

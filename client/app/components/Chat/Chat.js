@@ -88,7 +88,7 @@ class Chat extends React.Component {
                             this.updateConversation(this.props.roomId);
                             notice();
                             mes.push({
-                                _id: data._id,
+                                u_id: data.u_id,
                                 user_id: data.name,
                                 create_time: data.create_time,
                                 content: data.msg,
@@ -106,10 +106,11 @@ class Chat extends React.Component {
             <div className="chat" style={{ marginBottom: 150 }}>
                 <div className="chat__messages" style={{ marginBottom: 100 }}>
                     {this.state.roomMessages.map(({
-                        _id, user_id, content, create_time, avatar,
+                        u_id, user_id, content, create_time, avatar,
                     }) => (
                         <Message
-                            key={_id}
+                            key={u_id}
+                            uId={u_id}
                             message={content}
                             timestamp={create_time}
                             user={user_id}

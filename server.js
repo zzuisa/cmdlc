@@ -107,7 +107,7 @@ io.on('connection', (socket) => {
             avatar: msg.eventUser.avatar,
             eventName: msg.eventName,
             name: msg.eventUser.name,
-            _id: new Date().getTime(),
+            u_id: msg.eventUser._id,
             msg: msg.content,
             create_time: local,
         });
@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
             avatar: msg.eventUser.avatar,
             eventName: msg.eventName,
             name: msg.eventUser.name,
-            _id: new Date().getTime(),
+            u_id: msg.eventUser._id,
             msg: msg.content,
             create_time: local,
         });

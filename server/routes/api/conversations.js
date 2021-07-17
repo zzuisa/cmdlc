@@ -27,6 +27,7 @@ module.exports = (app) => {
                 message.content = data.content;
                 message.avatar = data.eventUser.avatar;
                 message.user_id = data.eventUser.name;
+                message.u_id = data.eventUser._id;
                 r.messages.push(message);
                 r.save();
                 res.json(R.ok());

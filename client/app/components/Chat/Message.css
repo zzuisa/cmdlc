@@ -9,6 +9,45 @@
     width: 50px;
     object-fit: contain;
 }
+.msgBg{
+    background-color: #C2E9FB;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+}
+
+.msgBg_current{
+    background-color: #E4EfE9;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+}
+.message_info {
+    padding-left: 15px;
+}
+
+.message__timestamp {
+    color: gray;
+    font-weight: 300;
+    font-size: 13px;
+    margin: 2px;
+    padding: 10px;
+}
+
+
+.message_current {
+    display: flex;
+    align-items: center;
+    float: right;
+    padding: 20px;
+}
+
+
+.message_current>img {
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+}
 
 .message_info {
     padding-left: 15px;

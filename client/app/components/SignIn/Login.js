@@ -39,7 +39,7 @@ export default class Login extends React.Component {
           .then((res) => {
               cookie.save('userinfo', res.data.content.doc);
               cookie.save('userToken', res.data.content.token);
-              console.log(cookie.load('userinfo')); //check userinfo
+              console.log(cookie.load('userinfo')); // check userinfo
               this.props.history.push('/');
           });
   };
@@ -159,23 +159,17 @@ export default class Login extends React.Component {
                           >
                               <Space>
                                   <Button type="primary" htmlType="submit" onClick={this.submit}>
-          Submit
+          Login
                                   </Button>
                                   <Button htmlType="button" onClick={this.onReset}>
           Reset
                                   </Button>
+                                  <Button type="link" htmlType="button" onClick={this.register}>
+              No account? Here register
+                                  </Button>
                               </Space>
 
                           </Form.Item>
-                          <Form.Item
-                              wrapperCol={{
-                                  offset: 8,
-                                  span: 8,
-                              }}
-                          ><Button type="link" htmlType="button" onClick={this.register}>
-              No account? Here register
-                              </Button></Form.Item>
-
                       </Form>
 
                   </Col>
