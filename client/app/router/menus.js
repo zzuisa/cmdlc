@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     NavLink, Link, withRouter, useLocation,
+    HashRouter,
 } from 'react-router-dom';
 import './menus.css';
 import cookie from 'react-cookies';
@@ -13,6 +14,8 @@ import {
 } from '@ant-design/icons';
 import Nav from '../components/Header/Nav';
 import Logo from '../components/Header/Logo';
+
+const router = new HashRouter();
 
 const { teamRoute, topicRoute } = require('./routes');
 
@@ -40,10 +43,16 @@ function getAndSavePath(path) {
 
 const MainMenu = (props) => {
     const user = cookie.load('userinfo');
+    console.log('user', user);
+    if (user === undefined) {
+        console.log('push');
+        router.history.push('/login');
+        return <></>;
+    }
     return (
         <Layout>
             <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
-    
+
                 <Logo style={{ float: 'left' }}/>
                 <Nav style={{ float: 'right' }} isLoggedIn={props}/>
             </Header>
@@ -51,20 +60,21 @@ const MainMenu = (props) => {
                 <Sider
                     collapsedWidth="0"
                     onBreakpoint={(broken) => {
-    
+
                     }}
                     onCollapse={(collapsed, type) => {
-    
+
                     }}
                 >
-    
+
                     <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
                         {teamRoute.map((e, index) => {
                             if (e.path != '*') {
-                                if (e.name === user.team[0]){
+                                if (e.name === user.team[0]) {
                                     return (
-                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                        <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                                        <Menu.Item key={e.path} icon={<UserOutlined />}>
+                                            <NavLink to={e.path}>{e.name }</NavLink>
+                                        </Menu.Item>
                                     );
                                 }
                                 return '';
@@ -76,12 +86,13 @@ const MainMenu = (props) => {
                             if (e.path != '*') {
                                 return (
                                     <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                        <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                                        <NavLink to={e.path}>{e.name }</NavLink>
+                                    </Menu.Item>
                                 );
                             }
                         })}
                     </SubMenu>
-    
+
                     </Menu>
                 </Sider>
                 <Layout>
