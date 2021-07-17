@@ -145,7 +145,6 @@ class ResetPsdByEmail extends Component {
                                 this.setState({
                                     userMail: values.email,
                                     verifyCode: data.data.content.response.verify,
-
                                 });
                                 this.sendSuccessfully;
                                 // console.log(this.state.verifyCode);
