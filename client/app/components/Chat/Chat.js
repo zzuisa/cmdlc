@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Chat.css';
 import { useParams } from 'react-router-dom';
-import { InfoOutlined, StarBorderOutlined } from '@material-ui/icons';
+import { InfoOutlined, StarBorderOutlined, VerticalAlignBottomOutlined } from '@material-ui/icons';
 // import db from './firebase';
 import cookie from 'react-cookies';
+import { BackTop, Button } from 'antd';
 import Message from './Message';
 import ChatInput from './ChatInput';
 import { notice, verify } from '../Common/Notice';
 import $http from '../Util/PageHelper';
-
 
 class Chat extends React.Component {
     state={
@@ -47,6 +47,11 @@ class Chat extends React.Component {
             });
     }
 
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+        console.log('1', this.messagesEnd);
+    }
+
     componentWillMount=() => {
         if (this.state.roomId) {
             let { roomId } = this.props;
@@ -56,6 +61,7 @@ class Chat extends React.Component {
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
                         if (this.props.roomId === data.eventName) {
+                            this.scrollToBottom();
                             this.updateConversation(this.props.roomId);
                             notice();
                             mes.push({
@@ -74,7 +80,7 @@ class Chat extends React.Component {
 
     render() {
         return (
-            <div className="chat">
+            <div className="chat" style={{ marginBottom: 150 }}>
                 <div className="chat__messages" style={{ marginBottom: 100 }}>
                     {this.state.roomMessages.map(({
                         _id, user_id, content, create_time, avatar,
@@ -88,7 +94,10 @@ class Chat extends React.Component {
                         />
                     ))}
                 </div>
-                <ChatInput style={{ marginTop: '100' }} channelName={this.props.roomId} channelId={this.props.roomId} type={'con'} socket={this.props.socket} />
+                <div style={{ float: 'left', clear: 'both' }}
+                    ref={(el) => { this.messagesEnd = el; }}>
+                </div>
+                <ChatInput style={{ marginTop: '100' }} channelName={this.props.roomId} messagesEnd={this.messagesEnd} channelId={this.props.roomId} type={'con'} socket={this.props.socket} />
 
             </div>
         );

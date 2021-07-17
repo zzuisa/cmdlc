@@ -16,13 +16,23 @@ import SlideList from '../Slide/SlideList';
 import Chat from '../Chat/Chat';
 import $http from '../Util/PageHelper';
 import config from '../../../../config/config';
+import './topic.css';
 
 const props = {
     name: 'file',
     showUploadList: false,
 
 };
-
+const style = {
+    height: 40,
+    width: 40,
+    lineHeight: '40px',
+    borderRadius: 4,
+    backgroundColor: '#1088e9',
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 14,
+};
 export default class TopicPage extends React.Component {
     state={
         name: '',
@@ -120,7 +130,6 @@ export default class TopicPage extends React.Component {
                     </Spin>
                 </Card>
 
-                <BackTop />
             </MainMenu>
         );
     }

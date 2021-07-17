@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	 "settings": {
+      "ESLint-Formatter": {
+      "format_on_save": true
+    }
+  }
+}
