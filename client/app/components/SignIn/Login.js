@@ -34,6 +34,7 @@ export default class Login extends React.Component {
           .then((res) => {
               cookie.save('userinfo', res.data.content.doc);
               cookie.save('userToken', res.data.content.token);
+              console.log(cookie.load('userinfo')); //check userinfo
               this.props.history.push('/');
           });
   };

@@ -80,7 +80,7 @@ export default class ChatInput extends React.Component {
     }
 
     componentWillUnmount=() => {
-        window.removeEventListener('scroll');
+        //window.removeEventListener('scroll');
     }
 
     submitContent = async() => {

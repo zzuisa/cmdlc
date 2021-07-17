@@ -51,7 +51,7 @@ export default class RegisterForm extends Component {
                 create_time: new Date(),
                 update_time: null,
                 delete_time: null,
-                team: [],
+                team: values.team, //get input values in 'topic-team' choosing
                 channels: [],
             },
         })
@@ -159,19 +159,20 @@ export default class RegisterForm extends Component {
                     <Input.Password />
                 </Form.Item>
                 <Form.Item
-                    name="major"
-                    label="Major"
+                    name="team"
+                    label="Topic-Team"
                     hasFeedback
                     rules={[
                         {
                             required: true,
-                            message: 'Please select your major!',
+                            message: 'Please select your topic-team!',
                         },
                     ]}
                 >
-                    <Select placeholder="Please select your major">
-                        <Option value="china">Computer Engineering</Option>
-                        <Option value="usa">Intelligent Network</Option>
+                    <Select placeholder="Please select your topic-team">
+                        <Option value="React">React Group</Option>
+                        <Option value="Vue">Vue Group</Option>
+                        <Option value="Angular">Angular Group</Option>
                     </Select>
                 </Form.Item>
 

@@ -38,56 +38,63 @@ function getAndSavePath(path) {
     return '/team/vue';
 }
 
-const MainMenu = (props) => (
-    <Layout>
-        <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
-
-            <Logo style={{ float: 'left' }}/>
-            <Nav style={{ float: 'right' }} isLoggedIn={props}/>
-        </Header>
+const MainMenu = (props) => {
+    const user = cookie.load('userinfo');
+    return (
         <Layout>
-            <Sider
-                collapsedWidth="0"
-                onBreakpoint={(broken) => {
-
-                }}
-                onCollapse={(collapsed, type) => {
-
-                }}
-            >
-
-                <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
-                    {teamRoute.map((e, index) => {
-                        if (e.path != '*') {
-                            return (
-                                <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                    <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
-                            );
-                        }
-                    })}
-                </SubMenu>
-                <SubMenu key="topic" icon={<AppstoreOutlined />} title="Topic">
-                    {topicRoute.map((e, index) => {
-                        if (e.path != '*') {
-                            return (
-                                <Menu.Item key={e.path} icon={<UserOutlined />}>
-                                    <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
-                            );
-                        }
-                    })}
-                </SubMenu>
-
-                </Menu>
-            </Sider>
+            <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
+    
+                <Logo style={{ float: 'left' }}/>
+                <Nav style={{ float: 'right' }} isLoggedIn={props}/>
+            </Header>
             <Layout>
-                <Content style={{ margin: '24px 16px 0' }}>
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: '100vh' }}>
-                        {props.children}
-                    </div>
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>Group3 Noders ©2021 Created by Uni-DUE</Footer>
+                <Sider
+                    collapsedWidth="0"
+                    onBreakpoint={(broken) => {
+    
+                    }}
+                    onCollapse={(collapsed, type) => {
+    
+                    }}
+                >
+    
+                    <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
+                        {teamRoute.map((e, index) => {
+                            if (e.path != '*') {
+                                if (e.name === user.team[0]){
+                                    return (
+                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
+                                        <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                                    );
+                                }
+                                return '';
+                            }
+                        })}
+                    </SubMenu>
+                    <SubMenu key="topic" icon={<AppstoreOutlined />} title="Topic">
+                        {topicRoute.map((e, index) => {
+                            if (e.path != '*') {
+                                return (
+                                    <Menu.Item key={e.path} icon={<UserOutlined />}>
+                                        <NavLink to={e.path}>{e.name }</NavLink>                   </Menu.Item>
+                                );
+                            }
+                        })}
+                    </SubMenu>
+    
+                    </Menu>
+                </Sider>
+                <Layout>
+                    <Content style={{ margin: '24px 16px 0' }}>
+                        <div className="site-layout-background" style={{ padding: 24, minHeight: '100vh' }}>
+                            {props.children}
+                        </div>
+                    </Content>
+                    <Footer style={{ textAlign: 'center' }}>Group3 Noders ©2021 Created by Uni-DUE</Footer>
+                </Layout>
             </Layout>
         </Layout>
-    </Layout>
-);
+    );
+};
+
 export default withRouter(MainMenu);
