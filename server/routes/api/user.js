@@ -90,17 +90,49 @@ module.exports = (app) => {
         // console.log(`修改档案${req.body.newName}`);
         let conditions = { name: req.body.currentUser.name, password: req.body.currentUser.password };
         let update = { $set: { name: req.body.newName, email: req.body.newEmail } }; // $set 表示只修改 age，否则全覆盖
-        User.findOneAndUpdate(conditions, update, (error, data) => {
+        User.findOneAndUpdate(conditions, update, { new: true }, (error, data) => {
             console.log(conditions);
             if (error) {
                 console.log(error);
             } else if (!data) {
                 console.log('no data in DB');
+                res.json(R.error());
             } else if (data) {
                 console.log('update success');
-                console.log(data);
+                console.log(`更新${data}`);
+                let doc = data;
+                res.json(R.ok({
+                    token: jwt.sign({
+                        name: 'BinMaing',
+                        data: '=============',
+                    }, secretOrPrivateKey, {
+                        expiresIn: '24h',
+                    }),
+                    doc,
+                }));
+
                 // return data to front-end
-                res.json(data);
+                // User.findOne({ name: data.name, password: data.password }, (err, doc) => {
+                //     if (err) {
+                //         console.log('error here');
+                //     } else if (doc != null) {
+                //         console.log('执行findOne');
+                //         // let pageUserinfo = doc;
+                //         console.log(`更新后${doc}`);
+                //         res.json(R.ok({
+                //             token: jwt.sign({
+                //                 name: 'BinMaing',
+                //                 data: '=============',
+                //             }, secretOrPrivateKey, {
+                //                 expiresIn: '24h',
+                //             }),
+                //             doc,
+                //         }));
+                //     } else {
+                //         res.json(R.error());
+                //     }
+                // })
+                //     .catch((err) => next(err));
             }
         });
 

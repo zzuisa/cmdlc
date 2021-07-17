@@ -188,7 +188,10 @@ export default class Login extends React.Component {
                   onClose={this.onClose}
                   visible={this.state.visible}
                   key={this.state.placement}
+                  width='300'
+                  closable='true'
               >
+
                   <ResetPsdByEmail/>
               </Drawer>
 

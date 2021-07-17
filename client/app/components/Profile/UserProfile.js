@@ -108,12 +108,16 @@ export default class UserProfile extends React.Component {
             },
         })
             .then((res) => {
-                // cookie.save('userinfo', res.data.content.doc);
-                // cookie.save('userToken', res.data.content.token);
-                // this.props.history.push('/');
-                console.log(res);
+                // console.log(`更新后：${res.data.content.doc}`);
+
+                cookie.save('userinfo', res.data.content.doc);
+                cookie.save('userToken', res.data.content.token);
+
                 openNotificationWithIcon('success');
-                setTimeout(() => { this.props.history.push('/login'); }, 2000);
+                this.setState({
+                    userinfo: cookie.load('userinfo'),
+                });
+                setTimeout(() => { this.props.history.push('/'); }, 2000);
             });
         console.log(values);
     };
@@ -129,9 +133,13 @@ Edit your userinfo
         let judge;
 
         if (this.state.changepsd) {
-            judge = <Form.Item name="newpsd"><Input placeholder="Your new password"></Input></Form.Item>;
+            judge = <Form.Item name="newpsd"
+                rules={[{ required: true, message: 'Please input your new password!' }]}
+            >
+                <Input.Password placeholder="Your new password"></Input.Password>
+            </Form.Item>;
         } else {
-            judge = <Form.Item name="oldpsd"><Input placeholder="Your original password"></Input></Form.Item>;
+            judge = <Form.Item name="oldpsd" rules={[{ required: true, message: 'Please input your current password!' }]}><Input.Password placeholder="Your original password"></Input.Password></Form.Item>;
         }
         if (this.state.isEdited) {
             // console.log(this.state.isEdited);

@@ -15,7 +15,8 @@ class ResetPsdByEmail extends Component {
 
             isMail: false,
             newPsd: false,
-
+            hasSent: false,
+            end: false,
         };
     }
 
@@ -23,11 +24,27 @@ class ResetPsdByEmail extends Component {
         notification[type]({
             message: 'vaild email address',
             description:
-            'Please check your mail box and input theverification code!',
+            'Please check your mail box and input the verification code!',
         });
     };
 
-    openNotificationWithIcon = (type) => {
+    wrongCAPTCHA = (type) => {
+        notification[type]({
+            message: 'Wrong CAPTCHA',
+            description:
+            'Please check your mail box and input the right verification code!',
+        });
+    };
+
+    noMail= (type) => {
+        notification[type]({
+            message: 'Email does not exist ',
+            description:
+            'We can not find your email address, please type the vaild one!',
+        });
+    };
+
+    toMain = (type) => {
         notification[type]({
             message: 'Password resetting successully',
             description:
@@ -35,12 +52,61 @@ class ResetPsdByEmail extends Component {
         });
     };
 
+    newPsdset = (type) => {
+        notification[type]({
+            message: 'Right verification code',
+            description:
+            'Please set your new password !',
+        });
+    };
+
+    sendSuccessfully=(type) => {
+        notification[type]({
+            message: 'New verification code has been sent',
+            description:
+            'Please check your email !',
+        });
+    }
+
+    sendCAPTCHA=() => {
+        $http({
+            url: '/api/sendMail',
+            method: 'post',
+            // send data as json strings to back-end
+            data: {
+                email: this.state.userMail,
+
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((data) => {
+                this.setState({
+
+                    verifyCode: data.data.content.response.verify,
+                });
+                this.sendSuccessfully('success');
+                // console.log(this.state.verifyCode);
+            });
+    }
+
+    checkCAPTCHA=(number) => {
+        console.log(number + this.state.verifyCode + this.state.newPsd);
+        if (this.state.verifyCode != number && this.state.verifyCode !== undefined && !this.state.newPsd && number !== undefined) {
+            this.wrongCAPTCHA('error');
+        }
+    }
+
     onFinish = (values) => {
         console.log('Success:', values);
         // message.loading({ content: 'Loading...' });
         // setTimeout(() => {
         //     message.success({ content: 'Loaded!', duration: 2 });
         // }, 1000);
+        this.setState({
+            hasSent: true,
+        });
         if (!this.state.isMail) {
             $http({
                 url: '/api/findOneUser',
@@ -79,10 +145,11 @@ class ResetPsdByEmail extends Component {
                                     userMail: values.email,
                                     verifyCode: data.data.content.response.verify,
                                 });
+                                this.sendSuccessfully;
                                 // console.log(this.state.verifyCode);
                             });
                     } else {
-                        alert("Your email isn't registrated, please try again");
+                        this.noMail('warning');
                     }
                 });
         }
@@ -91,9 +158,12 @@ class ResetPsdByEmail extends Component {
             this.setState({
                 newPsd: true,
             });
-        } else if (this.state.verifyCode != values.verifyCode && this.state.verifyCode !== undefined) {
-            alert('Wroing Verification Code');
         }
+
+        this.checkCAPTCHA(values.verifyCode);
+        // else if (this.state.verifyCode != values.verifyCode && this.state.verifyCode !== undefined) {
+        //     this.wrongCAPTCHA('error');
+        // }
 
         if (values.newpassword !== undefined) {
             $http({
@@ -111,7 +181,7 @@ class ResetPsdByEmail extends Component {
             })
                 .then((res) => {
                     // console.log(res);
-                    this.openNotificationWithIcon('success');
+                    this.toMain('success');
                     setTimeout(() => { this.props.history.push('/'); }, 2000);
                 });
             console.log(values.newpassword);
@@ -123,66 +193,79 @@ class ResetPsdByEmail extends Component {
       };
 
     render=() => {
+        let sendButton;
+
         let buttonText;
         let submit;
         let newPsd;
         let newPsdButton;
+
+        if (!this.state.hasSent) {
+            sendButton = <Form.Item>
+                <Button type="primary" htmlType="submit">
+                    Send verification code
+                </Button>
+            </Form.Item>;
+        } else {
+            sendButton = <Form.Item>
+                <Button type="primary" htmlType="submit" onClick={this.sendCAPTCHA}>
+                Send verification code again!
+                </Button>
+            </Form.Item>;
+        }
         if (this.state.isMail) {
-            buttonText = <Row>
-                <Form.Item
-                    label="VerifyCode"
-                    name="verifyCode"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Verification Code!',
-                        },
-                    ]}
+            buttonText = <Form.Item
+                label="CAPTCHA"
+                name="verifyCode"
+                labelAlign='left'
+                labelCol={{ span: 24 }}
+                rules={[
+                    {
+                        // required: true,
+                        message: 'Please input your Verification Code!',
+                    },
+                ]}
 
-                >
+            >
 
-                    <Input />
+                <Input.Password/>
 
-                </Form.Item>
-            </Row>;
-            submit = <Row>
-                <Form.Item
+            </Form.Item>;
 
-                ><Button type="primary" htmlType="submit">
-          Submit
-                    </Button>
-                </Form.Item>
-            </Row>;
+            submit = <Form.Item
+
+            ><Button type="primary" htmlType="submit" >
+          Submit CAPTCHA
+                </Button>
+            </Form.Item>;
         }
 
         if (this.state.newPsd) {
-            newPsd = <Row>
-                <Form.Item
-                    label="New password"
-                    name="newpassword"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your new password!',
-                        },
-                    ]}
+            this.newPsdset('success');
+            newPsd = <Form.Item
+                label="New password"
+                name="newpassword"
+                labelAlign='left'
+                labelCol={{ span: 24 }}
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your new password!',
+                    },
+                ]}
 
-                >
+            >
 
-                    <Row>
-                        <Input />
-                    </Row>
+                <Input.Password />
 
-                </Form.Item>
-            </Row>;
-            newPsdButton = <Row>
-                <Form.Item
+            </Form.Item>;
 
-                ><Button type="primary" htmlType="submit">
-  Submit
-                    </Button>
-                </Form.Item>
-            </Row>;
+            newPsdButton = <Form.Item
+
+            ><Button type="primary" htmlType="submit" onClick={this.jump}>
+    Confirm New Password
+                </Button>
+            </Form.Item>;
         }
         return (
 
@@ -200,39 +283,37 @@ class ResetPsdByEmail extends Component {
                 onFinish={this.onFinish}
 
             >
-                <Row>
+                {/* <Row>
                     <Col span={24}></Col>
                 </Row>
                 <Row>
                     <Col span={12}></Col>
                     <Col span={12}></Col>
-                </Row>
-                <Row>
-                    <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your Email!',
-                            },
-                        ]}
-                    >
+                </Row> */}
+                {/* <Row> */}
+                <Form.Item
+                    label="Email"
+                    name="email"
+                    labelAlign='left'
+                    labelCol={{ span: 24 }}
 
-                        <Row>
-                            <Input />
-                        </Row>
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input a vaild Email!',
+                            type: 'email',
+                        },
+                    ]}
 
-                    </Form.Item>
-                    <Row>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                      Check  mailaddress?
-                            </Button>
-                        </Form.Item>
-                    </Row>
+                >
 
-                </Row>
+                    <Input/>
+
+                </Form.Item>
+
+                {sendButton}
+
+                {/* </Row> */}
 
                 {buttonText}
                 {submit}
