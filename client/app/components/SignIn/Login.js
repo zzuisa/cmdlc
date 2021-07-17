@@ -1,9 +1,10 @@
 import {
-    Form, Input, Button, Checkbox, Space, Row, Col, Image,
+    Form, Input, Button, Checkbox, Space, Row, Col, Image, Drawer,
 } from 'antd';
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
-
+import { NavLink } from 'react-router-dom';
+import ResetPsdByEmail from '../Signup/ResetPsdByEmail';
 import $http from '../Util/PageHelper';
 
 export default class Login extends React.Component {
@@ -15,6 +16,9 @@ export default class Login extends React.Component {
         this.state = {
 
             isLogin: false,
+            // page change states
+            visible: false,
+            placement: 'right',
         };
     }
 
@@ -26,6 +30,7 @@ export default class Login extends React.Component {
           data: {
               username: values.username,
               password: values.password,
+
           },
           headers: {
               'Content-Type': 'application/json',
@@ -51,116 +56,147 @@ export default class Login extends React.Component {
       this.props.history.push('/register');
   }
 
+  onClose = () => {
+      this.setState({
+          visible: false,
+      });
+  };
+
+  forgetPsd=() => {
+      // this.props.history.push('/forgetPassword');
+      this.setState({
+          visible: true,
+      });
+  }
+
   render=() => {
       return (
-          <Row style={{ marginTop: 150 }}>
-              <Col style={{ margin: '0 auto', display: 'inline-block' }} offset={16} span={8}>
+          <>
+              <Row style={{ marginTop: 150 }}>
+                  <Col style={{ margin: '0 auto', display: 'inline-block' }} offset={16} span={8}>
 
-                  <Image
-                      style={{
-                          margin: '0 auto', borderRadius: '10px', textAlign: 'center', display: 'flex',
-                      }}
-                      src="assets/img/due.png"
-                  />
-                  <div style={{ float: 'left' }}>
-                      <span style={{ fontSize: '2em' }}>Brainstorm </span>
-                      <span style={{ fontSize: '2em' }}> CourseMapper</span>
+                      <Image
+                          style={{
+                              margin: '0 auto', borderRadius: '10px', textAlign: 'center', display: 'flex',
+                          }}
+                          src="assets/img/due.png"
+                      />
+                      <div style={{ float: 'left' }}>
+                          <span style={{ fontSize: '2em' }}>Brainstorm </span>
+                          <span style={{ fontSize: '2em' }}> CourseMapper</span>
 
-                  </div>
-              </Col>
-              <Col span={24} style={{ marginTop: 50 }}>
-                  <Form
-                      ref={this.formRef}
-                      name="basic"
-                      labelCol={{
-                          span: 8,
-                      }}
-                      wrapperCol={{
-                          span: 8,
-                      }}
-                      initialValues={{
-                          remember: true,
-                      }}
-                      onFinish={this.onFinish}
-                      onFinishFailed={this.onFinishFailed}
-
-                  >
-
-                      <Form.Item
-                          label="Username"
-                          name="username"
-                          rules={[
-                              {
-                                  required: true,
-                                  message: 'Please input your username!',
-                              },
-                          ]}
-                      >
-                          <Input />
-                      </Form.Item>
-
-                      <Form.Item
-                          label="Password"
-                          name="password"
-                          wrapperCol={{
-                              offset: 0,
+                      </div>
+                  </Col>
+                  <Col span={24} style={{ marginTop: 50 }}>
+                      <Form
+                          ref={this.formRef}
+                          name="basic"
+                          labelCol={{
                               span: 8,
                           }}
-                          rules={[
-                              {
-                                  required: true,
-                                  message: 'Please input your password!',
-                              },
-                          ]}
-                      >
-                          <Input.Password />
-                      </Form.Item>
-
-                      <Form.Item
-                          name="remember"
-                          valuePropName="checked"
                           wrapperCol={{
-                              offset: 8,
                               span: 8,
                           }}
-                      >
-                          <Checkbox>Remember me</Checkbox>
-                          <Button type="link" htmlType="button" onClick={this.register}>
-          Forget password?
-                          </Button>
-                      </Form.Item>
-
-                      <Form.Item
-                          wrapperCol={{
-                              offset: 8,
-                              span: 8,
+                          initialValues={{
+                              remember: true,
                           }}
+                          onFinish={this.onFinish}
+                          onFinishFailed={this.onFinishFailed}
+
                       >
-                          <Space>
-                              <Button type="primary" htmlType="submit" onClick={this.submit}>
+
+                          <Form.Item
+                              label="Username"
+                              name="username"
+                              rules={[
+                                  {
+                                      required: true,
+                                      message: 'Please input your username!',
+                                  },
+                              ]}
+                          >
+                              <Input />
+                          </Form.Item>
+
+                          <Form.Item
+                              label="Password"
+                              name="password"
+                              wrapperCol={{
+                                  offset: 0,
+                                  span: 8,
+                              }}
+                              rules={[
+                                  {
+                                      required: true,
+                                      message: 'Please input your password!',
+                                  },
+                              ]}
+                          >
+                              <Input.Password />
+                          </Form.Item>
+
+                          <Form.Item
+                              name="remember"
+                              valuePropName="checked"
+                              wrapperCol={{
+                                  offset: 8,
+                                  span: 8,
+                              }}
+                          >
+                              <Checkbox>Remember me</Checkbox>
+                              <Button type="link" htmlType="button" onClick={this.forgetPsd}>
+                                  {/* <NavLink to="/forgetPassword">Forget password?</NavLink> */}
+                              Forget password?
+
+                              </Button>
+                          </Form.Item>
+
+                          <Form.Item
+                              wrapperCol={{
+                                  offset: 8,
+                                  span: 8,
+                              }}
+                          >
+                              <Space>
+                                  <Button type="primary" htmlType="submit" onClick={this.submit}>
           Submit
-                              </Button>
-                              <Button htmlType="button" onClick={this.onReset}>
+                                  </Button>
+                                  <Button htmlType="button" onClick={this.onReset}>
           Reset
-                              </Button>
-                          </Space>
+                                  </Button>
+                              </Space>
 
-                      </Form.Item>
-                      <Form.Item
-                          wrapperCol={{
-                              offset: 8,
-                              span: 8,
-                          }}
-                      ><Button type="link" htmlType="button" onClick={this.register}>
+                          </Form.Item>
+                          <Form.Item
+                              wrapperCol={{
+                                  offset: 8,
+                                  span: 8,
+                              }}
+                          ><Button type="link" htmlType="button" onClick={this.register}>
               No account? Here register
-                          </Button></Form.Item>
+                              </Button></Form.Item>
 
-                  </Form>
+                      </Form>
 
-              </Col>
-          </Row>
+                  </Col>
 
-      //   <RegisterForm/>
+                  <Col></Col>
+              </Row>
+              <Drawer
+                  title="Password reset"
+                  placement={this.state.placement}
+                  closable={false}
+                  onClose={this.onClose}
+                  visible={this.state.visible}
+                  key={this.state.placement}
+                  width='300'
+                  closable='true'
+              >
+
+                  <ResetPsdByEmail/>
+              </Drawer>
+
+          </>
       );
   }
 }

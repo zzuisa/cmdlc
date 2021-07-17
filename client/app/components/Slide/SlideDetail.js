@@ -199,6 +199,7 @@ textChange=(e) => {
                               </div>
                               </Spin>
                               <ChatInput
+                                  initClass='class3'
                                   controls={this.state.controls}
                                   style={{ marginTop: '20', height: 300 }}
                                   channelName={this.state.pageNumber}

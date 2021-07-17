@@ -32,23 +32,7 @@ const controls = [
 //     event.preventDefault();
 //     return false;
 // });
-const style = {
-    margin: 0,
-    padding: 0,
-    color: 'rgba(0, 0, 0, 0.85)',
-    fontSize: 14,
-    fontVariant: 'tabular-nums',
-    lineHeight: 1.5715,
-    listStyle: 'none',
-    fontFeatureSettings: 'tnum',
-    position: 'fixed',
-    right: 100,
-    bottom: 0,
-    zIndex: 10,
-    width: 40,
-    height: 40,
-    cursor: 'pointer',
-};
+
 export default class ChatInput extends React.Component {
     // const [input, setInput] = useState('');
     // // const [{ user }] = useStateValue();
@@ -59,28 +43,31 @@ export default class ChatInput extends React.Component {
         type: this.props.type,
         socket: this.props.socket,
         user: cookie.load('userinfo'),
-        divClass: 'class2',
+        divClass: 'class1',
     }
 
     componentWillMount=() => {
         window.addEventListener('scroll', this.bindScroll);
+
         // const scrollTop = (window.srcElement ? window.srcElement.documentElement.scrollTop : false) || window.pageYOffset || (window.srcElement ? window.srcElement.body.scrollTop : 0);
         // const clientHeight = (window.srcElement && window.srcElement.documentElement.clientHeight) || document.body.clientHeight;
         // const scrollHeight = (window.srcElement && window.srcElement.documentElement.scrollHeight) || document.body.scrollHeight;
         // const height = scrollHeight - scrollTop - clientHeight;
-        // if (scrollTop >= 900 || height <= 100) {
-        //     this.setState({
-        //         divClass: 'class2',
-        //     });
-        // } else {
-        //     this.setState({
-        //         divClass: 'class1',
-        //     });
-        // }
+        // console.log('h',height)
     }
 
     componentWillUnmount=() => {
-        //window.removeEventListener('scroll');
+        // window.removeEventListener('scroll');
+    }
+
+    componentWillReceiveProps = (nextProps, nextState) => {
+        if (this.props.channelId !== nextProps.channelId) {
+            // get the new state after path changed
+            this.setState({
+                divClass: 'class1',
+            });
+            console.log(this.state.initClass, nextProps.initClass);
+        }
     }
 
     submitContent = async() => {
@@ -118,7 +105,7 @@ export default class ChatInput extends React.Component {
         const clientHeight = (event.srcElement && event.srcElement.documentElement.clientHeight) || document.body.clientHeight;
         const scrollHeight = (event.srcElement && event.srcElement.documentElement.scrollHeight) || document.body.scrollHeight;
         const height = scrollHeight - scrollTop - clientHeight;
-        if (scrollTop >= 900 || height <= 100) {
+        if (scrollTop >= 900 || height <= 200) {
             this.setState({
                 divClass: 'class1',
             });
@@ -130,7 +117,6 @@ export default class ChatInput extends React.Component {
     }
 
     onKeyPressed = (event) => {
-        console.log(event.shiftKey, event.key);
         if (!event.shiftKey && event.key === 'Enter') {
             this.sendMessage(event);
         }
@@ -138,7 +124,8 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
-         if (this.state.editorState.toText().trim() == '' && !this.state.editorState.toHTML().includes('img')) {
+         if (this.state.editorState.toText().trim() == ''
+          && !this.state.editorState.toHTML().includes('img')) {
              message.error('Please text something!');
              return false;
          }
@@ -182,6 +169,7 @@ export default class ChatInput extends React.Component {
      };
 
      getReverse = (c) => {
+         console.log('cc', c);
          return c === 'class2' ? 'class3' : 'class2';
      }
 
@@ -189,7 +177,9 @@ export default class ChatInput extends React.Component {
          const { editorState } = this.state;
 
          return (
-             <Card onKeyDown={this.onKeyPressed} className={this.props.type === 'con' ? this.state.divClass : this.getReverse(this.state.divClass)} style={{ position: this.props.type === 'con' ? 'fixed' : 'relevant', bottom: 10, padding: 20 }}>
+             <Card onKeyDown={this.onKeyPressed}
+                 className={this.props.initClass !== 'class3' ? this.state.divClass : 'class3' }
+                 style={{ position: this.props.type === 'con' ? 'fixed' : 'relevant', bottom: 10, padding: 20 }}>
                  <BraftEditor
 
                      controls={this.props.controls ? this.props.controls : controls}
@@ -198,8 +188,6 @@ export default class ChatInput extends React.Component {
                      contentStyle={{ height: 200, minHeight: 200 }}
                      textBackgroundColor={true}
                      value={this.state.editorState} onChange={this.handleChange}/>
-                 <Button type="primary" size="50px" shape="round" icon={<VerticalAlignBottomOutlined />} style={style} onClick={this.scrollToBottom} />
-                 <BackTop />
 
                  <Button type="primary" style={{ float: 'left' }} shape="circle" icon={<SendOutlined />}
                      size={'large'}

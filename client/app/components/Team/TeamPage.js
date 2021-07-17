@@ -7,6 +7,7 @@ import {
 import socketClient from 'socket.io-client';
 import MainMenu from '../../router/menus';
 import Chat from '../Chat/Chat';
+import config from '../../../../config/config';
 
 export default class TeamPage extends React.Component {
     constructor(props) {
@@ -19,11 +20,17 @@ export default class TeamPage extends React.Component {
         };
     }
 
+    componentWillMount=() => {
+        let socket = socketClient(config.nginxHost);
+        this.setState({
+            socket,
+        });
+    }
+
     render = () => { // Describes what the UI should appear
         return (
             <MainMenu>
                 <Card style={{ margin: 20, borderRadius: 5 }}>
-                    <p>Welcone to: {this.props.match.params.name} {this.state.name}</p>
                     <Divider plain>Messages</Divider>
                     <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
                 </Card>

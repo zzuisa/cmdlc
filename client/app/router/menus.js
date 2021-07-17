@@ -43,7 +43,6 @@ function getAndSavePath(path) {
 
 const MainMenu = (props) => {
     const user = cookie.load('userinfo');
-    console.log('user', user);
     if (user === undefined) {
         console.log('push');
         router.history.push('/login');

@@ -77,6 +77,7 @@ export default class TopicPage extends React.Component {
 
             fetch('/api/commons/lecture', {
                 method: 'POST',
+
                 body: formData,
             }).then((json) => {
                 message.success(`${info.file.name} file uploaded successfully`);
