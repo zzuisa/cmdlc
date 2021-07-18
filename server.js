@@ -113,6 +113,7 @@ io.on('connection', (socket) => {
         });
     });
     socket.on('client_slide_comment', (msg) => {
+        console.log('received');
         io.sockets.emit('server_slide_comment', {
             eventName: msg.eventName,
             avatar: msg.eventUser.avatar,
@@ -141,7 +142,7 @@ io.on('connection', (socket) => {
         io.emit('loadUser', connectedUser);
     }
 });
-console.log(port);
+console.log(`**************listen: ${config.host}**************`);
 server.listen(port, (err) => {
     if (err) {
         console.log(err);

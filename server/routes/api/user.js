@@ -71,14 +71,11 @@ module.exports = (app) => {
         let conditions = { name: req.body.currentUser.name, email: req.body.currentUser.email };
         let update = { $set: { password: req.body.newpsd } };
         User.findOneAndUpdate(conditions, update, (error, data) => {
-            console.log(conditions);
             if (error) {
-                console.log(error);
+
             } else if (!data) {
-                console.log('no data in DB');
+
             } else if (data) {
-                console.log('update success');
-                console.log(data);
                 // return data to front-end
                 res.json(data);
             }
@@ -91,9 +88,8 @@ module.exports = (app) => {
         let conditions = { name: req.body.currentUser.name, password: req.body.currentUser.password };
         let update = { $set: { name: req.body.newName, email: req.body.newEmail } };
         User.findOneAndUpdate(conditions, update, { new: true }, (error, data) => {
-            console.log(conditions);
             if (error) {
-                console.log(error);
+
             } else if (!data) {
                 res.json(R.error());
             } else if (data) {
@@ -106,7 +102,6 @@ module.exports = (app) => {
     });
 
     app.post('/api/sendMail', (req, res, next) => {
-        console.log(req.body.email);
         let transporter = nodemailer.createTransport({
             host: 'smtp.qq.com',
             port: 25,
@@ -132,9 +127,8 @@ module.exports = (app) => {
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log('error occurs');
                 res.json(R.error());
-                return console.log(error);
+                return;
             }
 
             res.json(R.ok({
@@ -146,17 +140,14 @@ module.exports = (app) => {
                 }),
                 response,
             }));
-
-            console.log('mail sent:', info.response);
         });
     });
 
     app.post('/api/findOneUser', (req, res, next) => {
         User.findOne({ email: req.body.email }, (err, doc) => {
             if (err) {
-                console.log(`err is : ${err}`);
+
             } else if (doc != null) {
-                console.log(doc);
                 res.json(R.ok({
                     token: jwt.sign({
                         name: 'BinMaing',
@@ -176,14 +167,9 @@ module.exports = (app) => {
         let conditions = { email: req.body.email };
         let update = { $set: { password: req.body.newPassword } }; //
         User.findOneAndUpdate(conditions, update, (error, data) => {
-            console.log(conditions);
             if (error) {
-                console.log(error);
-            } else if (!data) {
-                console.log('no data in DB');
+                res.json(R.error());
             } else if (data) {
-                console.log('update success');
-                console.log(data);
                 // return data to front-end
                 res.json(data);
             }

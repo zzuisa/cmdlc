@@ -59,7 +59,7 @@
     height: 400;
     /* grid-template-rows: 20px 50px 1fr 50px; */
     border-radius: 10px;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+
     transition: all 2s;
     padding: 20;
         /* background: radial-gradient(#93A5CF, #E4EfE9); */
@@ -68,8 +68,9 @@
   }
   
   .class1:hover {
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    /* box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4); */
     transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   }
 
   .bf-content{

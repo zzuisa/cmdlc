@@ -45,7 +45,6 @@ export default class UserProfile extends React.Component {
 
     // submitButton=(e) => {
     //     openNotificationWithIcon('success');
-    //     console.log();
     //     setTimeout(() => { this.props.history.push('/login'); }, 1000);
     // }
 
@@ -131,7 +130,7 @@ Edit your userinfo
             judge = <Form.Item name="oldpsd" rules={[{ required: true, message: 'Please input your current password!' }]}><Input.Password placeholder="Your original password"></Input.Password></Form.Item>;
         }
         if (this.state.isEdited) {
-            // console.log(this.state.isEdited);
+            // ;
             // name change
             Inp[0] = <Form.Item
                 name="profileName"

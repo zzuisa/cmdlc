@@ -8,7 +8,6 @@ import moment from 'moment';
 import cookie from 'react-cookies';
 
 const currentUser = cookie.load('userinfo');
-console.log('currentUser', currentUser);
 
 function Message({
     noStyle, uId, message, timestamp, user, userImage,

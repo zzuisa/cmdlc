@@ -87,23 +87,20 @@ class ResetPsdByEmail extends Component {
                     verifyCode: data.data.content.response.verify,
                 });
                 this.sendSuccessfully('success');
-                // console.log(this.state.verifyCode);
+                // ;
             });
     }
 
     checkCAPTCHA=(number) => {
-        console.log(number + this.state.verifyCode + this.state.newPsd);
-        if (this.state.verifyCode != number && this.state.verifyCode !== undefined && !this.state.newPsd && number !== undefined) {
+        if (this.state.verifyCode != number
+            && this.state.verifyCode !== undefined
+            && !this.state.newPsd
+            && number !== undefined) {
             this.wrongCAPTCHA('error');
         }
     }
 
     onFinish = (values) => {
-        console.log('Success:', values);
-        // message.loading({ content: 'Loading...' });
-        // setTimeout(() => {
-        //     message.success({ content: 'Loaded!', duration: 2 });
-        // }, 1000);
         this.setState({
             hasSent: true,
         });
@@ -120,9 +117,6 @@ class ResetPsdByEmail extends Component {
                 },
             })
                 .then((res) => {
-                    // cookie.save('userinfo', res.data.content.doc);
-                    // cookie.save('userToken', res.data.content.token);
-
                     if (res !== undefined) {
                         this.openNotificationWithIcon('success');
                         this.setState({
@@ -147,7 +141,7 @@ class ResetPsdByEmail extends Component {
                                     verifyCode: data.data.content.response.verify,
                                 });
                                 this.sendSuccessfully;
-                                // console.log(this.state.verifyCode);
+                                // ;
                             });
                     } else {
                         this.noMail('warning');
@@ -163,10 +157,6 @@ class ResetPsdByEmail extends Component {
         }
 
         this.checkCAPTCHA(values.verifyCode);
-        // else if (this.state.verifyCode != values.verifyCode && this.state.verifyCode !== undefined) {
-        //     this.wrongCAPTCHA('error');
-        // }
-
         if (values.newpassword !== undefined) {
             $http({
                 url: '/api/forgetPsd',
@@ -182,16 +172,15 @@ class ResetPsdByEmail extends Component {
                 },
             })
                 .then((res) => {
-                    // console.log(res);
+                    // ;
                     this.toMain('success');
                     setTimeout(() => { this.props.history.push('/'); }, 2000);
                 });
-            console.log(values.newpassword);
         }
     };
 
       onFinishFailed = (errorInfo) => {
-          console.log('Failed:', errorInfo);
+
       };
 
     render=() => {

@@ -18,6 +18,8 @@ import {
     Alert,
     BackTop,
 } from 'antd';
+import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+
 import { pdfjs, Document, Page } from 'react-pdf';
 import socketClient from 'socket.io-client';
 import TextField from '@material-ui/core/TextField';
@@ -67,10 +69,7 @@ export default class SlideDetail extends React.Component {
       this.getSlide(this.props.match.params.id);
       this.getSlideComment(1);
       socket.on('server_slide_comment', (r) => {
-          console.log('rrrrrrrr', `${this.state.id}#${this.state.pageNumber}`);
-          console.log('22222222', r);
           if (`${this.state.id}#${this.state.pageNumber}` === r.eventName) {
-              console.log('euqals');
               this.getSlideComment(this.state.pageNumber);
               //   mes.push({
               //       _id: r._id,
@@ -104,7 +103,7 @@ export default class SlideDetail extends React.Component {
 
           .then((res) => {
               let { data } = res;
-              console.log('res', data);
+
               let mes = data.content !== null ? data.content.messages : [];
               this.setRoomMessages(mes);
               //   this.scrollToBottom();
@@ -174,10 +173,11 @@ textChange=(e) => {
                               </Viewer>
                           </Spin>
                           <Row justify="center" style={{ margin: 10 }}>
-                              <Col span={4}>
-                                  <Button onClick={this.prev}>Prev</Button>
+                              <Col span={4} style={{ float: 'right', flex: 0 }}>
+                                  <Button type="primary" onClick={this.prev} shape="circle" icon={<CaretLeftOutlined />} />
+
                               </Col>
-                              <Col span={8} style={{ textAlign: 'center' }}>
+                              <Col span={8} offset={-2} style={{ textAlign: 'center' }}>
                                   <span>
                                       <TextField size="small" type="number" onBlur={this.textBlur} onChange={this.textChange} style={{ width: 74, height: '32px' }} value={this.state.textValue} label="current" id="outlined-basic" variant="outlined" />
                                       <TextField size="small" disabled style={{ width: 54, height: '32px' }}
@@ -186,7 +186,7 @@ textChange=(e) => {
                                           id="outlined-basic" variant="outlined" />
                                   </span>             </Col>
                               <Col span={4}>
-                                  <Button onClick={this.next}>Next</Button>
+                                  <Button type="primary" onClick={this.next} shape="circle" icon={<CaretRightOutlined />} />
                               </Col>
                           </Row>
                       </Col>

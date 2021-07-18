@@ -94,7 +94,7 @@ class Chat extends React.Component {
                             //     content: data.msg,
                             //     avatar: data.eventAvatar,
                             // });
-                            // console.log('roomMessages', this.state.roomMessages);
+                            // ;
                             // this.setRoomMessages([...mes]);
                         }
                     });

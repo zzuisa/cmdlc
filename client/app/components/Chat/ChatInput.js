@@ -26,7 +26,7 @@ const controls = [
     'clear',
 ];
 // window.addEventListener('keypress', (event) => {
-//     console.log('evvv', event);
+//     ;
 //     if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;
 //     alert('Ctrl-S pressed');
 //     event.preventDefault();
@@ -54,7 +54,7 @@ export default class ChatInput extends React.Component {
         // const clientHeight = (window.srcElement && window.srcElement.documentElement.clientHeight) || document.body.clientHeight;
         // const scrollHeight = (window.srcElement && window.srcElement.documentElement.scrollHeight) || document.body.scrollHeight;
         // const height = scrollHeight - scrollTop - clientHeight;
-        // console.log('h',height)
+        //
     }
 
     componentWillUnmount=() => {
@@ -67,7 +67,6 @@ export default class ChatInput extends React.Component {
             this.setState({
                 divClass: 'class1',
             });
-            console.log(this.state.initClass, nextProps.initClass);
         }
     }
 
@@ -120,6 +119,14 @@ export default class ChatInput extends React.Component {
     onKeyPressed = (event) => {
         if (!event.shiftKey && event.key === 'Enter') {
             this.sendMessage(event);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.channelName != prevProps.channelName) {
+            this.setState({
+                channelName: this.props.channelName,
+            });
         }
     }
 
@@ -181,7 +188,6 @@ export default class ChatInput extends React.Component {
      };
 
      getReverse = (c) => {
-         console.log('cc', c);
          return c === 'class2' ? 'class3' : 'class2';
      }
 
@@ -191,7 +197,12 @@ export default class ChatInput extends React.Component {
          return (
              <Card onKeyDown={this.onKeyPressed}
                  className={this.props.initClass !== 'class3' ? this.state.divClass : 'class3' }
-                 style={{ position: this.props.type === 'con' ? 'fixed' : 'relevant', bottom: 50, padding: 20 }}>
+                 style={{
+                     position: this.props.type === 'con' ? 'fixed' : 'relevant',
+                     bottom: 50,
+                     padding: 20,
+                     boxShadow: 'rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset',
+                 }}>
                  <BraftEditor
                      placeholder="Type something :)"
                      controls={this.props.controls ? this.props.controls : controls}

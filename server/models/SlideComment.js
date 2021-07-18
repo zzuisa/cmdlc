@@ -12,7 +12,7 @@ const SlideCommentSchema = new mongoose.Schema({
         id: Number,
         u_id: String,
         avatar: String,
-        user_id: Number,
+        user_id: String,
         content: String,
         create_time: String,
     }],
