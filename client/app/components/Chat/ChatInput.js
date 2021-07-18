@@ -36,6 +36,12 @@ const controls = [
 export default class ChatInput extends React.Component {
     // const [input, setInput] = useState('');
     // // const [{ user }] = useStateValue();
+    constructor(props) {
+        super(props);
+
+        this.inputRef = React.createRef();
+    }
+
     state = {
         editorState: BraftEditor.createEditorState(null),
         channelName: this.props.channelName,
@@ -45,6 +51,7 @@ export default class ChatInput extends React.Component {
         user: cookie.load('userinfo'),
         divClass: 'class1',
         readOnly: false,
+        pending: false,
     }
 
     componentWillMount=() => {
@@ -132,41 +139,52 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
-         this.setState({
-             readOnly: true,
-         });
+         if (this.state.pending) {
+             message.warning('pending!');
+             return;
+         }
+
          if (this.state.editorState.toText().trim() == ''
           && !this.state.editorState.toHTML().includes('img')) {
              message.error('Please text something!');
-             return false;
+             return;
          }
+         this.setState({
+             readOnly: true,
+             pending: true,
+         });
+         let htmlContent = this.state.editorState.toHTML();
+         this.clearContent();
+
          let content = {
              eventUser: this.state.user,
              eventName: this.props.channelId,
-             content: this.state.editorState.toHTML(),
+             content: htmlContent,
          };
-
          if (this.props.channelId && this.props.type === 'con') {
              let eventName = 'client_slide_message';
 
              $http(`/api/conversations/${this.props.channelId}`, {
                  method: 'POST',
                  data: {
-                     content: this.state.editorState.toHTML(),
+                     content: htmlContent,
                      eventUser: this.state.user,
                  },
 
              }).then((res) => {
                  this.state.socket.emit(eventName, content);
-                 this.clearContent();
                  this.setState({
                      readOnly: false,
+                     pending: false,
+
                  });
+
+                 this.state.form.focus();
              });
          } else {
              let data = {
                  eventUser: this.state.user,
-                 content: this.state.editorState.toHTML(),
+                 content: htmlContent,
                  page: this.state.channelName,
                  slide_id: this.state.channelId,
                  eventName: `${this.state.channelId}#${this.state.channelName}`,
@@ -182,10 +200,19 @@ export default class ChatInput extends React.Component {
                  this.clearContent();
                  this.setState({
                      readOnly: false,
+                     pending: false,
+
                  });
+
+                 this.state.form.focus();
              });
          }
      };
+
+     onBEBlur=(e) => {
+         ;
+         ;
+     }
 
      getReverse = (c) => {
          return c === 'class2' ? 'class3' : 'class2';
@@ -210,7 +237,6 @@ export default class ChatInput extends React.Component {
                      style={{
                          width: '100%', overflowX: 'hidden', overflowY: 'hidden', zIndex: 99, height: 250,
                      }}
-                     readOnly={this.state.readOnly}
                      contentStyle={{ height: 200, minHeight: 200 }}
                      textBackgroundColor={true}
                      value={this.state.editorState} onChange={this.handleChange}/>
