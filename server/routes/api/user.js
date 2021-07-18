@@ -4,6 +4,7 @@ const User = require('../../models/User');
 const config = require('../../../config/config');
 const { T } = require('../../models/entity/R');
 const tools = require('../../utils/tool');
+const { C } = require('../../utils/constant');
 
 let R = new T();
 let { secretOrPrivateKey } = config;
@@ -35,7 +36,7 @@ module.exports = (app) => {
                     doc,
                 }));
             } else {
-                res.json(R.error());
+                res.json(R.error(101, C[101]));
             }
         })
             .catch((err) => next(err));
