@@ -139,7 +139,6 @@ export default class ChatInput extends React.Component {
              message.warning('pending!');
              return;
          }
-
          if (this.state.editorState.toText().trim() == ''
           && !this.state.editorState.toHTML().includes('img')) {
              message.error('Please text something!');
@@ -151,7 +150,6 @@ export default class ChatInput extends React.Component {
          });
          let htmlContent = this.state.editorState.toHTML();
          this.clearContent();
-
          let content = {
              eventUser: this.state.user,
              eventName: this.props.channelId,
@@ -159,14 +157,12 @@ export default class ChatInput extends React.Component {
          };
          if (this.props.channelId && this.props.type === 'con') {
              let eventName = 'client_slide_message';
-
              $http(`/api/conversations/${this.props.channelId}`, {
                  method: 'POST',
                  data: {
                      content: htmlContent,
                      eventUser: this.state.user,
                  },
-
              }).then((res) => {
                  if (res !== undefined) {
                      this.state.socket.emit(eventName, content);
@@ -174,7 +170,6 @@ export default class ChatInput extends React.Component {
                  this.setState({
                      readOnly: false,
                      pending: false,
-
                  });
              });
          } else {
@@ -184,12 +179,10 @@ export default class ChatInput extends React.Component {
                  page: this.state.channelName,
                  slide_id: this.state.channelId,
                  eventName: `${this.state.channelId}#${this.state.channelName}`,
-
              };
              $http('/api/slideComments', {
                  method: 'POST',
                  data,
-
              }).then((res) => {
                  let eventName = 'client_slide_comment';
                  this.state.socket.emit(eventName, data);

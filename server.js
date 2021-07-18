@@ -31,7 +31,7 @@ mongoose.Promise = global.Promise;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(express.bodyParser({ limit: '50mb' }));
 // API routes
 
 let date = moment.utc().format();
