@@ -11,6 +11,7 @@ import {
     Image,
     Row,
     Col,
+    Empty,
     Divider,
     Skeleton,
     Spin,
@@ -20,6 +21,7 @@ import {
 import { pdfjs, Document, Page } from 'react-pdf';
 import socketClient from 'socket.io-client';
 import TextField from '@material-ui/core/TextField';
+import cookie from 'react-cookies';
 import { Viewer, DocumentWrapper } from './styles';
 import MainMenu from '../../router/menus';
 import Message from '../Chat/Message';
@@ -43,6 +45,7 @@ export default class SlideDetail extends React.Component {
           'text-color', 'bold', 'italic', 'underline', 'separator',
           'clear',
       ],
+      currentUser: cookie.load('userinfo'),
   };
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -63,6 +66,21 @@ export default class SlideDetail extends React.Component {
       });
       this.getSlide(this.props.match.params.id);
       this.getSlideComment(1);
+      socket.on('server_slide_comment', (r) => {
+          console.log('rrrrrrrr', `${this.state.id}#${this.state.pageNumber}`);
+          console.log('22222222', r);
+          if (`${this.state.id}#${this.state.pageNumber}` === r.eventName) {
+              console.log('euqals');
+              this.getSlideComment(this.state.pageNumber);
+              //   mes.push({
+              //       _id: r._id,
+              //       create_time: r.create_time,
+              //       content: r.msg,
+              //       u_id: r.name,
+              //       avatar: r.avatar,
+              //   });
+          }
+      });
   };
 
   getSlide = (id) => {
@@ -86,18 +104,10 @@ export default class SlideDetail extends React.Component {
 
           .then((res) => {
               let { data } = res;
-              let mes = data.content !== null ? data.content.data.messages : [];
+              console.log('res', data);
+              let mes = data.content !== null ? data.content.messages : [];
               this.setRoomMessages(mes);
-              this.state.socket.on('server_slide_comment', (r) => {
-                  if (this.state.id === r.eventName) {
-                      mes.push({
-                          _id: r._id,
-                          create_time: r.create_time,
-                          content: r.msg,
-                      });
-                      this.setRoomMessages([...mes]);
-                  }
-              });
+              //   this.scrollToBottom();
           });
   };
 
@@ -125,6 +135,10 @@ export default class SlideDetail extends React.Component {
       this.setState(() => ({
           pageNumber: this.state.textValue,
       }));
+  }
+
+  scrollToBottom = () => {
+      this.commentEnd.scrollIntoView({ behavior: 'smooth' });
   }
 
 textChange=(e) => {
@@ -177,26 +191,42 @@ textChange=(e) => {
                           </Row>
                       </Col>
                       <Col span={9}>
-                          <div className="chat">
-                              <Spin tip="Loading..." spinning={this.state.spinning}>                 <div className="chat__messages" style={{
-                                  marginBottom: 60, minHeight: 280, height: 280, overflowY: 'auto',
-                              }}>
-                                  {this.state.roomMessages.map(
-                                      ({
-                                          _id, user_id, content, create_time,
-                                      }) => (
-                                          <Message
-                                              key={_id}
-                                              message={content}
-                                              timestamp={create_time}
-                                              user={user_id == 0 ? 'System' : 'User'}
-                                              userImage={
-                                                  'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-                                              }
-                                          />
-                                      ),
-                                  )}
-                              </div>
+                          <div className="chat_slide">
+                              <Spin tip="Loading..." spinning={this.state.spinning}>
+                                  {this.state.roomMessages.length > 0
+                                      ? <div className="chat__messages" style={{
+                                          marginBottom: 30, minHeight: 300, height: 300, overflowY: 'auto',
+                                      }}>
+                                          {this.state.roomMessages.map(
+                                              ({
+                                                  _id, user_id, content, create_time, avatar,
+                                              }) => (
+                                                  <Message
+                                                      noStyle={true}
+                                                      key={_id}
+                                                      message={content}
+                                                      timestamp={create_time}
+                                                      user={user_id}
+                                                      userImage={
+                                                          avatar
+                                                      }
+                                                  />
+                                              ),
+                                          )}
+                                          {/* <div style={{
+                                            zIndex: 1,
+                                            background: 'red',
+                                            width: 11,
+                                            height: 11,
+                                            float: 'left',
+                                            clear: 'both',
+                                        }}
+                                        ref={(el) => { this.commentEnd = el; }}>
+                                        </div> */}
+                                      </div>
+                                      : <Empty />
+                                  }
+
                               </Spin>
                               <ChatInput
                                   initClass='class3'
@@ -209,8 +239,11 @@ textChange=(e) => {
                           </div>
                       </Col>
                       <Divider plain style={{ color: '#888' }}>Public Message</Divider>
+
                       <Col span={24}>
-                          <Chat roomId={`topic_${this.state.slide.topic}`} socket={this.state.socket} />     </Col> </Row>
+                          <Chat roomId={`topic_${this.state.slide.topic}`} socket={this.state.socket} />
+                      </Col>
+                  </Row>
                   <BackTop />
 
               </Card>

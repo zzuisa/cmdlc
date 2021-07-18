@@ -61,7 +61,6 @@ export default class UserProfile extends React.Component {
         } else if (values.oldpsd != this.state.userinfo.password && !this.state.changepsd) {
             openNotificationWithIcon('error');
         } else if (this.state.changepsd && values.newpsd !== undefined) {
-            console.log('执行后台');
             $http({
                 url: '/api/modifyPsd',
                 method: 'post',
@@ -78,8 +77,8 @@ export default class UserProfile extends React.Component {
                     // cookie.save('userinfo', res.data.content.doc);
                     // cookie.save('userToken', res.data.content.token);
                     // this.props.history.push('/');
-                    console.log(res);
                     openNotificationWithIcon('success');
+                    cookie.remove('userinfo');
                     setTimeout(() => { this.props.history.push('/login'); }, 2000);
                 });
         }
@@ -87,7 +86,6 @@ export default class UserProfile extends React.Component {
 
     // modify profile
     onFinish = (values) => {
-        console.log(`profile提交${values}`);
         if (values.profileName === undefined) {
             values.profileName = this.state.userinfo.name;
         }
@@ -103,23 +101,14 @@ export default class UserProfile extends React.Component {
                 newEmail: values.profileEmail,
                 currentUser: this.state.userinfo,
             },
-            headers: {
-                'Content-Type': 'application/json',
-            },
         })
             .then((res) => {
-                // console.log(`更新后：${res.data.content.doc}`);
-
                 cookie.save('userinfo', res.data.content.doc);
-                cookie.save('userToken', res.data.content.token);
-
                 openNotificationWithIcon('success');
                 this.setState({
-                    userinfo: cookie.load('userinfo'),
+                    userinfo: res.data.content.doc,
                 });
-                setTimeout(() => { this.props.history.push('/'); }, 2000);
             });
-        console.log(values);
     };
 
     // eslint-disable-next-line class-methods-use-this
@@ -221,9 +210,8 @@ Edit your userinfo
 
         return (
             <MainMenu>
-
                 <Form
-
+                    style={{ margin: 20 }}
                     name="basic"
                     labelCol={{
                         span: 8,
@@ -237,7 +225,6 @@ Edit your userinfo
                     onFinish={this.onFinish}
 
                 >
-
                     <Descriptions title="User Info" bordered>
 
                         <Descriptions.Item label="Name">

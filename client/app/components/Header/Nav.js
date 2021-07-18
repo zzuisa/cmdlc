@@ -104,7 +104,7 @@ class Nav extends React.Component {
 
       return (
 
-          <Menu theme="dark" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
+          <Menu theme="light" onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{ float: 'right', zIndex: 99 }}>
 
               {/* status button!!! */}
               {/* <Menu.Item key="status">
@@ -130,7 +130,6 @@ class Nav extends React.Component {
                   <Menu.ItemGroup title="Profile">
                       {/* icon={<ProfileOutlined />} */}
                       <Menu.Item key="setting:3" icon={<ProfileOutlined />}><NavLink to='/userSetting/profile'>View Profile</NavLink></Menu.Item>
-                      <Menu.Item key="setting:4" icon={<FormOutlined />}>Edit Profile</Menu.Item>
                       {logoutItem}
                   </Menu.ItemGroup>
               </SubMenu>

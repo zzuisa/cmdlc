@@ -44,6 +44,7 @@ export default class ChatInput extends React.Component {
         socket: this.props.socket,
         user: cookie.load('userinfo'),
         divClass: 'class1',
+        readOnly: false,
     }
 
     componentWillMount=() => {
@@ -124,6 +125,9 @@ export default class ChatInput extends React.Component {
 
      sendMessage = (e) => {
          e.preventDefault();
+         this.setState({
+             readOnly: true,
+         });
          if (this.state.editorState.toText().trim() == ''
           && !this.state.editorState.toHTML().includes('img')) {
              message.error('Please text something!');
@@ -148,6 +152,9 @@ export default class ChatInput extends React.Component {
              }).then((res) => {
                  this.state.socket.emit(eventName, content);
                  this.clearContent();
+                 this.setState({
+                     readOnly: false,
+                 });
              });
          } else {
              let data = {
@@ -155,6 +162,8 @@ export default class ChatInput extends React.Component {
                  content: this.state.editorState.toHTML(),
                  page: this.state.channelName,
                  slide_id: this.state.channelId,
+                 eventName: `${this.state.channelId}#${this.state.channelName}`,
+
              };
              $http('/api/slideComments', {
                  method: 'POST',
@@ -162,8 +171,11 @@ export default class ChatInput extends React.Component {
 
              }).then((res) => {
                  let eventName = 'client_slide_comment';
-                 this.state.socket.emit(eventName, content);
+                 this.state.socket.emit(eventName, data);
                  this.clearContent();
+                 this.setState({
+                     readOnly: false,
+                 });
              });
          }
      };
@@ -179,12 +191,15 @@ export default class ChatInput extends React.Component {
          return (
              <Card onKeyDown={this.onKeyPressed}
                  className={this.props.initClass !== 'class3' ? this.state.divClass : 'class3' }
-                 style={{ position: this.props.type === 'con' ? 'fixed' : 'relevant', bottom: 10, padding: 20 }}>
+                 style={{ position: this.props.type === 'con' ? 'fixed' : 'relevant', bottom: 50, padding: 20 }}>
                  <BraftEditor
-
+                     placeholder="Type something :)"
                      controls={this.props.controls ? this.props.controls : controls}
                      language={'en'}
-                     style={{ width: '100%', overflowX: 'hidden', overflowY: 'hidden' }}
+                     style={{
+                         width: '100%', overflowX: 'hidden', overflowY: 'hidden', zIndex: 99, height: 250,
+                     }}
+                     readOnly={this.state.readOnly}
                      contentStyle={{ height: 200, minHeight: 200 }}
                      textBackgroundColor={true}
                      value={this.state.editorState} onChange={this.handleChange}/>

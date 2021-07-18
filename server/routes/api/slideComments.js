@@ -26,6 +26,10 @@ module.exports = (app) => {
             } else {
                 let slideComment = new SlideComment();
                 slideComment.slide_id = data.slide_id;
+                message.avatar = data.eventUser.avatar;
+                message.user_id = data.eventUser.name;
+                message.u_id = data.eventUser._id;
+
                 slideComment.page = data.page;
                 slideComment.messages.push(message);
                 slideComment.save();

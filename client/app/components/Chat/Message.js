@@ -8,20 +8,21 @@ import moment from 'moment';
 import cookie from 'react-cookies';
 
 const currentUser = cookie.load('userinfo');
+console.log('currentUser', currentUser);
 
 function Message({
-    uId, message, timestamp, user, userImage,
+    noStyle, uId, message, timestamp, user, userImage,
 }) {
     return (
         <>
             {uId === currentUser._id
                 ? <Card style={{ marginBottom: '1px' }} elevation={0} >
                     <div className="message_current">
-                        <div className="msgBg_current">
+                        <div className={noStyle ? 'fullBg_current' : 'msgBg_current'}>
                             <div className="message__info" >
                                 <h4 style={{ float: 'right' }}>
                                     <span className="message__timestamp">
-                                        {moment(`${timestamp}+02:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
+                                        {moment(`${timestamp}+00:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
                                     </span>
                                     <Tag color="blue">you</Tag>
 
@@ -36,7 +37,7 @@ function Message({
                 </Card>
                 : <Card style={{ marginBottom: '2px' }} >
                     <div className="message">
-                        <div className="msgBg">
+                        <div className={noStyle ? 'fullBg' : 'msgBg'}>
                             <Image style={{ width: 60, borderRadius: '50%', margin: 10 }} src={userImage} alt="" />
                             <div className="message__info">
                                 <h4>

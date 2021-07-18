@@ -4,9 +4,29 @@
     overflow-y: hidden;
     padding-bottom: 150px;
 }
+.MuiPaper-root{
+    background-color: #e6f7ff !important;
+
+}
+.ant-layout{
+    background-color: #e6f7ff !important;
+
+}
 body{
     overflow-x: hidden;
+    background-color: #e6f7ff !important;
 }
+.ant-card{
+    background-color: #e6f7ff !important;
+}
+.chat_slide{
+        flex: 0.7;
+        flex-grow: 1;
+        overflow-y: hidden;
+        padding-bottom: 150px;
+        border-left:1px solid #ccc
+    }
+
 .chat__header {
     display: flex;
     align-items: center;

@@ -15,9 +15,23 @@
     padding: 20px;
     display: flex;
 }
+.fullBg{
+    width: 100%;
+    background: #C2E9FB;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+}
 
 .msgBg_current{
-    background-color: #E4EfE9;
+    background-color: #e6fffb;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+}
+.fullBg_current{
+    width: 100%;
+    background-color: #bae7ff;
     border-radius: 10px;
     padding: 20px;
     display: flex;

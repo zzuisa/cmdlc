@@ -12,7 +12,9 @@ import {
     DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import cookie from 'react-cookies';
 
+const currentUser = cookie.load('userinfo');
 function SlideList(props) {
     return (
         <Card>
@@ -21,11 +23,11 @@ function SlideList(props) {
                     { props.slides.map((s, index) => (
                         <Comment
                             key={index}
-                            author={<a>Han Solo</a>}
+                            author={<a>{s.user_id === currentUser.name ? 'you' : s.user_id}</a>}
                             avatar={
                                 <Avatar
-                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                    alt="Han Solo"
+                                    src={s.user_avatar}
+                                    alt={s.user_id}
                                 />
                             }
                             content={

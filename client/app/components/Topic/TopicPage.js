@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import socketClient from 'socket.io-client';
+import cookie from 'react-cookies';
 import MainMenu from '../../router/menus';
 import SlideList from '../Slide/SlideList';
 import Chat from '../Chat/Chat';
@@ -44,6 +45,7 @@ export default class TopicPage extends React.Component {
         slides: [],
         flag: 0,
         spinning: true,
+        currentUser: cookie.load('userinfo'),
     }
 
     componentWillMount=() => {
@@ -74,6 +76,7 @@ export default class TopicPage extends React.Component {
             const formData = new FormData();
             formData.append('file', info.file.originFileObj);
             formData.append('topic', this.props.match.params.name);
+            formData.append('userInfo', JSON.stringify(this.state.currentUser));
 
             fetch('/api/commons/lecture', {
                 method: 'POST',

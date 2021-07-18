@@ -32,7 +32,7 @@ export default class TeamPage extends React.Component {
             <MainMenu>
                 <Card style={{ margin: 20, borderRadius: 5 }}>
                     <Divider plain>Messages</Divider>
-                    <Chat roomId={this.props.match.params.name} socket={this.state.socket} />
+                    <Chat roomId={`team_${this.props.match.params.name}`} socket={this.state.socket} />
                 </Card>
 
             </MainMenu>

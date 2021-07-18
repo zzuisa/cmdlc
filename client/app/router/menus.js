@@ -57,6 +57,7 @@ const MainMenu = (props) => {
             </Header>
             <Layout>
                 <Sider
+                    theme="light"
                     collapsedWidth="0"
                     onBreakpoint={(broken) => {
 
@@ -66,7 +67,7 @@ const MainMenu = (props) => {
                     }}
                 >
 
-                    <Menu theme="dark" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
+                    <Menu theme="light" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
                         {teamRoute.map((e, index) => {
                             if (e.path != '*') {
                                 if (e.name === user.team[0]) {
@@ -96,7 +97,7 @@ const MainMenu = (props) => {
                 </Sider>
                 <Layout>
                     <Content style={{ margin: '24px 16px 0' }}>
-                        <div className="site-layout-background" style={{ padding: 24, minHeight: '100vh' }}>
+                        <div className="site-layout-background" style={{ padding: 24 }}>
                             {props.children}
                         </div>
                     </Content>

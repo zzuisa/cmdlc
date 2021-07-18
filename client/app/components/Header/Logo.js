@@ -32,7 +32,7 @@ export default class Logo extends React.Component {
   render() {
       const { current } = this.state;
       return (
-          <Link to="/"> <Button type="primary" size="large" >Logo</Button></Link>
+          <Link to="/"> <img style={{ height: 64, margin: 10 }} src="assets/img/nodejs-logo.png"></img></Link>
 
       );
   }

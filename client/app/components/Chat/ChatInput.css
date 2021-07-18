@@ -1,7 +1,9 @@
 .channelInput {
     border-radius: 20px;
   }
-  
+   .site-layout-sub-header-background {
+    background: #fff !important;
+  }
   .channelInput > form {
     position: relative;
     display: flex;
@@ -48,8 +50,8 @@
     transition: all 1s;
     padding: 20;
     /* background: radial-gradient(#93A5CF, #E4EfE9); */
-    /* background: radial-gradient(#A1C4FD, #C2E9FB); */
-    background: radial-gradient(#FDFCFB, #E4EfE9);
+    background: radial-gradient(#A1C4FD, #C2E9FB);
+    /* background: radial-gradient(#FDFCFB, #E4EfE9); */
     display: none;
   }
   .class1 {
@@ -58,16 +60,16 @@
     /* grid-template-rows: 20px 50px 1fr 50px; */
     border-radius: 10px;
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-    transition: all 1s;
+    transition: all 2s;
     padding: 20;
         /* background: radial-gradient(#93A5CF, #E4EfE9); */
-        /* background: radial-gradient(#A1C4FD, #C2E9FB); */
-        background: radial-gradient(#FDFCFB, #E4EfE9);
+        background: radial-gradient(#e6f7ff,#e6f7ff);
+        /* background: radial-gradient(#FDFCFB, #E4EfE9); */
   }
   
   .class1:hover {
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
-    transform: scale(1.02);
+    transform: scale(1.05);
   }
 
   .bf-content{

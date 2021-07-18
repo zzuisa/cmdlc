@@ -114,8 +114,8 @@ io.on('connection', (socket) => {
     });
     socket.on('client_slide_comment', (msg) => {
         io.sockets.emit('server_slide_comment', {
-            avatar: msg.eventUser.avatar,
             eventName: msg.eventName,
+            avatar: msg.eventUser.avatar,
             name: msg.eventUser.name,
             u_id: msg.eventUser._id,
             msg: msg.content,

@@ -50,7 +50,7 @@ class Home extends Component {
     render() {
         return (
             <MainMenu props='false'>
-                <Card style={{ margin: 0, width: '100%', height: '100vh' }}>
+                <Card style={{ margin: 0, width: '100%' }}>
                     <CardActionArea onClick={() => { window.open('https://github.com/zzuisa/cmdlc'); }}>
                         <CardMedia
                             component="img"
@@ -59,25 +59,8 @@ class Home extends Component {
                             image="assets/img/bg.png"
                             title="Contemplative Reptile"
                         />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Brainstorming CourseMapper
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                            Brainstorming CourseMapper is an upgraded version of CourseMapper, which optimizes
-                            the communication in the group and before the small components, and uses Socket-io
-                            technology to communicate smoothly
-                            </Typography>
-                        </CardContent>
+
                     </CardActionArea>
-                    <CardActions>
-                        <Button size="small" color="primary">
-                        Join a Team!
-                        </Button>
-                        <Button onClick={() => { window.open('https://github.com/zzuisa/cmdlc'); }} size="small" color="primary">
-                        Learn More
-                        </Button>
-                    </CardActions>
                 </Card>
             </MainMenu>
 

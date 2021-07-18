@@ -21,7 +21,7 @@ const style = {
     fontFeatureSettings: 'tnum',
     position: 'fixed',
     right: 100,
-    bottom: 0,
+    bottom: 100,
     zIndex: 10,
     width: 40,
     height: 40,
@@ -67,12 +67,12 @@ class Chat extends React.Component {
                 this.setState({
                     initClass: mes.length < 10 ? 'class1' : 'class2',
                 });
+                this.scrollToBottom();
             });
     }
 
     scrollToBottom = () => {
         this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
-        console.log('1', this.messagesEnd);
     }
 
     componentWillMount=() => {
@@ -84,17 +84,18 @@ class Chat extends React.Component {
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
                         if (this.props.roomId === data.eventName) {
-                            this.scrollToBottom();
-                            this.updateConversation(this.props.roomId);
                             notice();
-                            mes.push({
-                                u_id: data.u_id,
-                                user_id: data.name,
-                                create_time: data.create_time,
-                                content: data.msg,
-                                avatar: data.eventAvatar,
-                            });
-                            this.setRoomMessages([...mes]);
+
+                            this.updateConversation(this.props.roomId);
+                            // mes.push({
+                            //     u_id: data.u_id,
+                            //     user_id: data.name,
+                            //     create_time: data.create_time,
+                            //     content: data.msg,
+                            //     avatar: data.eventAvatar,
+                            // });
+                            // console.log('roomMessages', this.state.roomMessages);
+                            // this.setRoomMessages([...mes]);
                         }
                     });
                 });
@@ -106,10 +107,10 @@ class Chat extends React.Component {
             <div className="chat" style={{ marginBottom: 150 }}>
                 <div className="chat__messages" style={{ marginBottom: 100 }}>
                     {this.state.roomMessages.map(({
-                        u_id, user_id, content, create_time, avatar,
+                        _id, u_id, user_id, content, create_time, avatar,
                     }) => (
                         <Message
-                            key={u_id}
+                            key={_id}
                             uId={u_id}
                             message={content}
                             timestamp={create_time}
@@ -118,12 +119,21 @@ class Chat extends React.Component {
                         />
                     ))}
                 </div>
-                <div style={{ float: 'left', clear: 'both' }}
-                    ref={(el) => { this.messagesEnd = el; }}>
-                </div>
+
                 <ChatInput style={{ marginTop: '100' }} initClass={this.state.initClass} channelName={this.props.roomId} messagesEnd={this.messagesEnd} channelId={this.props.roomId} type={'con'} socket={this.props.socket} />
                 <Button type="primary" size="50px" shape="round" icon={<VerticalAlignBottomOutlined />} style={style} onClick={this.scrollToBottom} />
                 <BackTop />
+                <div style={{
+                    zIndex: 1,
+                    width: 1,
+                    height: 1,
+                    position: 'absolute',
+                    bottom: 10,
+                    float: 'left',
+                    clear: 'both',
+                }}
+                ref={(el) => { this.messagesEnd = el; }}>
+                </div>
             </div>
         );
     }

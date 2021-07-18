@@ -5,6 +5,10 @@ let express = require('express');
 let bodyParser = require('body-parser');
 const Common = require('../../models/Common');
 const Slide = require('../../models/Slide');
+const { T } = require('../../models/entity/R');
+const { C } = require('../../utils/constant');
+
+let R = new T();
 
 module.exports = (app) => {
     app.use(fileUpload({
@@ -25,6 +29,12 @@ module.exports = (app) => {
         let sampleFile;
         let uploadPath;
         let method = req.params.type;
+        let { userInfo } = req.body;
+
+        if (userInfo === undefined) {
+            return res.json(R.error(501, C[501]));
+        }
+        let user = JSON.parse(userInfo);
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.');
         }
@@ -33,7 +43,6 @@ module.exports = (app) => {
 
         let ss = sampleFile.name.split('.');
         let suffix = ss[ss.length - 1];
-
         let date = moment.utc().format();
         let local = moment.utc(date).local().format('YYYY-MM-DD HHmmss');
         let finalName = `${local}.${suffix}`;
@@ -41,9 +50,14 @@ module.exports = (app) => {
 
         // Use the mv() method to place the file somewhere on your server
         sampleFile.mv(uploadPath, (err) => {
-            if (err) { return res.status(500).send(err); }
+            if (err) {
+                console.log('err', err);
+                return res.status(500).send(err);
+            }
             let sType = 0 ? method == 'lecture' : 1;
             const slide = new Slide({
+                user_id: user.name,
+                user_avatar: user.avatar,
                 name: sampleFile.name,
                 type: sType,
                 path: `/files/${finalName}`,
