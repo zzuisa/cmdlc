@@ -27,7 +27,6 @@ function Message({
                             </div>
                             <Image style={{ width: 60, borderRadius: '50%', margin: 10 }} src={userImage} alt="" />
                         </div>
-
                     </div>
 
                 </Card>
@@ -39,7 +38,7 @@ function Message({
                                 <h4>
                                     {user}{' '}
                                     <span className="message__timestamp">
-                                        {moment(`${timestamp}+02:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
+                                        {moment(`${timestamp}+00:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
                                     </span>
                                 </h4>
                                 <p dangerouslySetInnerHTML={{ __html: message }}></p>

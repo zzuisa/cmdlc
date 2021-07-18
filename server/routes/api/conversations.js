@@ -13,7 +13,21 @@ module.exports = (app) => {
         if (tools.verifyToken(authorization, res)) {
             Conversation.findOne({ channel_name: req.params.channelName })
                 .exec()
-                .then((conversation) => res.json(R.ok(conversation)))
+                .then((conversation) => {
+                    if (conversation !== null) {
+                        res.json(R.ok(conversation));
+                    } else {
+                        let conv = new Conversation();
+                        const message = new E.Message().init();
+                        let date = moment.utc().format();
+                        let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
+                        message.create_time = local;
+                        conv.messages = [message];
+                        conv.channel_name = req.params.channelName;
+                        conv.save();
+                        res.json(R.ok(conv));
+                    }
+                })
                 .catch((err) => res.json(R.error()));
         } else {
             res.json(R.error(301, C[301]));
@@ -28,12 +42,12 @@ module.exports = (app) => {
             let date = moment.utc().format();
             let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
             message.create_time = local;
+            message.content = data.content;
+            message.avatar = data.eventUser.avatar;
+            message.user_id = data.eventUser.name;
+            message.u_id = data.eventUser._id;
             Conversation.findOne({ channel_name: cm }).exec().then((r) => {
                 if (r !== null) {
-                    message.content = data.content;
-                    message.avatar = data.eventUser.avatar;
-                    message.user_id = data.eventUser.name;
-                    message.u_id = data.eventUser._id;
                     r.messages.push(message);
                     r.save();
                     res.json(R.ok(r));
@@ -42,7 +56,7 @@ module.exports = (app) => {
                     conv.messages = [message];
                     conv.channel_name = cm;
                     conv.save();
-                    res.json(R.ok(res));
+                    res.json(R.ok(conv));
                 }
             });
         } else {
