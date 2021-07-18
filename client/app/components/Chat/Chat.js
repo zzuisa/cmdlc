@@ -33,6 +33,7 @@ class Chat extends React.Component {
         roomMessages: [],
         roomId: this.props.roomId,
         pref: this.props.roomId.split('_')[0],
+        currentUser: cookie.load('userinfo'),
         mes: [],
         initClass: 'class2',
 
@@ -110,6 +111,7 @@ class Chat extends React.Component {
                         _id, u_id, user_id, content, create_time, avatar,
                     }) => (
                         <Message
+                            currentUser= {this.state.currentUser}
                             key={_id}
                             uId={u_id}
                             message={content}

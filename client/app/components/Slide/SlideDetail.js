@@ -202,6 +202,7 @@ textChange=(e) => {
                                                   _id, user_id, content, create_time, avatar,
                                               }) => (
                                                   <Message
+                                                      currentUser={this.state.currentUser}
                                                       noStyle={true}
                                                       key={_id}
                                                       message={content}

@@ -128,7 +128,7 @@ export default class TopicPage extends React.Component {
                         <Upload {...props} onChange={this.onChange}>
                             <Button type='primary' icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
-                        <SlideList slides={this.state.slides}/>
+                        <SlideList currentUser={this.state.currentUser} slides={this.state.slides}/>
                         <Divider plain>Text</Divider>
                         <Chat roomId={`topic_${this.props.match.params.name}`} socket={this.state.socket} />
                     </Spin>

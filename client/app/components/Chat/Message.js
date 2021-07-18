@@ -5,12 +5,9 @@ import {
     Image, Tag,
 } from 'antd';
 import moment from 'moment';
-import cookie from 'react-cookies';
-
-const currentUser = cookie.load('userinfo');
 
 function Message({
-    noStyle, uId, message, timestamp, user, userImage,
+    currentUser, noStyle, uId, message, timestamp, user, userImage,
 }) {
     return (
         <>
