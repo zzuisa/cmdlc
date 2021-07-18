@@ -54,23 +54,24 @@ class Chat extends React.Component {
         if (this.props.roomId !== nextProps.roomId) {
             // get the new state after path changed
             this.setRoomMessages([]);
-
             this.updateConversation(nextProps.roomId);
         }
     }
 
-    updateConversation=(roomId, withNotice) => {
+    updateConversation=(roomId, withNotice, scroll) => {
         $http(`/api/conversations/${roomId}`)
             .then((res) => {
                 if (withNotice) {
                     notice();
+                }
+                if (withNotice && !scroll) {
+                    this.scrollToBottom();
                 }
                 let mes = res.data.content !== null ? res.data.content.messages : [];
                 this.setRoomMessages(mes);
                 this.setState({
                     initClass: mes.length < 10 ? 'class1' : 'class2',
                 });
-                this.scrollToBottom();
             });
     }
 
@@ -87,7 +88,7 @@ class Chat extends React.Component {
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
                         if (this.props.roomId === data.eventName) {
-                            this.updateConversation(this.props.roomId, true);
+                            this.updateConversation(this.props.roomId, true, this.props.closeScroll);
                             // mes.push({
                             //     u_id: data.u_id,
                             //     user_id: data.name,
@@ -122,7 +123,7 @@ class Chat extends React.Component {
                     ))}
                 </div>
 
-                <ChatInput style={{ marginTop: '100' }} initClass={this.state.initClass} channelName={this.props.roomId} messagesEnd={this.messagesEnd} channelId={this.props.roomId} type={'con'} socket={this.props.socket} />
+                <ChatInput style={{ marginTop: '100' }} closeScroll={this.props.closeScroll} initClass={this.state.initClass} channelName={this.props.roomId} messagesEnd={this.messagesEnd} channelId={this.props.roomId} type={'con'} socket={this.props.socket} />
                 <Button type="primary" size="50px" shape="round" icon={<VerticalAlignBottomOutlined />} style={style} onClick={this.scrollToBottom} />
                 <BackTop />
                 <div style={{

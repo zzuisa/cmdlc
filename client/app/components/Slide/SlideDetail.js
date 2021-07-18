@@ -242,7 +242,7 @@ textChange=(e) => {
                       <Divider plain style={{ color: '#888' }}>Public Message</Divider>
 
                       <Col span={24}>
-                          <Chat roomId={`topic_${this.state.slide.topic}`} socket={this.state.socket} />
+                          <Chat closeScroll={true} roomId={`topic_${this.state.slide.topic}`} socket={this.state.socket} />
                       </Col>
                   </Row>
                   <BackTop />
