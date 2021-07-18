@@ -6,6 +6,7 @@
  * 401 Illegal users
  * 403 JsonWebTokenError
  * 501 server error
+ * 601 No msg
  */
 
 exports.C = {
@@ -14,4 +15,5 @@ exports.C = {
     301: 'Credential expired, please log in again!',
     401: 'Illegal users!',
     501: 'Server error...',
+    601: '',
 };

@@ -32,13 +32,6 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        // let style = document.createElement('style');
-        // style.innerHTML = `
-        //     .ant-layout-content{
-        //         margin:0 !important
-        //     }
-        //     `;
-        // document.head.appendChile(style);
         $http('/api/counters')
             .then((res) => {
                 this.setState({

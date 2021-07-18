@@ -46,7 +46,7 @@ function SlideList(props) {
                         />
                         // <Radio.Button style={{ float: 'left' }} value={ s.name} key={index}>{ s.name}</Radio.Button>
                     )) }
-                </Radio.Group> : <Empty else image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+                </Radio.Group> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
 
         </Card>
 

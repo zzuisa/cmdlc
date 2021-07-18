@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Chat.css';
-import { useParams } from 'react-router-dom';
-import { InfoOutlined, StarBorderOutlined, VerticalAlignBottomOutlined } from '@material-ui/icons';
+import { VerticalAlignBottomOutlined } from '@material-ui/icons';
 // import db from './firebase';
 import cookie from 'react-cookies';
 import { BackTop, Button } from 'antd';
 import Message from './Message';
 import ChatInput from './ChatInput';
-import { notice, verify } from '../Common/Notice';
+import { notice } from '../Common/Notice';
 import $http from '../Util/PageHelper';
 
 const style = {
@@ -60,9 +59,12 @@ class Chat extends React.Component {
         }
     }
 
-    updateConversation=(roomId) => {
+    updateConversation=(roomId, withNotice) => {
         $http(`/api/conversations/${roomId}`)
             .then((res) => {
+                if (withNotice) {
+                    notice();
+                }
                 let mes = res.data.content !== null ? res.data.content.messages : [];
                 this.setRoomMessages(mes);
                 this.setState({
@@ -85,9 +87,7 @@ class Chat extends React.Component {
                     this.setRoomMessages(mes);
                     this.props.socket.on('server_slide_message', (data) => {
                         if (this.props.roomId === data.eventName) {
-                            notice();
-
-                            this.updateConversation(this.props.roomId);
+                            this.updateConversation(this.props.roomId, true);
                             // mes.push({
                             //     u_id: data.u_id,
                             //     user_id: data.name,

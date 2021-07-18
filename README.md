@@ -1,4 +1,6 @@
-# MERN-boilerplate
+Brainstorming CourseMapper, is an upgraded version of CourseMapper, which optimizes the 
+communication in the group and before the small components, 
+and uses Socket-io technology to communicate smoothly.
 
 This is a boilerplate project using the following technologies:
 - [React](https://facebook.github.io/react/) and [React Router](https://reacttraining.com/react-router/) for the frontend
@@ -9,12 +11,11 @@ This is a boilerplate project using the following technologies:
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) 6+
+- [Node.js](https://nodejs.org/en/) 14+
 
 ```shell
 npm install
 ```
-
 
 ## Running
 

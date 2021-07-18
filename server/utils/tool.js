@@ -32,14 +32,13 @@ let tools = {
     md5() { },
 
     verifyToken(authorization, res) {
-        if (authorization === undefined) {
-            res.json(R.error(301, C[301]));
+        let token = authorization.split(' ')[1];
+        if (token === 'undefined') {
             return false;
         }
-        let token = authorization.split(' ')[1];
         jwt.verify(token, secretOrPrivateKey, (err, decode) => {
             if (err) {
-                res.json(R.error(301, C[301]));
+                return false;
             }
         });
         return R.ok(token);

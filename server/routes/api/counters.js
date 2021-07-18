@@ -3,6 +3,7 @@ const { T } = require('../../models/entity/R');
 const tools = require('../../utils/tool');
 
 let R = new T();
+const { C } = require('../../utils/constant');
 
 module.exports = (app) => {
     app.get('/api/counters', (req, res, next) => {
@@ -12,47 +13,8 @@ module.exports = (app) => {
                 .exec()
                 .then((counter) => res.json(counter))
                 .catch((err) => next(err));
+        } else {
+            res.json(R.error(301, C[301]));
         }
-    });
-
-    app.post('/api/counters', (req, res, next) => {
-        const counter = new Counter();
-
-        counter.save()
-            .then(() => res.json(counter))
-            .catch((err) => next(err));
-    });
-
-    app.delete('/api/counters/:id', (req, res, next) => {
-        Counter.findOneAndDelete({ _id: req.params.id })
-            .exec()
-            .then((counter) => res.json())
-            .catch((err) => next(err));
-    });
-
-    app.put('/api/counters/:id/increment', (req, res, next) => {
-        Counter.findById(req.params.id)
-            .exec()
-            .then((counter) => {
-                counter.count++;
-
-                counter.save()
-                    .then(() => res.json(counter))
-                    .catch((err) => next(err));
-            })
-            .catch((err) => next(err));
-    });
-
-    app.put('/api/counters/:id/decrement', (req, res, next) => {
-        Counter.findById(req.params.id)
-            .exec()
-            .then((counter) => {
-                counter.count--;
-
-                counter.save()
-                    .then(() => res.json(counter))
-                    .catch((err) => next(err));
-            })
-            .catch((err) => next(err));
     });
 };

@@ -64,10 +64,6 @@ export default class ChatInput extends React.Component {
         //
     }
 
-    componentWillUnmount=() => {
-        // window.removeEventListener('scroll');
-    }
-
     componentWillReceiveProps = (nextProps, nextState) => {
         if (this.props.channelId !== nextProps.channelId) {
             // get the new state after path changed
@@ -172,14 +168,14 @@ export default class ChatInput extends React.Component {
                  },
 
              }).then((res) => {
-                 this.state.socket.emit(eventName, content);
+                 if (res !== undefined) {
+                     this.state.socket.emit(eventName, content);
+                 }
                  this.setState({
                      readOnly: false,
                      pending: false,
 
                  });
-
-                 this.state.form.focus();
              });
          } else {
              let data = {
@@ -203,16 +199,9 @@ export default class ChatInput extends React.Component {
                      pending: false,
 
                  });
-
-                 this.state.form.focus();
              });
          }
      };
-
-     onBEBlur=(e) => {
-         ;
-         ;
-     }
 
      getReverse = (c) => {
          return c === 'class2' ? 'class3' : 'class2';

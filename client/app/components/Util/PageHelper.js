@@ -49,6 +49,9 @@ $http.interceptors.response.use((response) => {
                 message.error(response.data.content);
                 router.history.push('/login');
                 break;
+            case 601:
+                // token expired
+                break;
             default:
                 message.error(response.data.content);
         }
