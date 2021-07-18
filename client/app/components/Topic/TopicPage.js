@@ -78,7 +78,7 @@ export default class TopicPage extends React.Component {
             formData.append('topic', this.props.match.params.name);
             formData.append('userInfo', JSON.stringify(this.state.currentUser));
 
-            fetch('/api/commons/lecture', {
+            fetch(`${config.host}/api/commons/lecture`, {
                 method: 'POST',
 
                 body: formData,
