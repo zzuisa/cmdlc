@@ -31,7 +31,21 @@ export const topicRoute = [
     },
 
 ];
+export const memberRoute = [
+    {
+        path: '/member/bhoomika',
+        name: 'Bhoomika Rana',
+    },
+    {
+        path: '/member/jing',
+        name: 'Jing Song',
+    },
+    {
+        path: '/member/ao',
+        name: 'Ao Sun',
+    },
 
+];
 export const UserSettingRoute = [
     {
         path: '/userSetting/login',

@@ -17,6 +17,7 @@ import Home from './components/Home/Home';
 import TopicPage from './components/Topic/TopicPage';
 import TeamPage from './components/Team/TeamPage';
 import SlideDetail from './components/Slide/SlideDetail';
+import MemberPage from './components/Member/MemberPage';
 
 import './styles/styles.scss';
 import 'antd/dist/antd.css';
@@ -36,6 +37,7 @@ render((
                 <Route exact path="/register" component={RegisterForm}/>
                 <Route exact path="/topic/:name" component={TopicPage}/>
                 <Route exact path="/team/:name" component={TeamPage}/>
+                <Route exact path="/member/:name" component={MemberPage}/>
                 <Route exact path="/detail/:id" component={SlideDetail}/>
                 <Route exact path="/userSetting/profile" component={UserProfile}/>
                 <Route exact path="/forgetPassword" component={ResetPsdByEmail}/>

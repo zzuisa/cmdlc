@@ -17,7 +17,7 @@ import Logo from '../components/Header/Logo';
 
 const router = new HashRouter();
 
-const { teamRoute, topicRoute } = require('./routes');
+const { teamRoute, topicRoute, memberRoute } = require('./routes');
 
 const { SubMenu } = Menu;
 
@@ -91,7 +91,22 @@ const MainMenu = (props) => {
                             }
                         })}
                     </SubMenu>
+                    {
+                        memberRoute.length === 0 ? <> </> : <>
+                            <SubMenu key="member" icon={<AppstoreOutlined />} title="Member">
+                                {memberRoute.map((e, index) => {
+                                    if (e.path != '*') {
+                                        return (
+                                            <Menu.Item key={index} icon={<UserOutlined />}>
+                                                <NavLink to={e.path}>{e.name }</NavLink>
 
+                                            </Menu.Item>
+                                        );
+                                    }
+                                })}
+                            </SubMenu>
+                        </>
+                    }
                     </Menu>
                 </Sider>
                 <Layout>
