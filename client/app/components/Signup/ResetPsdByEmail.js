@@ -17,6 +17,7 @@ class ResetPsdByEmail extends Component {
             newPsd: false,
             hasSent: false,
             end: false,
+            newButton: false,
         };
     }
 
@@ -68,29 +69,6 @@ class ResetPsdByEmail extends Component {
         });
     }
 
-    sendCAPTCHA=() => {
-        $http({
-            url: '/api/sendMail',
-            method: 'post',
-            // send data as json strings to back-end
-            data: {
-                email: this.state.userMail,
-
-            },
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((data) => {
-                this.setState({
-
-                    verifyCode: data.data.content.response.verify,
-                });
-                this.sendSuccessfully('success');
-                // ;
-            });
-    }
-
     checkCAPTCHA=(number) => {
         if (this.state.verifyCode != number
             && this.state.verifyCode !== undefined
@@ -101,6 +79,7 @@ class ResetPsdByEmail extends Component {
     }
 
     onFinish = (values) => {
+        console.log('values', values);
         this.setState({
             hasSent: true,
         });
@@ -139,6 +118,7 @@ class ResetPsdByEmail extends Component {
                                 this.setState({
                                     userMail: values.email,
                                     verifyCode: data.data.content.response.verify,
+                                    newButton: true,
                                 });
                                 this.sendSuccessfully;
                                 // ;
@@ -148,7 +128,28 @@ class ResetPsdByEmail extends Component {
                     }
                 });
         }
+        if (this.state.newButton) {
+            $http({
+                url: '/api/sendMail',
+                method: 'post',
+                // send data as json strings to back-end
+                data: {
+                    email: values.email,
 
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((data) => {
+                    this.setState({
+
+                        verifyCode: data.data.content.response.verify,
+                    });
+                    this.sendSuccessfully('success');
+                    // ;
+                });
+        }
         if (this.state.verifyCode == values.verifyCode && this.state.verifyCode !== undefined) {
             this.setState({
                 showv: false,
@@ -199,7 +200,7 @@ class ResetPsdByEmail extends Component {
             </Form.Item>;
         } else {
             sendButton = <Form.Item>
-                <Button type="primary" htmlType="submit" onClick={this.sendCAPTCHA}>
+                <Button type="primary" htmlType="submit">
                 Send verification code again!
                 </Button>
             </Form.Item>;
@@ -311,18 +312,6 @@ class ResetPsdByEmail extends Component {
                 {newPsd}
                 {newPsdButton}
             </Form>
-
-        //     <Result
-        //         status="success"
-        //         title="Successfully Purchased Cloud Server ECS!"
-        //         subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
-        //         extra={[
-        //             <Button type="primary" key="console" onClick={this.sendEvent}>
-        // Go Console
-        //             </Button>,
-        //             <Button key="buy">Buy Again</Button>,
-        //         ]}
-        //     />
 
         );
     }
