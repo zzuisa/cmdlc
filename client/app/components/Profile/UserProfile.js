@@ -51,8 +51,6 @@ export default class UserProfile extends React.Component {
     // change password
     psdChange=(values) => {
         if (values.oldpsd === this.state.userinfo.password && !this.state.changepsd) {
-            openNotificationWithIcon('success');
-
             this.setState({
                 changepsd: true,
                 psdChangeTitle: 'New password',
