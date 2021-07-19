@@ -1,3 +1,4 @@
+const moment = require('moment');
 const SlideComment = require('../../models/SlideComment');
 const E = require('../../models/entity/E');
 const { T } = require('../../models/entity/R');
@@ -23,11 +24,13 @@ module.exports = (app) => {
         if (tools.verifyToken(authorization, res)) {
             let data = req.body;
             const message = new E.Message().init();
+            let date = moment.utc().format();
+            let local = moment.utc(date).local().format('YYYY-MM-DD HH:mm:ss');
             message.content = data.content;
             message.user_id = data.eventUser.name;
             message.avatar = data.eventUser.avatar;
             message.u_id = data.eventUser._id;
-
+            message.create_time = local;
             SlideComment.findOne({ slide_id: data.slide_id, page: data.page }).exec().then((r) => {
                 if (r !== null) {
                     r.messages.push(message);
