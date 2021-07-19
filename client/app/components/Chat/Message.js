@@ -16,12 +16,11 @@ function Message({
                     <div className="message_current">
                         <div className={noStyle ? 'fullBg_current' : 'msgBg_current'}>
                             <div className="message__info" >
-                                <h4 style={{ float: 'right' }}>
+                                <h4>
                                     <span className="message__timestamp">
                                         {moment(`${timestamp}+00:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
                                     </span>
                                     <Tag color="blue">you</Tag>
-
                                 </h4>
                                 <p dangerouslySetInnerHTML={{ __html: message }}></p>
                             </div>
