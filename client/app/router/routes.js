@@ -44,6 +44,10 @@ export const memberRoute = [
         path: '/member/ao',
         name: 'Ao Sun',
     },
+    {
+        path: '/member/chris',
+        name: 'Chris',
+    },
 
 ];
 export const UserSettingRoute = [
