@@ -29,6 +29,9 @@
     padding: 20px;
     display: flex;
 }
+.display{
+    display:flex;width:100%;flex-direction: row;flex-wrap: nowrap;align-content: center;align-items: center;justify-content: flex-end;
+}
 .fullBg_current{
     width: 100%;
     background-color: #bae7ff;
@@ -50,7 +53,7 @@
 
 
 .message_current {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     float: right;
     padding: 20px;

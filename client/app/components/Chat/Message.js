@@ -16,13 +16,13 @@ function Message({
                     <div className="message_current">
                         <div className={noStyle ? 'fullBg_current' : 'msgBg_current'}>
                             <div className="message__info" >
-                                <h4>
+                                <div className="display">
                                     <span className="message__timestamp">
                                         {moment(`${timestamp}+00:00`, 'YYYY-MM-DD HH:mm:ssZ').fromNow()}
                                     </span>
                                     <Tag color="blue">you</Tag>
-                                </h4>
-                                <p dangerouslySetInnerHTML={{ __html: message }}></p>
+                                </div>
+                                <p style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: message }}></p>
                             </div>
                             <Image style={{ width: 60, borderRadius: '50%', margin: 10 }} src={userImage} alt="" />
                         </div>
