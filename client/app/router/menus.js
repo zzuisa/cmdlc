@@ -66,7 +66,7 @@ const MainMenu = (props) => {
                     }}
                 >
 
-                    <Menu theme="light" mode="inline" defaultOpenKeys={['team', 'topic']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
+                    <Menu theme="light" mode="inline" defaultOpenKeys={['team', 'topic', 'member']} defaultSelectedKeys={[getAndSavePath(props.location.pathname)]}>   <SubMenu key="team" icon={<MailOutlined />} title="Team">
                         {teamRoute.map((e, index) => {
                             if (e.path != '*') {
                                 if (e.name === user.team[0]) {
