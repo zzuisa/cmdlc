@@ -1,4 +1,6 @@
-Brainstorming CourseMapper, is an upgraded version of CourseMapper, which optimizes the 
+# Brainstorming CourseMapper,
+
+is an upgraded version of CourseMapper, which optimizes the 
 communication in the group and before the small components, 
 and uses Socket-io technology to communicate smoothly.
 
@@ -7,6 +9,8 @@ This is a boilerplate project using the following technologies:
 - [Express](http://expressjs.com/) and [Mongoose](http://mongoosejs.com/) for the backend
 - [Sass](http://sass-lang.com/) for styles (using the SCSS syntax)
 - [Webpack](https://webpack.github.io/) for compilation
+- [Braft Editor](https://braft.margox.cn/) for rich-text editor
+- [antd](https://ant.design/) for UI compontent
 
 
 ## Requirements
